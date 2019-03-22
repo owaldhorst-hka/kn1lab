@@ -48,7 +48,8 @@ cpunetlog
 
 gestartet werden. *Abbildung 1* zeigt eine typische Ausgabe von `cpunetlog` auf einem Rechner mit drei Netzschnittstellen `sv1-eth0`, `sv1-eth1` und `sv1-eth2`. Das Programm kann durch Drücken der Taste `q` beendet werden.
 
-![Ausgabe von cpunetlog](images/ausgabe-cpunetlog.png)<br>
+![Ausgabe von cpunetlog](images/ausgabe-cpunetlog.png)
+
 *Abbildung 1: Ausgabe von `cpunetlog`*
 
 Außerdem erlaubt `cpunetlog` das Aufzeichnen des zeitlichen Verlaufs von CPU-Auslastung und Netzdurchsatz zur späteren Auswertung. Diese kann mit
@@ -68,7 +69,8 @@ gestartet werden, wenn der Netzdurchsatz der in der Liste angegebenen Schnittste
 ausgewertet werden. `-nsc 0.01` setzt die maximale Datenrate auf 10 Mbit/s. Eine beispielhafte Ausgabe zeigt *Abbildung 2*.<br>
 **Achtung: Das Plotten funktioniert nicht über eine SSH-Verbindung, daher muss das Plot-Kommando auf dem "echten" PC gestartet werden!**
 
-![Ausgabe von cnl_plot.py](images/ausgabe-plot.png)<br>
+![Ausgabe von cnl_plot.py](images/ausgabe-plot.png)
+
 *Abbildung 2: Ausgabe von `cnl_plot.py`*
 
 Für eine Aufzeichnung lassen sich Durchschnittswerte mit dem Kommando
@@ -83,7 +85,8 @@ berechnen.
 
 Für den Versuch haben wir Ihnen in den Skripten `Aufgabe4-1.py` bis `Aufgabe4-3.py` eine Mininet-Topologie vorgegeben, die in *Abbildung 3* dargestellt ist. Die Namen der Schnittstellen aller Hosts kann *Tabelle 1* entnommen werden.
 
-![Verwendete Mininet-Topologie](images/topologie.png)<br>
+![Verwendete Mininet-Topologie](images/topologie.png)
+
 *Abbildung 3: Verwendete Mininet-Topologie*
 
 | Server (`sv1`)             | Client-1 (`c1`)      | Client-2 (`c2`)      |
@@ -91,7 +94,8 @@ Für den Versuch haben wir Ihnen in den Skripten `Aufgabe4-1.py` bis `Aufgabe4-3
 | sv1-eth0 (11.0.0.3)        | c1-eth0 (11.0.0.1)   | c2-eth0 (12.0.0.2)   |
 | sv1-eth1 (12.0.0.3)        | c1-eth1 (SSH)        | c2-eth1 (SSH)        |
 | sv1-eth2 (SSH)             |                      |                      |
-| `--nics sv1-eth0 sv1-eth1` | `--nics c1-eth0`     | `--nics c2-eth0`     |<br>
+| `--nics sv1-eth0 sv1-eth1` | `--nics c1-eth0`     | `--nics c2-eth0`     |
+
 *Tabelle 1: Schnittstellen der Hosts in der Mininet-Topologie inkl. Parameter für `cpunetlog`*
 
 Die Leistungsmessung zwischen den Rechnern `c1`, `c2` und `sv1` wird über die schwarz dargestellten Netzverbindungen und die Switches `S1` und `S2` erfolgen. Die rot dargestellten Netzverbindungen und der Switch `S3` werden lediglich zur Steuerung der Experimente verwendet. Die Das Mininet-Netz kann beispielsweise mit
