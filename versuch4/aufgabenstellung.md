@@ -98,7 +98,7 @@ Für den Versuch haben wir Ihnen in den Skripten `Aufgabe4-1.py` bis `Aufgabe4-3
 Die Leistungsmessung zwischen den Rechnern `c1`, `c2` und `sv1` wird über die schwarz dargestellten Netzverbindungen und die Switches `S1` und `S2` erfolgen. Die rot dargestellten Netzverbindungen und der Switch `S3` werden lediglich zur Steuerung der Experimente verwendet. Die Das Mininet-Netz kann beispielsweise mit
 
 ```bash
-sudo python Aufgabe4-1.py
+sudo python ~/Schreibtisch/kn1lab/versuch4/scripts/Aufgabe4-1.py
 ```
 
 gestartet werden. Das benötigte Passwort ist `password`.
