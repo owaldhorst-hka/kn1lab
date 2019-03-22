@@ -1,4 +1,3 @@
-package experiment1;
 import java.util.Properties;
 import javax.mail.Folder;
 import javax.mail.Message;

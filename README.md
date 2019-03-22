@@ -2,7 +2,7 @@
 
 ## Aufgabenstellungen
 
-### [Versuch 1 - Anwendungsschicht](docs/01-Aufgabenstellung.md)
-### [Versuch 2 - Transportschicht](docs/02-Aufgabenstellung.md)
-### [Versuch 3 - Vermittlungsschicht](docs/03-Aufgabenstellung.md)
-### [Versuch 4 - Leistungsmessung](docs/04-Aufgabenstellung.md)
+### [Versuch 1 - Anwendungsschicht](versuch1/aufgabenstellung.md)
+### [Versuch 2 - Transportschicht](versuch2/aufgabenstellung.md)
+### [Versuch 3 - Vermittlungsschicht](versuch3/aufgabenstellung.md)
+### [Versuch 4 - Leistungsmessung](versuch4/aufgabenstellung.md)
