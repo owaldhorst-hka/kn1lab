@@ -48,8 +48,7 @@ cpunetlog
 
 gestartet werden. *Abbildung 1* zeigt eine typische Ausgabe von `cpunetlog` auf einem Rechner mit drei Netzschnittstellen `sv1-eth0`, `sv1-eth1` und `sv1-eth2`. Das Programm kann durch Drücken der Taste `q` beendet werden.
 
-![Ausgabe von cpunetlog](images/ausgabe-cpunetlog.png)
-
+![Ausgabe von cpunetlog](images/ausgabe-cpunetlog.png)<br>
 *Abbildung 1: Ausgabe von `cpunetlog`*
 
 Außerdem erlaubt `cpunetlog` das Aufzeichnen des zeitlichen Verlaufs von CPU-Auslastung und Netzdurchsatz zur späteren Auswertung. Diese kann mit
@@ -69,8 +68,7 @@ gestartet werden, wenn der Netzdurchsatz der in der Liste angegebenen Schnittste
 ausgewertet werden. `-nsc 0.01` setzt die maximale Datenrate auf 10 Mbit/s. Eine beispielhafte Ausgabe zeigt *Abbildung 2*.<br>
 **Achtung: Das Plotten funktioniert nicht über eine SSH-Verbindung, daher muss das Plot-Kommando auf dem "echten" PC gestartet werden!**
 
-![Ausgabe von cnl_plot.py](images/ausgabe-plot.png)
-
+![Ausgabe von cnl_plot.py](images/ausgabe-plot.png)<br>
 *Abbildung 2: Ausgabe von `cnl_plot.py`*
 
 Für eine Aufzeichnung lassen sich Durchschnittswerte mit dem Kommando
@@ -85,8 +83,7 @@ berechnen.
 
 Für den Versuch haben wir Ihnen in den Skripten `Aufgabe4-1.py` bis `Aufgabe4-3.py` eine Mininet-Topologie vorgegeben, die in *Abbildung 3* dargestellt ist. Die Namen der Schnittstellen aller Hosts kann *Tabelle 1* entnommen werden.
 
-![Verwendete Mininet-Topologie](images/topologie.png)
-
+![Verwendete Mininet-Topologie](images/topologie.png)<br>
 *Abbildung 3: Verwendete Mininet-Topologie*
 
 | Server (`sv1`)             | Client-1 (`c1`)      | Client-2 (`c2`)      |
