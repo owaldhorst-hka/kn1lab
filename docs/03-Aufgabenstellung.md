@@ -10,7 +10,7 @@ Jedes Teammitglied soll seinen eigenen Arbeitsplatz mit PC erhalten. Ein Network
 
 1. Bitte öffnen Sie das Mininet-Skript unter `~/mininet/custom/Aufgabe3-1.py` mit einem Texteditor und rekonstruieren (zeichnen) Sie die Netzwerkumgebung mit den Verbindungen!
 
-1. Bitte bezeichnen Sie zusätzlich in ihrer Zeichnung die Netzwerkschnittstellen mit den richtigen IP-Adressen. Vermerken Sie auch die Routing-Tabellen-Einträge, die Sie anzeigen können mit `<hostname> route`
+1. Bitte bezeichnen Sie zusätzlich in ihrer Zeichnung die Netzwerkschnittstellen mit den richtigen IP-Adressen. Vermerken Sie auch die Routing-Tabellen-Einträge, die Sie anzeigen können mit `<hostname> route`.
 
 1. Starten Sie nun die Mininet Topologie mit `sudo python ~/mininet/custom/Aufgabe3-1.py`. Testen Sie dann die Verbindung der PCs untereinander mit Hilfe des Tools ping, indem sie in der Mininet-Konsole den Befehl `<hostname-quelle> ping <hostname-ziel>` verwenden. Können sich alle Rechner gegenseitig erreichen?
 
@@ -25,7 +25,7 @@ Wir haben ein Büro in einem Gründerhaus bekommen! Es ist zwar nicht so groß, 
 
 Von unserem neuen Büro gibt es einen Switch, der die PCs verbindet, sowie einen neuen Router. Das NAS in der Garage soll von den neuen PCs erreichbar sein, aber nicht die PCs der alten Teammitglieder in der Garage! Zur Vereinfachung gehen wir davon aus, dass die beiden Router "Garage" (`r1`) und "Buero" (`r2`) eine direkte Verbindung haben.
 
-Hier ist die aktualisierte Liste, ich habe sie für Sie angepasst. Schauen Sie sich die neuen Geräte und deren IPs genau an.
+Hier ist die aktualisierte Liste, ich habe sie für Sie angepasst. Schauen Sie sich die **neuen Geräte und deren IPs** genau an.
 
 | Gerät             | Typ        | IP                                        |
 |-------------------|------------|-------------------------------------------|
