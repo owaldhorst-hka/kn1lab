@@ -43,4 +43,4 @@ Hier ist die aktualisierte Liste, ich habe sie für Sie angepasst. Schauen Sie s
 
 1. Für das neue Büro stehen uns `/24` IP-Adressen zur Verfügung. Wie viele Geräte können hier maximal genutzt werden?
 
-1. Fügen Sie die neuen Geräte in die Zeichnung ein. Realisieren Sie die neue Topologie mit IP-Adressen/-Subnetzen und Routen im Mininet-Skript `~/Schreibtisch/kn1lab/versuch3/scripts/Aufgabe3-2.py`. Hinweis zu den Routen: Orientieren Sie sich an dem Aufbau von Router 1! Einen Routing-Eintrag für ein Subnetz erstellen Sie mit dem Befehl `net['r1'].cmd("ip route add <subnetz> via <next-hop-ip>")`.
+1. Fügen Sie die neuen Geräte in die Zeichnung ein. Realisieren Sie die neue Topologie mit IP-Adressen/-Subnetzen und Routen im Mininet-Skript `Aufgabe3-2.py`. Hinweis zu den Routen: Orientieren Sie sich an dem Aufbau von Router 1! Einen Routing-Eintrag für ein Subnetz erstellen Sie mit dem Befehl `net['r1'].cmd("ip route add <subnetz> via <next-hop-ip>")`.
