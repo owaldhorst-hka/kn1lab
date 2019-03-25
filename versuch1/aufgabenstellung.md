@@ -12,7 +12,7 @@ Die erste Aufgabe umfasst das Senden einer E-Mail mit Hilfe der Java Mail API. D
 
 https://eclipse-ee4j.github.io/javamail/docs/api/javax/mail/package-summary.html
 
-Die Vorlage für diese Aufgabe finden Sie in Eclipse unter `versuch1/src/Send_Mail.java`.
+Die Vorlage für diese Aufgabe finden Sie in Eclipse unter `versuch1/src/(default package)/Send_Mail.java`.
 
 Der SMTP-Server läuft auf `localhost`, d.h. die E-Mail-Adressen für Sender und Empfänger müssen auf `@localhost` enden, sind aber sonst frei wählbar. Um später erfolgreich eine Sitzung aufzubauen, werden der Name des Hosts und die Anmeldeinformationen benötigt.
 
@@ -30,7 +30,7 @@ Die zweite Aufgabe dreht sich darum, alle versendeten E-Mails aus Aufgabe 1 abzu
 * Das Versanddatum der E-Mail
 * Der Inhalt der E-Mail
 
-Die Vorlage für diese Aufgabe finden Sie in Eclipse unter `versuch1/src/Receive_Mail.java`.
+Die Vorlage für diese Aufgabe finden Sie in Eclipse unter `versuch1/src/(default package)/Receive_Mail.java`.
 
 Um erfolgreich eine Sitzung aufzubauen, werden der Name des Hosts, dessen Store Type und die Anmeldeinformationen benötigt. 
 
