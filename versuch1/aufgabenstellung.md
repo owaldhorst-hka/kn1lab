@@ -12,7 +12,7 @@ Die erste Aufgabe umfasst das Senden einer E-Mail mit Hilfe der Java Mail API. D
 
 https://eclipse-ee4j.github.io/javamail/docs/api/javax/mail/package-summary.html
 
-Die E-Mail-Adressen für Sender und Empfänger sind frei wählbar, müssen aber auf `@localhost` enden. Um später erfolgreich eine Sitzung aufzubauen, werden Benutzername und Passwort des Kontos benötigt. Weiterhin sollte überlegt werden welcher SMTP Host zu verwenden ist und auf welchem Port dieser anzusprechen ist. 
+Der SMTP-Server läuft auf `localhost`, d.h. die E-Mail-Adressen für Sender und Empfänger müssen auf `@localhost` enden, sind aber sonst frei wählbar. Um später erfolgreich eine Sitzung aufzubauen, werden der Name des Hosts und die Anmeldeinformationen benötigt.
 
 Mit den genannten Informationen kann eine Sitzung aufgebaut werden. Die E-Mail darf direkt über den Code erzeugt werden.
 
@@ -28,7 +28,7 @@ Die zweite Aufgabe dreht sich darum, alle versendeten E-Mails aus Aufgabe 1 abzu
 * Das Versanddatum der E-Mail
 * Der Inhalt der E-Mail
 
-Um erfolgreich eine Sitzung aufzubauen werden der Name des Hosts, dessen Store Type, der entsprechende Port, auf dem die Kommunikation läuft, und die Kontoinformationen benötigt. 
+Um erfolgreich eine Sitzung aufzubauen, werden der Name des Hosts, dessen Store Type und die Anmeldeinformationen benötigt. 
 
 Bei Problemen können die folgenden Parameter gesetzt werden:
 
