@@ -4,6 +4,8 @@
 
 Realisieren Sie in Java aufbauend auf UDP einen zuverlässigen Transport. Hierzu müssen UDP-Segmente innerhalb der Payload um Sequenz- und Acknowledgement-Nummern ergänzt werden (bereits in `Packet.java` implementiert). Implementieren Sie einen Sender, der über ein "Medium"-Prozess mit einem Empfänger-Prozess kommuniziert. Der Empfänger und das Medium liegen bereits fertig kompiliert vor. Die Skripte zum Starten von Medium und Empfänger finden Sie im Ordner `~/Schreibtisch/kn1lab/versuch2/scripts`.
 
+Die Vorlagen für diese Aufgabe finden Sie in Eclipse unter `versuch2/src`.
+
 Beachten Sie, dass ein UDP-Socket nur Bytes versenden kann. Daher muss ein Objekt der Klasse `Packet` für die Übertragung in Bytes serialisiert werden. Sie können hierfür die Klasse `ByteArrayOutputStream` verwenden, z.B. so:
 
 ```java
