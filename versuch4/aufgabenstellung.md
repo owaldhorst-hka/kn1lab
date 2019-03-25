@@ -62,7 +62,7 @@ cpunetlog -l --nics <Liste der Schnittstellen>
 gestartet werden, wenn der Netzdurchsatz der in der Liste angegebenen Schnittstellen aufgezeichnet werden soll (vgl. *Tabelle 1*). Im Fenster sollte dann oben rechts in der Ecke `Logging: enabled` stehen. Die Log-Dateien werden nach `/tmp/cpunetlog` geschrieben und können mit dem Kommando
 
 ```bash
-~/cpunetlog/cnl_plot.py -nsc 0.01 <Log-Datei>
+cnl_plot.py -nsc 0.01 <Log-Datei>
 ```
 
 ausgewertet werden. `-nsc 0.01` setzt die maximale Datenrate auf 10 Mbit/s. Eine beispielhafte Ausgabe zeigt *Abbildung 2*.<br>
@@ -74,7 +74,7 @@ ausgewertet werden. `-nsc 0.01` setzt die maximale Datenrate auf 10 Mbit/s. Eine
 Für eine Aufzeichnung lassen sich Durchschnittswerte mit dem Kommando
 
 ```bash
-~/cpunetlog/summary.py <Log-Datei>
+summary.py <Log-Datei>
 ```
 
 berechnen.
@@ -119,7 +119,7 @@ Verwenden Sie für diese Aufgabe die Mininet-Topologie `Aufgabe4-1.py`.
 
 1. Generieren Sie mit Hilfe von `iperf3` einen TCP-Datenstrom zwischen Client `c1` und Server `sv1`. Dabei soll der `iperf3`-Client auf `c1` und der `iperf3`-Server auf `sv1` laufen. `iperf3` gibt das Staukontrollfenster `CWND` des TCP-Datenstroms aus. Wie verhält sich dieses und wie hoch ist es, nachdem der Strom eine Weile gelaufen ist?
 
-1. Zeichen Sie diesen Datenstrom nun auf dem Server `sv1` mit Hilfe von `cpunetlog` für 60 Sekunden auf und stellen Sie das Ergebnis grafisch dar. Bewahren Sie einen Screenshot der Ausgabe für die Abnahme auf. Achten Sie auf eine entsprechende Skalierung der Plots!
+1. Zeichen Sie diesen Datenstrom nun auf dem Server `sv1` mit Hilfe von `cpunetlog` für 1 Minute auf und stellen Sie das Ergebnis grafisch dar. Bewahren Sie einen Screenshot der Ausgabe für die Abnahme auf. Achten Sie auf eine entsprechende Skalierung der Plots!
 
 1. Wie hoch war die durchschnittliche Auslastung der Netzschnittstelle? 
 
