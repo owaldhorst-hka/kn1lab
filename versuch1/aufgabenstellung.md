@@ -14,9 +14,7 @@ https://eclipse-ee4j.github.io/javamail/docs/api/javax/mail/package-summary.html
 
 Die Vorlage für diese Aufgabe finden Sie in Eclipse unter `versuch1/src/(default package)/Send_Mail.java`.
 
-Der SMTP-Server läuft auf `localhost`, d.h. die E-Mail-Adressen für Sender und Empfänger müssen auf `@localhost` enden, sind aber sonst frei wählbar. Um später erfolgreich eine Sitzung aufzubauen, werden der Name des Hosts und die Anmeldeinformationen benötigt.
-
-Mit den genannten Informationen kann eine Sitzung aufgebaut werden. Die E-Mail darf direkt über den Code erzeugt werden.
+Der SMTP-Server läuft auf `localhost`, d.h. die E-Mail-Adressen für Sender und Empfänger müssen auf `@localhost` enden, sind aber sonst frei wählbar. Um später erfolgreich eine Sitzung aufzubauen, werden der Name des Hosts und die Anmeldeinformationen benötigt. Die E-Mail darf direkt über den Code erzeugt werden.
 
 Um zu kontrollieren, ob die E-Mail erfolgreich versendet wurde kann im Ordner `home/user/Maildir` im Unterordner `new` nachgeschaut werden. 
 
