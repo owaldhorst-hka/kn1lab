@@ -81,7 +81,7 @@ berechnen.
 
 ## Verwendete Mininet-Topologie
 
-Für den Versuch haben wir Ihnen in den Skripten `Aufgabe4-1.py` bis `Aufgabe4-3.py` eine Mininet-Topologie vorgegeben, die in *Abbildung 3* dargestellt ist. Die Namen der Schnittstellen aller Hosts kann *Tabelle 1* entnommen werden.
+Für den Versuch haben wir Ihnen in den Skripten unter `~/Schreibtisch/kn1lab/versuch4/scripts` eine Mininet-Topologie vorgegeben, die in *Abbildung 3* dargestellt ist. Die Namen der Schnittstellen aller Hosts kann *Tabelle 1* entnommen werden.
 
 ![Verwendete Mininet-Topologie](images/topologie.png)<br>
 *Abbildung 3: Verwendete Mininet-Topologie*
@@ -98,7 +98,7 @@ Für den Versuch haben wir Ihnen in den Skripten `Aufgabe4-1.py` bis `Aufgabe4-3
 Die Leistungsmessung zwischen den Rechnern `c1`, `c2` und `sv1` wird über die schwarz dargestellten Netzverbindungen und die Switches `S1` und `S2` erfolgen. Die rot dargestellten Netzverbindungen und der Switch `S3` werden lediglich zur Steuerung der Experimente verwendet. Die Das Mininet-Netz kann beispielsweise mit
 
 ```bash
-sudo python ~/Schreibtisch/kn1lab/versuch4/scripts/Aufgabe4-1.py
+sudo python ~/Schreibtisch/kn1lab/versuch4/scripts/mininet-1.py
 ```
 
 gestartet werden. Das benötigte Passwort ist `password`.
@@ -115,7 +115,7 @@ Für die Rechner `c2` und `sv1` sind die entsprechenden Adressen aus dem Subnetz
 
 ## Aufgabe 1 - Ein TCP-Strom
 
-Verwenden Sie für diese Aufgabe die Mininet-Topologie `Aufgabe4-1.py`.
+Verwenden Sie für diese Aufgabe die Mininet-Topologie `mininet-1.py`.
 
 1. Generieren Sie mit Hilfe von `iperf3` einen TCP-Datenstrom zwischen Client `c1` und Server `sv1`. Dabei soll der `iperf3`-Client auf `c1` und der `iperf3`-Server auf `sv1` laufen. `iperf3` gibt das Staukontrollfenster `CWND` des TCP-Datenstroms aus. Wie verhält sich dieses und wie hoch ist es, nachdem der Strom eine Weile gelaufen ist?
 
@@ -125,7 +125,7 @@ Verwenden Sie für diese Aufgabe die Mininet-Topologie `Aufgabe4-1.py`.
 
 ## Aufgabe 2 - Fairness
 
-Verwenden Sie für diese Aufgabe ebenfalls die Mininet-Topologie `Aufgabe4-1.py`. Wir wollen nun untersuchen, ob sich zwei TCP-Datenströme die verfügbare Bandbreite fair teilen. Dazu benötigen wir zwei Datenströme, jeweils einen von Client `c1` bzw. Client `c2` zu Server `sv1`. Zu beachten sind die zwei Netzschnittstellen des Servers `sv1`; jede befindet sich in einem anderen Subnetz. Um die zwei Datenströme mit `cpunetlog` unterscheiden zu können, ist es notwendig, dass je einer der TCP-Ströme an einer der beiden Schnittstellen ankommt. Anderenfalls kann nicht zentral auf dem Server gemessen werden, welcher Datenstrom welchen Durchsatz erreicht. 
+Verwenden Sie für diese Aufgabe ebenfalls die Mininet-Topologie `mininet-1.py`. Wir wollen nun untersuchen, ob sich zwei TCP-Datenströme die verfügbare Bandbreite fair teilen. Dazu benötigen wir zwei Datenströme, jeweils einen von Client `c1` bzw. Client `c2` zu Server `sv1`. Zu beachten sind die zwei Netzschnittstellen des Servers `sv1`; jede befindet sich in einem anderen Subnetz. Um die zwei Datenströme mit `cpunetlog` unterscheiden zu können, ist es notwendig, dass je einer der TCP-Ströme an einer der beiden Schnittstellen ankommt. Anderenfalls kann nicht zentral auf dem Server gemessen werden, welcher Datenstrom welchen Durchsatz erreicht. 
 
 1. Erstellen Sie die notwendigen Datenströme mit `iperf3`, zeichnen Sie diese auf den Server mit `cpunetlog` für 1 Minute auf und stellen Sie das Ergebnis grafisch dar. Bewahren Sie einen Screenshot der Ausgabe für die Abnahme auf.
 
@@ -137,7 +137,7 @@ Verwenden Sie für diese Aufgabe ebenfalls die Mininet-Topologie `Aufgabe4-1.py`
 
 ## Aufgabe 3 - Auswirkungen von hohem Paketverlust auf den TCP-Durchsatz
 
-In dieser Aufgabe simulieren wir eine schlechte Verbindung vom Client zum Server, indem wir den Paketverlust auf der Leitung zwischen den zwei Switches von 0% auf 5% erhöhen. Verwenden Sie für diese Aufgabe die Mininet-Topologie `Aufgabe4-2.py`.
+In dieser Aufgabe simulieren wir eine schlechte Verbindung vom Client zum Server, indem wir den Paketverlust auf der Leitung zwischen den zwei Switches von 0% auf 5% erhöhen. Verwenden Sie für diese Aufgabe die Mininet-Topologie `mininet-2.py`.
 
 1. Erstellen Sie einen TCP-Datenstrom vom Client `c1` zum Server `sv1` und zeichnen Sie diesen auf dem Server für eine Minute auf. Wenn Sie den Wert `CWND`, den `iperf3` ausgibt, beobachten und mit dem aus 1.1 vergleichen, was fällt Ihnen auf? Warum ist dies so?
 
@@ -145,7 +145,7 @@ In dieser Aufgabe simulieren wir eine schlechte Verbindung vom Client zum Server
 
 ## Aufgabe 4 - Auswirkungen von hohem Paketverlust auf den UDP-Durchsatz
 
-Verwenden Sie für diese Aufgabe die Mininet-Topologie `Aufgabe4-3.py`, in dem der Paketverlust auf der Leitung zwischen den zwei Switches auf 10% erhöht wurde.
+Verwenden Sie für diese Aufgabe die Mininet-Topologie `mininet-3.py`, in dem der Paketverlust auf der Leitung zwischen den zwei Switches auf 10% erhöht wurde.
 
 1. Erstellen Sie einen UDP-Datenstrom mit einer maximalen Bandbreite von 10 Mbit/s vom Client `c1` zum Server `sv1`. Messen Sie nun sowohl die gesendeten Daten auf Client-Seite als auch empfangenen Daten auf Server-Seite jeweils mit `cpunetlog`.
 
