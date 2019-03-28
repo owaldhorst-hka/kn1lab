@@ -1,5 +1,10 @@
 # Versuch 3 - Vermittlungsschicht
 
+## Hinweise
+
+* Der Name eines Routers wird auf die IP-Adresse von genau einer Schnittstelle aufgelöst, andere Schnittstellen können Sie über deren IP-Adressen erreichen (z.B. mit `host1 ping 10.0.0.2`)
+* Falls Sie bei der Verwendung von `traceroute` oder `route` in der Ausgabe unerwartet Rechnernamen (z.B. `_gateway`) statt IP-Adressen sehen und dies nicht wollen, geben Sie das Argument `-n` mit (z.B. `host1 traceroute -n host2`)
+
 ## Aufgabe 1
 
 Wie viele erfolgreiche Start-Ups haben auch wir eine kleine Garage gemietet, in der wir die Entwicklung an unserer streng geheimen neuen Idee fortführen wollen. Unser Team besteht im Moment aus Lukas, Lisa, Ela, Ben und Elias.
