@@ -36,7 +36,7 @@ Hier ist die aktualisierte Liste, ich habe sie für Sie angepasst. Schauen Sie s
 |-------------------|------------|-------------------------------------------|
 | Garage (`r1`)     | Router     | 10.0.0.1/24, 10.0.3.1/24, **10.0.2.1/24** |
 | **Buero (`r2`)**  | **Router** | **10.0.2.2/24, 10.0.4.1/24**              |
-| sw1               | Switch     | **Keine IP**                              |
+| sw1               | Switch     | Keine IP                                  |
 | **sw2**           | **Switch** | **Keine IP**                              |
 | NAS               | Host       | 10.0.3.2                                  |
 | Ela               | PC         | 10.0.0.2                                  |
