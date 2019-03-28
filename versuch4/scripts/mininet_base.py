@@ -6,8 +6,8 @@ from mininet.node import Node
 from mininet.topo import Topo
 from mininet.util import waitListening
 
-class NetTopo(Topo, loss):
-    def __init__(self):
+class NetTopo(Topo):
+    def __init__(self, loss):
         Topo.__init__(self)
         c1 = self.addHost('c1', ip='11.0.0.1/24')
         c2 = self.addHost('c2', ip='12.0.0.2/24')
@@ -44,7 +44,7 @@ def sshd(net):
     for host in net.hosts:
         host.cmd('/usr/sbin/sshd -D -o UseDNS=no -u0&')
 
-def start(loss)
+def start(loss):
     lg.setLogLevel('info')
     topo = NetTopo(loss=loss)
     net = Mininet(topo=topo, link=TCLink)
