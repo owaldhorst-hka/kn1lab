@@ -13,11 +13,11 @@ Leider ist unser alter Netzwerkadministrator unerwartet ausgeschieden, deswegen 
 
 Jedes Teammitglied soll seinen eigenen Arbeitsplatz mit PC erhalten. Ein Network Attached Storage (NAS) als Dateiserver, einen Router und einen Switch haben wir bereits angeschafft. Unser alter Administrator hat die Geräte notdürftig verkabelt und konfiguriert – wir wissen nur leider nicht wie!
 
-1. Bitte öffnen Sie das Mininet-Skript unter `~/Schreibtisch/kn1lab/versuch3/scripts/mininet-1.py` mit einem Texteditor und rekonstruieren (zeichnen) Sie die Netzwerkumgebung mit den Verbindungen!
+1. Bitte öffnen Sie das Mininet-Skript unter `~/Schreibtisch/kn1lab/versuch3/scripts/mininet_1.py` mit einem Texteditor und rekonstruieren (zeichnen) Sie die Netzwerkumgebung mit den Verbindungen!
 
 1. Bitte bezeichnen Sie zusätzlich in ihrer Zeichnung die Netzwerkschnittstellen mit den richtigen IP-Adressen. Vermerken Sie auch die Routing-Tabellen-Einträge, die Sie anzeigen können mit `<hostname> route`.
 
-1. Starten Sie nun die Mininet Topologie mit `sudo python ~/Schreibtisch/kn1lab/versuch3/scripts/mininet-1.py`. Testen Sie dann die Verbindung der PCs untereinander mit Hilfe des Tools ping, indem sie in der Mininet-Konsole den Befehl `<hostname-quelle> ping <hostname-ziel>` verwenden. Können sich alle Rechner gegenseitig erreichen?
+1. Starten Sie nun die Mininet Topologie mit `sudo python ~/Schreibtisch/kn1lab/versuch3/scripts/mininet_1.py`. Testen Sie dann die Verbindung der PCs untereinander mit Hilfe des Tools ping, indem sie in der Mininet-Konsole den Befehl `<hostname-quelle> ping <hostname-ziel>` verwenden. Können sich alle Rechner gegenseitig erreichen?
 
 1. Ben hat festgestellt, dass er den NAS nicht erreichen kann. Prüfen Sie das nach und notieren Sie den Fehlertext.
 
@@ -48,4 +48,5 @@ Hier ist die aktualisierte Liste, ich habe sie für Sie angepasst. Schauen Sie s
 
 1. Für das neue Büro stehen uns `/24` IP-Adressen zur Verfügung. Wie viele Geräte können hier maximal genutzt werden?
 
-1. Fügen Sie die neuen Geräte in die Zeichnung ein. Realisieren Sie die neue Topologie mit IP-Adressen/-Subnetzen und Routen im Mininet-Skript `mininet-2.py`. Hinweis zu den Routen: Orientieren Sie sich an dem Aufbau von Router 1! Einen Routing-Eintrag für ein Subnetz erstellen Sie mit dem Befehl `net['r1'].cmd("ip route add <subnetz> via <next-hop-ip>")`.
+1. Fügen Sie die neuen Geräte in die Zeichnung ein. Realisieren Sie die neue Topologie mit IP-Adressen/-Subnetzen und Routen im Mininet-Skript `mininet_2.py`.<br>
+Hinweis zu den Routen: Orientieren Sie sich an dem Aufbau von Router 1. Einen Routing-Eintrag für ein Subnetz erstellen Sie mit dem Befehl `net['r1'].cmd('ip route add <subnetz> via <next-hop-ip>')`.
