@@ -65,7 +65,7 @@ gestartet werden, wenn der Netzdurchsatz der in der Liste angegebenen Schnittste
 cnl_plot.py -nsc 0.01 <Log-Datei>
 ```
 
-ausgewertet werden. `-nsc 0.01` setzt die maximale Datenrate auf 10 Mbit/s. Eine beispielhafte Ausgabe zeigt *Abbildung 2*.<br>
+grafisch dargestellt werden. `-nsc 0.01` setzt die maximale Datenrate auf 10 Mbit/s. *Abbildung 2* zeigt eine beispielhafte Ausgabe. Speichern Sie bitte immer das Ergebnis von `cnl_plot.py` auf dem Schreibtisch ab und bewahren Sie es für die Abnahme auf.<br>
 **Achtung: Das Plotten funktioniert nicht über eine SSH-Verbindung, daher muss das Plot-Kommando auf dem "echten" PC gestartet werden!**
 
 ![Ausgabe von cnl_plot.py](images/ausgabe-plot.png)<br>
@@ -119,7 +119,7 @@ Verwenden Sie für diese Aufgabe die Mininet-Topologie `mininet_1.py`.
 
 1. Generieren Sie mit Hilfe von `iperf3` einen TCP-Datenstrom zwischen Client `c1` und Server `sv1`. Dabei soll der `iperf3`-Client auf `c1` und der `iperf3`-Server auf `sv1` laufen. `iperf3` gibt das Staukontrollfenster `CWND` des TCP-Datenstroms aus. Wie verhält sich dieses und wie hoch ist es, nachdem der Strom eine Weile gelaufen ist?
 
-1. Zeichen Sie diesen Datenstrom nun auf dem Server `sv1` mit Hilfe von `cpunetlog` für 1 Minute auf und stellen Sie das Ergebnis grafisch dar. Bewahren Sie einen Screenshot der Ausgabe für die Abnahme auf. Achten Sie auf eine entsprechende Skalierung der Plots!
+1. Zeichen Sie diesen Datenstrom nun auf dem Server `sv1` mit Hilfe von `cpunetlog` für 1 Minute auf und stellen Sie das Ergebnis grafisch dar. Achten Sie dabei auf eine entsprechende Skalierung der Plots. Denken Sie daran das Ergebnis für die Abgabe auf dem Schreibtisch abzuspeichern.
 
 1. Wie hoch war die durchschnittliche Auslastung der Netzschnittstelle? 
 
@@ -127,11 +127,11 @@ Verwenden Sie für diese Aufgabe die Mininet-Topologie `mininet_1.py`.
 
 Verwenden Sie für diese Aufgabe ebenfalls die Mininet-Topologie `mininet_1.py`. Wir wollen nun untersuchen, ob sich zwei TCP-Datenströme die verfügbare Bandbreite fair teilen. Dazu benötigen wir zwei Datenströme, jeweils einen von Client `c1` bzw. Client `c2` zu Server `sv1`. Zu beachten sind die zwei Netzschnittstellen des Servers `sv1`; jede befindet sich in einem anderen Subnetz. Um die zwei Datenströme mit `cpunetlog` unterscheiden zu können, ist es notwendig, dass je einer der TCP-Ströme an einer der beiden Schnittstellen ankommt. Anderenfalls kann nicht zentral auf dem Server gemessen werden, welcher Datenstrom welchen Durchsatz erreicht. 
 
-1. Erstellen Sie die notwendigen Datenströme mit `iperf3`, zeichnen Sie diese auf den Server mit `cpunetlog` für 1 Minute auf und stellen Sie das Ergebnis grafisch dar. Bewahren Sie einen Screenshot der Ausgabe für die Abnahme auf.
+1. Erstellen Sie die notwendigen Datenströme mit `iperf3`, zeichnen Sie diese auf den Server mit `cpunetlog` für 1 Minute auf und stellen Sie das Ergebnis grafisch dar.
 
 1. Wie war die durchschnittliche Auslastung der Netzverbindung, war diese besser oder schlechter als für einen einzelnen Strom?
 
-1.	War die Aufteilung der Bandbreite fair?
+1. War die Aufteilung der Bandbreite fair?
 
 1. Wiederholen Sie das Experiment, indem sie nun einen TCP-Strom gegen einen UDP-Strom mit einem Bandbreiten-Limit von 10 Mbit/s testen. Was ist das Ergebnis?
 
@@ -139,14 +139,14 @@ Verwenden Sie für diese Aufgabe ebenfalls die Mininet-Topologie `mininet_1.py`.
 
 In dieser Aufgabe simulieren wir eine schlechte Verbindung vom Client zum Server, indem wir den Paketverlust auf der Leitung zwischen den zwei Switches von 0% auf 5% erhöhen. Verwenden Sie für diese Aufgabe die Mininet-Topologie `mininet_2.py`.
 
-1. Erstellen Sie einen TCP-Datenstrom vom Client `c1` zum Server `sv1` und zeichnen Sie diesen auf dem Server für eine Minute auf. Wenn Sie den Wert `CWND`, den `iperf3` ausgibt, beobachten und mit dem aus 1.1 vergleichen, was fällt Ihnen auf? Warum ist dies so?
+1. Erstellen Sie einen TCP-Datenstrom vom Client `c1` zum Server `sv1` und zeichnen Sie diesen auf dem Server für 1 Minute auf. Wenn Sie den Wert `CWND`, den `iperf3` ausgibt, beobachten und mit dem aus Aufgabe 1.1 vergleichen, was fällt Ihnen auf? Warum ist dies so?
 
-1. Vergleichen Sie die Plots aus 3.1 und vor allem den durchschnittlichen Durchsatz, mit dem aus der ersten Aufgabe. Weichen diese signifikant ab? Wenn ja, warum könnte dies so sein?
+1. Stellen Sie das Ergebnis aus Aufgabe 3.1 grafisch dar und vergleichen Sie es mit dem aus Aufgabe 1.2, achten Sie vor allem auf den durchschnittlichen Durchsatz. Weichen die Ergebnisse signifikant ab? Wenn ja, warum könnte dies so sein?
 
 ## Aufgabe 4 - Auswirkungen von hohem Paketverlust auf den UDP-Durchsatz
 
 Verwenden Sie für diese Aufgabe die Mininet-Topologie `mininet_3.py`, in dem der Paketverlust auf der Leitung zwischen den zwei Switches auf 10% erhöht wurde.
 
-1. Erstellen Sie einen UDP-Datenstrom mit einer maximalen Bandbreite von 10 Mbit/s vom Client `c1` zum Server `sv1`. Messen Sie nun sowohl die gesendeten Daten auf Client-Seite als auch empfangenen Daten auf Server-Seite jeweils mit `cpunetlog`.
+1. Erstellen Sie einen UDP-Datenstrom mit einer maximalen Bandbreite von 10 Mbit/s vom Client `c1` zum Server `sv1`. Messen Sie nun sowohl die gesendeten Daten auf Client-Seite als auch empfangenen Daten auf Server-Seite jeweils mit `cpunetlog`. Was fällt Ihnen bezüglich der Datenrate auf, wenn Sie den Durchsatz beider Aufzeichnungen vergleichen? Was ist der Grund für dieses Verhalten?
 
-1. Was fällt Ihnen bezüglich der Datenrate auf, wenn Sie den Durchsatz beider Aufzeichnungen vergleichen? Was ist der Grund für dieses Verhalten? Welcher elementare Teil von TCP ist dafür verantwortlich, dass das Verhalten in den Versuchen 3.x signifikant anders war?
+1. Welcher elementare Teil von TCP ist dafür verantwortlich, dass das Verhalten in den Aufgaben 3.x signifikant anders war?
