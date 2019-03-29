@@ -1,9 +1,10 @@
 # Versuch 3 - Vermittlungsschicht
 
-## Hinweise
+## Generelle Hinweise
 
-* Der Name eines Routers wird auf die IP-Adresse von genau einer Schnittstelle aufgelöst, andere Schnittstellen können Sie über deren IP-Adressen erreichen (z.B. mit `host1 ping 10.0.0.2`)
-* Falls Sie bei der Verwendung von `traceroute` oder `route` in der Ausgabe unerwartet Rechnernamen (z.B. `_gateway`) statt IP-Adressen sehen und dies nicht wollen, geben Sie das Argument `-n` mit (z.B. `host1 traceroute -n host2`)
+* Mit dem Befehl `<knotenname> ifconfig` können Sie sich die Liste aller Netzwerkschnittstellen dieses Netzwerkknotens mit ihren jeweiligen Konfigurationen ausgeben lassen, dies schließt auch die zugewiesene IP-Adresse ein (`inet`).
+
+* Wenn Sie bei einem Befehl einen Ziel-Netzwerkknoten angeben wollen, dann sollten Sie anstatt des Hostnamens am besten direkt die IP-Adresse verwenden (z.B. mit `host1 ping 10.0.0.2`), denn über den Hostnamen eines Routers lässt sich nur *eine* seiner Netzwerkschnittstellen erreichen.
 
 ## Aufgabe 1
 
@@ -11,31 +12,31 @@ Wie viele erfolgreiche Start-Ups haben auch wir eine kleine Garage gemietet, in 
 
 Leider ist unser alter Netzwerkadministrator unerwartet ausgeschieden, deswegen sind wir sehr froh, dass Sie uns unterstützen möchten! Wir haben für das Netzwerk leider keine Zeit...
 
-Jedes Teammitglied soll seinen eigenen Arbeitsplatz mit PC erhalten. Ein Network Attached Storage (NAS) als Dateiserver, einen Router und einen Switch haben wir bereits angeschafft. Unser alter Administrator hat die Geräte notdürftig verkabelt und konfiguriert – wir wissen nur leider nicht wie!
+Jedes Teammitglied soll seinen eigenen Arbeitsplatz mit PC erhalten. Ein Network Attached Storage als Dateiserver (`NAS`), einen Router (`r1`) und einen Switch (`sw1`) haben wir bereits angeschafft. Unser alter Administrator hat die Geräte notdürftig verkabelt und konfiguriert – wir wissen nur leider nicht wie!
 
 1. Bitte öffnen Sie das Mininet-Skript unter `~/Schreibtisch/kn1lab/versuch3/scripts/mininet_1.py` mit einem Texteditor und rekonstruieren (zeichnen) Sie die Netzwerkumgebung mit den Verbindungen!
 
-1. Bitte bezeichnen Sie zusätzlich in ihrer Zeichnung die Netzwerkschnittstellen mit den richtigen IP-Adressen. Vermerken Sie auch die Routing-Tabellen-Einträge, die Sie anzeigen können mit `<hostname> route`.
+1. Bitte bezeichnen Sie zusätzlich in ihrer Zeichnung die Netzwerkschnittstellen mit den richtigen IP-Adressen. Vermerken Sie auch die Routing-Tabellen-Einträge, die Sie anzeigen können mit `<knotenname> route`. Falls Sie in der Ausgabe unerwartete Rechnernamen (z.B. `_gateway`) statt IP-Adressen sehen und dies nicht wollen, dann geben Sie das Argument `-n` mit (z.B. `host1 route -n`).
 
-1. Starten Sie nun die Mininet Topologie mit `sudo python ~/Schreibtisch/kn1lab/versuch3/scripts/mininet_1.py`. Testen Sie dann die Verbindung der PCs untereinander mit Hilfe des Tools ping, indem sie in der Mininet-Konsole den Befehl `<hostname-quelle> ping <hostname-ziel>` verwenden. Können sich alle Rechner gegenseitig erreichen?
+1. Starten Sie nun die Mininet Topologie mit `sudo python ~/Schreibtisch/kn1lab/versuch3/scripts/mininet_1.py`. Testen Sie dann die Verbindung der PCs untereinander mit Hilfe des Tools ping, indem sie in der Mininet-Konsole den Befehl `<knotenname-quelle> ping <ip-ziel>` verwenden. Können sich alle Rechner gegenseitig erreichen?
 
-1. Ben hat festgestellt, dass er den NAS nicht erreichen kann. Prüfen Sie das nach und notieren Sie den Fehlertext.
+1. Ben hat festgestellt, dass er den `NAS` nicht erreichen kann. Prüfen Sie das nach und notieren Sie den Fehlertext.
 
-1. Wir haben festgestellt, dass wir den NAS leider von keinem der PCs aus erreichen können. Da scheint etwas mit den Routing-Tabellen nicht zu stimmen, beheben Sie den Fehler bitte schnellstmöglich!<br>
-Tipp: Sehen Sie sich die IP-Adressen in den Tabellen genau an! Der Befehl `<hostname> traceroute <ziel-ip>` könnte Ihnen ebenfalls helfen.
+1. Wir haben festgestellt, dass wir den `NAS` leider von keinem der PCs aus erreichen können. Da scheint etwas mit den Routing-Tabellen nicht zu stimmen, beheben Sie den Fehler bitte schnellstmöglich!<br>
+Tipp: Sehen Sie sich die IP-Adressen in den Tabellen genau an! Der Befehl `<knotenname-quelle> traceroute <ziel-ip>` könnte Ihnen ebenfalls helfen. Auch hier gilt, dass Sie das Argument `-n` mitgeben können, um alle Ergebnisse als IP-Adressen anzeigen zu lassen (z.B. `host1 traceroute -n host2`).
 
 ## Aufgabe 2
 
-Wir haben ein Büro in einem Gründerhaus bekommen! Es ist zwar nicht so groß, dass wir alle dort Platz haben können, aber es schafft wenigstens Platz für neue Mitarbeiter. Ihr Arbeitsplatz wird in dem neuen Büro sein, suchen Sie sich einen schönen Platz aus.
+Wir haben ein Büro in einem Gründerhaus bekommen! Es ist zwar nicht so groß, dass wir alle dort Platz haben können, aber es schafft wenigstens Platz für neue Mitarbeiter. Unsere alten Teammitglieder werden vorerst weiterhin von der Garage aus arbeiten. Ihr Arbeitsplatz wird in dem neuen Büro sein, suchen Sie sich einen schönen Platz aus.
 
-Von unserem neuen Büro gibt es einen Switch, der die PCs verbindet, sowie einen neuen Router. Das NAS in der Garage soll von den neuen PCs erreichbar sein, aber nicht die PCs der alten Teammitglieder in der Garage! Zur Vereinfachung gehen wir davon aus, dass die beiden Router "Garage" (`r1`) und "Buero" (`r2`) eine direkte Verbindung haben.
+In unserem neuen Büro gibt es außer Ihrem PC (`Burak`) noch einen Switch, der die PCs verbindet (`sw2`), sowie einen neuen Router (`r2`). Der Plan ist, dass die PCs aus dem Gründerhaus von den Geräten in der Garage nur der `NAS` erreichen können sollen, die PCs der alten Teammitglieder sollen aber nicht erreichbar sein.
 
-Hier ist die aktualisierte Liste, ich habe sie für Sie angepasst. Schauen Sie sich die **neuen Geräte und deren IPs** genau an.
+Hier ist die aktualisierte Liste. Schauen Sie sich die neuen Geräte und deren IPs genau an, diese habe ich für Sie **fett markiert**.
 
 | Gerät             | Typ        | IP                                        |
 |-------------------|------------|-------------------------------------------|
-| Garage (`r1`)     | Router     | 10.0.0.1/24, 10.0.3.1/24, **10.0.2.1/24** |
-| **Buero (`r2`)**  | **Router** | **10.0.2.2/24, 10.0.4.1/24**              |
+| r1 (Garage)       | Router     | 10.0.0.1/24, 10.0.3.1/24, **10.0.2.1/24** |
+| **r2 (Buero)**    | **Router** | **10.0.2.2/24, 10.0.4.1/24**              |
 | sw1               | Switch     | Keine IP                                  |
 | **sw2**           | **Switch** | **Keine IP**                              |
 | NAS               | Host       | 10.0.3.2                                  |
@@ -48,5 +49,12 @@ Hier ist die aktualisierte Liste, ich habe sie für Sie angepasst. Schauen Sie s
 
 1. Für das neue Büro stehen uns `/24` IP-Adressen zur Verfügung. Wie viele Geräte können hier maximal genutzt werden?
 
-1. Fügen Sie die neuen Geräte in die Zeichnung ein. Realisieren Sie die neue Topologie mit IP-Adressen/-Subnetzen und Routen im Mininet-Skript `mininet_2.py`.<br>
-Hinweis zu den Routen: Orientieren Sie sich an dem Aufbau von Router 1. Einen Routing-Eintrag für ein Subnetz erstellen Sie mit dem Befehl `net['r1'].cmd('ip route add <subnetz> via <next-hop-ip>')`.
+1. Fügen Sie die neuen Geräte in die Zeichnung ein. Realisieren Sie die neue Topologie mit IP-Adressen/-Subnetzen und Routen im Mininet-Skript `mininet_2.py`.
+
+### Hinweise zu Aufgabe 2.2:
+
+* Zur Vereinfachung gehen wir davon aus, dass die beiden Router `r1` (Garage) und `r2` (Buero) eine direkte Verbindung haben.
+
+* Orientieren Sie sich bei den Routen am Aufbau von Router 1. Einen Routing-Eintrag für ein Subnetz erstellen Sie mit dem Befehl `net['<router>'].cmd('ip route add <subnetz> via <next-hop-ip>')`.
+
+* Wenn Sie Netzwerkknoten per `addLink()` mit einem Router verbinden, dann bestimmt die Reihenfolge dieser Aufrufe mit welcher Netzwerkschnittstelle des Routers die Netzwerkknoten verbunden werden (erster Aufruf von `addLink(r2, <host>)` = `eth0`, zweiter Aufruf = `eth1`, usw.). Hier kann es hilfreich sein, wenn Sie über `ifconfig` in Erfahrung bringen, welcher Netzwerkschnittstelle welche IP-Adresse zugewiesen ist und Sie dies zusätzlich in Ihrer Zeichnung vermerken.
