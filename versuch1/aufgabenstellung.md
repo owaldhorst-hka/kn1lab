@@ -8,7 +8,7 @@ Pfad zum MailDir Ordner: `/home/user/Maildir`
 
 ## Aufgabe 1
 
-Öffnen Sie die unter `~/Schreibtisch/kn1lab/versuch1/Vorfall X84F7IU6.eml` abgelegte Beispiel-Nachricht mit einem Texteditor und erklären Sie grob den Aufbau der Nachricht, sowie die Aufgaben der einzelnen Bestandteile.
+Öffnen Sie die unter `~/Schreibtisch/kn1lab/versuch1/beispiel-nachricht.eml` abgelegte Beispiel-Nachricht mit einem Texteditor und erklären Sie grob den Aufbau der Nachricht, sowie die Aufgaben der einzelnen Bestandteile.
 
 ## Aufgabe 2
 
