@@ -44,13 +44,13 @@ try {
 /*...*/
 ```
 
-Senden Sie die Pakete an den Port `9997` des Mediums und erwarten Sie ACKs auf Port `9998`. Hierfür benötigen Sie zwei Sockets.
+Senden Sie die Pakete an den Port `9997` des Mediums und erwarten Sie ACKs auf Port `9998`. Verwenden Sie dafür denselben Socket.
 
 Beispiele zur Programmierung mit UDP-Sockets in Java finden Sie hier:
 
 https://docs.oracle.com/javase/tutorial/networking/datagrams/clientServer.html
 	
-Implementieren Sie in den Sender eine Funktion, die einen String von der Konsole liest und ihn in einzelne Zeichen zerlegt. Anschließend wird jedes Zeichen einzeln in ein Paket verpackt und über das Medium an den Empfänger gesendet.
+Implementieren Sie in `Sender.java` eine Funktion, die einen String von der Konsole liest und ihn in einzelne Worte zerlegt. Anschließend wird jedes Wort einzeln in ein Paket verpackt und über das Medium an den Empfänger gesendet.
 
 Erst nach dem Erhalt des entsprechenden ACKs wird das nächste Paket verschickt. Erhält der Sender nach einem Timeout von 5 Sekunden kein ACK, überträgt er das Paket erneut.
 

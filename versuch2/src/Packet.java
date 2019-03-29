@@ -1,8 +1,8 @@
 import java.io.Serializable;
 
 /**
- * Die Packet Klasse stellt Sequenznummern, Acknowledgementnummern, ACK-Flags und Payloads zu Verfügung um UDP Pakete
- * um Elemente des zuverlässigen Transports zu erweitern. Dazu wird ein Objekt der Klasse als Payload eines
+ * Die Klasse "Packet" stellt Sequenznummern, Acknowledgementnummern, ACK-Flags und Payloads zu Verfügung, um UDP Pakete
+ * mit Elementen des zuverlässigen Transports zu erweitern. Dazu wird ein Objekt der Klasse als Payload eines
  * {@link java.net.DatagramPacket} verwendet.
  */
 public class Packet implements Serializable {
@@ -25,8 +25,8 @@ public class Packet implements Serializable {
     }
 
     /**
-     * Gibt Seqeuenznummer zurück.
-     * @return Seqeuenznummer
+     * Gibt Sequenznummer zurück.
+     * @return Sequenznummer
      */
     public int getSeq() {
         return seq;
@@ -49,7 +49,7 @@ public class Packet implements Serializable {
     }
 
     /**
-     * Gibt boolschen Ausdruck zurück ob ACK-Flag gesetzt ist.
+     * Gibt boolschen Wert zurück, ob ACK-Flag gesetzt ist.
      * @return Ist ACK-Flag gesetzt.
      */
     public boolean isAckFlag() {
