@@ -8,7 +8,11 @@ Pfad zum MailDir Ordner: `/home/user/Maildir`
 
 ## Aufgabe 1
 
-Die erste Aufgabe umfasst das Senden einer E-Mail mit Hilfe der Java Mail API. Die Dokumentation dazu finden sie auf der Oracle Website unter:
+Öffnen Sie die unter `~/Schreibtisch/kn1lab/versuch1/Vorfall X84F7IU6.eml` abgelegte Beispiel-Nachricht mit einem Texteditor und erklären Sie grob den Aufbau der Nachricht, sowie die Aufgaben der einzelnen Bestandteile.
+
+## Aufgabe 2
+
+Die zweite Aufgabe umfasst das Senden einer E-Mail mit Hilfe der Java Mail API. Die Dokumentation dazu finden sie auf der Oracle Website unter:
 
 https://eclipse-ee4j.github.io/javamail/docs/api/javax/mail/package-summary.html
 
@@ -18,9 +22,9 @@ Der Mail-Server läuft auf `localhost`, d.h. die E-Mail-Adressen für Sender und
 
 Um zu kontrollieren, ob die E-Mail erfolgreich versendet wurde kann im Ordner `home/user/Maildir` im Unterordner `new` nachgeschaut werden. 
 
-## Aufgabe 2
+## Aufgabe 3
 
-Die zweite Aufgabe dreht sich darum, alle versendeten E-Mails aus Aufgabe 1 abzurufen.  Hierfür ist es völlig ausreichend sie in der Konsole auszugeben. In der Ausgabe sollte enthalten sein:
+Die dritte Aufgabe dreht sich darum, alle versendeten E-Mails aus Aufgabe 2 abzurufen. Hierfür ist es völlig ausreichend sie in der Konsole auszugeben. In der Ausgabe sollte enthalten sein:
 
 * Eine Nummerierung die angibt um die wievielte ausgegebene Mail es sich handelt
 * Absender der E-Mail
