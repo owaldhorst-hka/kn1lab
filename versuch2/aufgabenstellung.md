@@ -10,38 +10,26 @@ Beachten Sie, dass ein UDP-Socket nur Bytes versenden kann. Daher muss ein Objek
 
 ```java
 // create new packet 
-Packet packetOut= new Packet(/*...*/);
-
-/*...*/
+Packet packetOut = new Packet(/*...*/);
 
 // serialize Packet for sending
-ByteArrayOutputStream b= new ByteArrayOutputStream();
-ObjectOutputStream o= new ObjectOutputStream(b);
+ByteArrayOutputStream b = new ByteArrayOutputStream();
+ObjectOutputStream o = new ObjectOutputStream(b);
 o.writeObject(packetOut);
-byte[] buf= b.toByteArray();
-
-/*...*/
+byte[] buf = b.toByteArray();
 ```
 
 Ein empfangenes UDP-Datagramm kann z.B. so deserialisiert werden:
 
 ```java
-try {
-  DatagramPacket rcvPacketRaw= new DatagramPacket(/*...*/);
-
-  /*...*/
-  
-  // deserialize Packet
-  ObjectInputStream is= new ObjectInputStream(new ByteArrayInputStream(rcvPacketRaw.getData()));
-  Packet packetIn= (Packet) is.readObject();
-  
-  /*...*/
-} catch (ClassNotFoundException e) {
-  e.printStackTrace();
-  System.exit(1);
-}
+byte[] buf = new byte[256];
+DatagramPacket rcvPacketRaw = new DatagramPacket(/*...*/);
 
 /*...*/
+
+// deserialize Packet
+ObjectInputStream is = new ObjectInputStream(new ByteArrayInputStream(rcvPacketRaw.getData()));
+Packet packetIn = (Packet) is.readObject();
 ```
 
 Senden Sie die Pakete an den Port `9997` des Mediums und erwarten Sie ACKs auf Port `9998`. Verwenden Sie dafür denselben Socket.
