@@ -35,7 +35,7 @@ public class Sender {
         /* Socket erzeugen auf Port 9998 und Timeout auf 5 Sekunden setzen */
         
         while (/* Iteration über den Konsolentext */) {
-        	/* Pakete empfangen und versenden */
+        	/* Paket an Port 9997 senden */
         	
             try {
                 /* Auf ACK warten und erst dann Schleifenzähler inkrementieren */
