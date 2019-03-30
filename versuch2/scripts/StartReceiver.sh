@@ -1,3 +1,3 @@
 #!/bin/bash
 scriptDir=$(dirname "$0")
-java -jar "$scriptDir/../lib/Receiver.jar"
+java -jar "$scriptDir/Receiver.jar"
