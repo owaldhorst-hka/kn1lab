@@ -1,10 +1,10 @@
 # Versuch 1 - Anwendungsschicht
 
-## Anmeldeinformationen & mehr
+## Anmeldeinformationen und MailDir-Ordner
 
 Benutzername: `user`<br>
 Passwort: `password`<br>
-Pfad zum MailDir Ordner: `/home/user/Maildir`
+MailDir-Ordner: `/home/user/Maildir`
 
 ## Aufgabe 1
 
@@ -18,7 +18,7 @@ https://eclipse-ee4j.github.io/javamail/docs/api/javax/mail/package-summary.html
 
 Die Vorlage für diese Aufgabe finden Sie in Eclipse unter `versuch1/src/(default package)/Send_Mail.java`.
 
-Der Mail-Server läuft auf `localhost`, d.h. die E-Mail-Adressen für Sender und Empfänger müssen auf `@localhost` enden, sind aber sonst frei wählbar. Um später erfolgreich eine Sitzung aufzubauen, werden der Name des Hosts und die Anmeldeinformationen benötigt. Die E-Mail darf direkt über den Code erzeugt werden.
+Der Mail-Server läuft auf `localhost`, d.h. die E-Mail-Adressen für Sender und Empfänger müssen auf `@localhost` enden, sind aber sonst frei wählbar. Um später erfolgreich eine Sitzung aufzubauen, benötigen Sie nur den Name des Hosts. Die E-Mail dürfen Sie direkt über den Code erzeugen.
 
 Um zu kontrollieren, ob die E-Mail erfolgreich versendet wurde kann im Ordner `home/user/Maildir` im Unterordner `new` nachgeschaut werden. 
 
@@ -34,7 +34,8 @@ Die dritte Aufgabe dreht sich darum, alle versendeten E-Mails aus Aufgabe 2 abzu
 
 Die Vorlage für diese Aufgabe finden Sie in Eclipse unter `versuch1/src/(default package)/Receive_Mail.java`.
 
-Um erfolgreich eine Sitzung aufzubauen, werden der Name des Hosts, dessen Store Type und die Anmeldeinformationen benötigt. 
+Um erfolgreich eine Sitzung aufzubauen, werden der Name des Hosts, dessen Store-Type und die Anmeldeinformationen benötigt.<br>
+Zur Erinnerung: es handelt sich um einen POP3-Server mit unverschlüsselter Verbindung.
 
 Bei Problemen können die folgenden Parameter gesetzt werden:
 
