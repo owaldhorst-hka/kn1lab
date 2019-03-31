@@ -33,7 +33,7 @@ starten. `-Z` bedeutet dabei "Zero copy", was die Leistung des Clients erhöht.
 Einen Client, der einen UDP-Datenstrom erzeugt, kann man mit 
 
 ```bash
-iperf3 -c <IP-Adresse des Servers> -u -b <Bandbreitenlimit>
+iperf3 -c <IP-Adresse des Servers> -Z -t <Dauer der Übertragung> -u -b <Bandbreitenlimit>
 ```
 
 erzeugen. Das Bandbreitenlimit ist standardmäßig auf 1 Mbit/s begrenzt und kann z.B. mit `-b 10M` auf 10 Mbit/s gesetzt werden. 
@@ -55,7 +55,7 @@ Außerdem erlaubt `cpunetlog` das Aufzeichnen des zeitlichen Verlaufs von CPU-Au
 
 ```bash
 cpunetlog -l
-# bzw.
+# bzw. in unserem Fall mit
 cpunetlog -l --nics <Liste der Schnittstellen>
 ```
 
@@ -115,19 +115,19 @@ mit dem gewünschten Rechner verbinden. Verwenden Sie die IP-Adressen aus dem Su
 
 Verwenden Sie für diese Aufgabe die Mininet-Topologie `mininet_1.py`.
 
-1. Generieren Sie mit Hilfe von `iperf3` einen TCP-Datenstrom zwischen Client `c1` und Server `sv1`. Dabei soll der `iperf3`-Client auf `c1` und der `iperf3`-Server auf `sv1` laufen. `iperf3` gibt das Staukontrollfenster `CWND` des TCP-Datenstroms aus. Wie verhält sich dieses und wie hoch ist es, nachdem der Strom eine Weile gelaufen ist?
+1. Generieren Sie mit Hilfe von `iperf3` einen TCP-Datenstrom zwischen Client `c1` und Server `sv1`. Dabei soll der `iperf3`-Client auf `c1` und der `iperf3`-Server auf `sv1` laufen. Ob Sie die IP-Adresse `11.0.0.3` oder `12.0.0.3` verwenden, ist Ihnen überlassen. `iperf3` gibt das Staukontrollfenster `CWND` des TCP-Datenstroms aus. Wie verhält sich dieses und wie hoch ist es, nachdem der Strom eine Weile gelaufen ist?
 
-1. Zeichen Sie diesen Datenstrom nun auf dem Server `sv1` mit Hilfe von `cpunetlog` für 1 Minute auf und stellen Sie das Ergebnis grafisch dar. Achten Sie dabei auf eine entsprechende Skalierung der Plots. Denken Sie daran das Ergebnis für die Abgabe auf dem Schreibtisch abzuspeichern.
+1. Zeichen Sie diesen Datenstrom nun auf dem Server `sv1` mit Hilfe von `cpunetlog` für 1 Minute auf und stellen Sie das Ergebnis grafisch dar. Dazu müssen Sie über ein anderes Terminal eine weitere SSH-Verbindung zu `sv1` aufbauen. Achten Sie darauf, nur die Daten der relevanten Netzwerkschnittstelle aufzuzeichnen, sowie die Plots entsprechend zu skalieren und denken Sie daran das Ergebnis für die Abgabe auf dem Schreibtisch abzuspeichern.
 
-1. Wie hoch war die durchschnittliche Auslastung der Netzschnittstelle? 
+1. Bestimmen Sie mit `summary.py` die durchschnittliche Auslastung der Netzschnittstelle (`receive`). 
 
 ## Aufgabe 2 - Fairness
 
-Verwenden Sie für diese Aufgabe ebenfalls die Mininet-Topologie `mininet_1.py`. Wir wollen nun untersuchen, ob sich zwei TCP-Datenströme die verfügbare Bandbreite fair teilen. Dazu benötigen wir zwei Datenströme, jeweils einen von Client `c1` bzw. Client `c2` zu Server `sv1`. Zu beachten sind die zwei Netzschnittstellen des Servers `sv1`; jede befindet sich in einem anderen Subnetz. Um die zwei Datenströme mit `cpunetlog` unterscheiden zu können, ist es notwendig, dass je einer der TCP-Ströme an einer der beiden Schnittstellen ankommt. Anderenfalls kann nicht zentral auf dem Server gemessen werden, welcher Datenstrom welchen Durchsatz erreicht. 
+Verwenden Sie für diese Aufgabe ebenfalls die Mininet-Topologie `mininet_1.py`. Wir wollen nun untersuchen, ob sich zwei TCP-Datenströme die verfügbare Bandbreite fair teilen. Dazu benötigen wir zwei Datenströme, jeweils einen von Client `c1` bzw. Client `c2` zu Server `sv1`. Zu beachten sind die zwei Netzschnittstellen des Servers `sv1`; jede befindet sich in einem anderen Subnetz. Um die zwei Datenströme mit `cpunetlog` unterscheiden zu können, ist es notwendig, dass die TCP-Ströme jeweils an einem eigenen `iperf3`-Server je Schnittstelle ankommen. Anderenfalls kann nicht zentral auf dem Server gemessen werden, welcher Datenstrom welchen Durchsatz erreicht. 
 
 1. Erstellen Sie die notwendigen Datenströme mit `iperf3`, zeichnen Sie diese auf den Server mit `cpunetlog` für 1 Minute auf und stellen Sie das Ergebnis grafisch dar.
 
-1. Wie war die durchschnittliche Auslastung der Netzverbindung, war diese besser oder schlechter als für einen einzelnen Strom?
+1. Wie war diesmal durchschnittliche Auslastung der Netzverbindung, war diese besser oder schlechter als für einen einzelnen Strom?
 
 1. War die Aufteilung der Bandbreite fair?
 
@@ -139,7 +139,7 @@ In dieser Aufgabe simulieren wir eine schlechte Verbindung vom Client zum Server
 
 1. Erstellen Sie einen TCP-Datenstrom vom Client `c1` zum Server `sv1` und zeichnen Sie diesen auf dem Server für 1 Minute auf. Wenn Sie den Wert `CWND`, den `iperf3` ausgibt, beobachten und mit dem aus Aufgabe 1.1 vergleichen, was fällt Ihnen auf? Warum ist dies so?
 
-1. Stellen Sie das Ergebnis aus Aufgabe 3.1 grafisch dar und vergleichen Sie es mit dem aus Aufgabe 1.2, achten Sie vor allem auf den durchschnittlichen Durchsatz. Weichen die Ergebnisse signifikant ab? Wenn ja, warum könnte dies so sein?
+1. Stellen Sie das Ergebnis grafisch dar und vergleichen Sie es mit dem aus Aufgabe 1.2, achten Sie vor allem auf den durchschnittlichen Durchsatz. Weichen die Ergebnisse signifikant ab? Wenn ja, warum könnte dies so sein?
 
 ## Aufgabe 4 - Auswirkungen von hohem Paketverlust auf den UDP-Durchsatz
 
