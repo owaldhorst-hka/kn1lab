@@ -127,7 +127,7 @@ Verwenden Sie für diese Aufgabe ebenfalls die Mininet-Topologie `mininet_1.py`.
 
 1. Erstellen Sie die notwendigen Datenströme mit `iperf3`, zeichnen Sie diese auf den Server mit `cpunetlog` für 1 Minute auf und stellen Sie das Ergebnis grafisch dar.
 
-1. Wie war diesmal durchschnittliche Auslastung der Netzverbindung, war diese besser oder schlechter als für einen einzelnen Strom?
+1. Wie war diesmal die durchschnittliche Auslastung der Netzverbindung, war diese besser oder schlechter als für einen einzelnen Strom?
 
 1. War die Aufteilung der Bandbreite fair?
 
