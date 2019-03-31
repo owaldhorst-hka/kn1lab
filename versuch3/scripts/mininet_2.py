@@ -21,6 +21,7 @@ class MyTopo(Topo):
         ela = self.addHost('ela', ip='10.0.0.4/24')
         ben = self.addHost('ben', ip='10.0.0.5/24')
         elias = self.addHost('elias', ip='10.0.0.6/24')
+
         nas = self.addHost('nas', ip='10.0.3.2/24')
 
         # create switch
@@ -40,19 +41,22 @@ class MyTopo(Topo):
         self.addLink(r1, sw1)
         self.addLink(nas, r1)
 
-# configure routing
+# configuration
 def conf(net):
     # router interfaces
     net['r1'].cmd('ifconfig r1-eth0 0')
     net['r1'].cmd('ifconfig r1-eth1 0')
-    net['r1'].cmd('ifconfig r1-eth2 0')
     net['r1'].cmd('ifconfig r1-eth0 hw ether 00:00:00:00:01:01')
     net['r1'].cmd('ifconfig r1-eth1 hw ether 00:00:00:00:01:02')
 
-    # router routing
+    # router addresses
     net['r1'].cmd('ip addr add 10.0.0.1/24 brd + dev r1-eth0')
     net['r1'].cmd('ip addr add 10.0.3.1/24 brd + dev r1-eth1')
     net['r1'].cmd('echo 1 > /proc/sys/net/ipv4/ip_forward')
+
+    # router routing
+    net['r1'].cmd('ip route add 10.0.0.0/24 dev r1-eth0')
+    net['r1'].cmd('ip route add 10.0.3.0/24 dev r1-eth1')
 
     # client routing
     net['ela'].cmd('ip route add default via 10.0.0.1')
@@ -60,6 +64,8 @@ def conf(net):
     net['ben'].cmd('ip route add default via 10.0.0.1')
     net['lukas'].cmd('ip route add default via 10.0.0.1')
     net['elias'].cmd('ip route add default via 10.0.0.1')
+
+    net['nas'].cmd('ip route add default via 10.0.3.1')
 
 def NetTopo(**kwargs):
     topo = MyTopo()

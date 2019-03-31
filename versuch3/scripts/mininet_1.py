@@ -41,7 +41,7 @@ class MyTopo(Topo):
         self.addLink(r1, sw1)
         self.addLink(nas, r1)
 
-# configure routing
+# configuration
 def conf(net):
     # router interfaces
     net['r1'].cmd('ifconfig r1-eth0 0')
