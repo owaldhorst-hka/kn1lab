@@ -95,7 +95,7 @@ Für den Versuch haben wir Ihnen in den Skripten unter `~/Schreibtisch/kn1lab/ve
 
 *Tabelle 1: Schnittstellen der Hosts in der Mininet-Topologie inkl. Parameter für `cpunetlog`*
 
-Die Leistungsmessung zwischen den Rechnern `c1`, `c2` und `sv1` wird über die schwarz dargestellten Netzverbindungen und die Switches `S1` und `S2` erfolgen. Die rot dargestellten Netzverbindungen und der Switch `S3` werden lediglich zur Steuerung der Experimente verwendet. Die Das Mininet-Netz kann beispielsweise mit
+Die Leistungsmessung zwischen den Rechnern `c1`, `c2` und `sv1` wird über die schwarz dargestellten Netzverbindungen und die Switches `S1` und `S2` erfolgen. Die rot dargestellten Netzverbindungen und der Switch `S3` werden lediglich zur Steuerung der Experimente verwendet. Das Mininet-Netz kann beispielsweise mit
 
 ```bash
 sudo python ~/Schreibtisch/kn1lab/versuch4/scripts/mininet_1.py
@@ -103,15 +103,13 @@ sudo python ~/Schreibtisch/kn1lab/versuch4/scripts/mininet_1.py
 
 gestartet werden. Das benötigte Passwort ist `password`.
 
-Um `iperf3` oder `cpunetlog` auf einen der Rechner `c1`, `c2` oder `sv1` zu starten, ist das Mininet-CLI nicht ausreichend. Sie müssen sich stattdessen beispielsweise für `c1` – während das Mininet-Script in einem Terminal läuft – von einem anderen Terminal aus mit
+Um `iperf3` oder `cpunetlog` auf einem der Rechner `c1`, `c2` oder `sv1` zu starten, ist das Mininet-CLI nicht ausreichend. Stattdessen müssen Sie sich, während das Mininet-Skript läuft, über ein weiteres Terminal mithilfe von
 
 ```bash
-ssh 10.0.0.1
+ssh <IP-Adresse des Ziels>
 ```
 
-verbinden. Das benötigte Passwort ist `password`.
-
-Für die Rechner `c2` und `sv1` sind die entsprechenden Adressen aus dem Subnetz `10.0.0.0/24` zu wählen.
+mit dem gewünschten Rechner verbinden. Verwenden Sie die IP-Adressen aus dem Subnetz `10.0.0.0/24`. Das benötigte Passwort ist `password`.
 
 ## Aufgabe 1 - Ein TCP-Strom
 
