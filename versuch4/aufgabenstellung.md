@@ -109,7 +109,7 @@ Um `iperf3` oder `cpunetlog` auf einem der Rechner `c1`, `c2` oder `sv1` zu star
 ssh <IP-Adresse des Ziels>
 ```
 
-mit dem gewünschten Rechner verbinden. Verwenden Sie die IP-Adressen aus dem Subnetz `10.0.0.0/24`. Das benötigte Passwort ist `password`.
+mit dem gewünschten Rechner verbinden. Verwenden Sie die IP-Adressen aus dem Subnetz `10.0.0.0/24`. Das benötigte Passwort ist auch hier `password`.
 
 ## Aufgabe 1 - Ein TCP-Strom
 
