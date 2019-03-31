@@ -26,7 +26,7 @@ class MyTopo(Topo):
 
         # create switch
         sw1 = self.addSwitch('sw1')
-        
+
         # create router
         r1 = self.addHost('r1', mac='00:00:00:00:01:00', ip='10.0.0.1/24')
 
