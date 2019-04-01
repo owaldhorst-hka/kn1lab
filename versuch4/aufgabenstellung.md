@@ -14,13 +14,13 @@ iperf3 -s
 
 gestartet werden.
 
-Wenn der Rechner, auf dem der Server laufen soll, wie im unten betrachteten Fall zwei Netzschnittstellen besitzt, kann der Server mit 
+Wenn der Rechner, auf dem der Server laufen soll, wie im betrachteten Fall mehrere Netzschnittstellen besitzt, kann der Server mit 
 
 ```bash
 iperf3 -s -B <IP-Adresse>
 ```
 
-gezielt an die Schnittstellen mit der angegebenen IP-Adresse gebunden werden.
+gezielt an die Schnittstellen mit der angegebenen IP-Adresse gebunden werden. Bitte geben die IP-Adresse immer mit an und verwenden Sie **NICHT** die Adressen aus dem Subnetz `10.0.0.0/24`, denn dieses Subnetz ist nur zum Aufbau der SSH-Verbindung gedacht und im Gegensatz zu den anderen Netzen nicht bandbreitenlimitiert.
 
 Einen Client, der einen TCP-Datenstrom erzeugt, kann man mit
 

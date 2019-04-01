@@ -14,7 +14,7 @@ Jedes Teammitglied soll seinen eigenen Arbeitsplatz mit PC erhalten. Ein Network
 
 1. Bitte öffnen Sie das Mininet-Skript unter `~/Schreibtisch/kn1lab/versuch3/scripts/mininet_1.py` mit einem Texteditor und rekonstruieren (zeichnen) Sie die Netzwerkumgebung mit den Verbindungen!
 
-1. Bitte bezeichnen Sie zusätzlich in ihrer Zeichnung die Netzwerkschnittstellen mit den richtigen IP-Adressen. Vermerken Sie auch die Routing-Tabellen-Einträge. Starten Sie dazu die Mininet Topologie mit `sudo python ~/Schreibtisch/kn1lab/versuch3/scripts/mininet_1.py`. Das benötigte Passwort ist `password`. Anschließend können Sie mit `<knotenname> route` die Routing-Tabellen-Einträge ausgeben lassen. Falls Sie in der Ausgabe unerwartete Rechnernamen (z.B. `_gateway`) statt IP-Adressen sehen und dies nicht wollen, dann geben Sie das Argument `-n` mit (z.B. `host1 route -n`).
+1. Bitte bezeichnen Sie zusätzlich in ihrer Zeichnung die Netzwerkschnittstellen mit den richtigen IP-Adressen. Vermerken Sie auch von den Routing-Tabellen-Einträgen die Attribute `Ziel` und `Router`. Starten Sie dazu die Mininet Topologie mit `sudo python ~/Schreibtisch/kn1lab/versuch3/scripts/mininet_1.py`. Das benötigte Passwort ist `password`. Anschließend können Sie mit `<knotenname> route` die Routing-Tabellen-Einträge ausgeben lassen. Falls Sie in der Ausgabe unerwartete Rechnernamen (z.B. `_gateway`) statt IP-Adressen sehen und dies nicht wollen, dann geben Sie das Argument `-n` mit (z.B. `host1 route -n`).
 
 1. Testen Sie nun die Verbindung der PCs untereinander mit Hilfe des Tools `ping`, indem sie in der Mininet-Konsole den Befehl `<knotenname-quelle> ping -c 3 <ip-ziel>` verwenden. Dadurch wird das Ziel 3 mal angepingt. Können sich alle Teammitglieder gegenseitig erreichen?
 
