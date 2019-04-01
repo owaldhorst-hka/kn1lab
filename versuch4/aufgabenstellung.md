@@ -146,5 +146,3 @@ In dieser Aufgabe simulieren wir eine schlechte Verbindung vom Client zum Server
 Verwenden Sie für diese Aufgabe die Mininet-Topologie `mininet_3.py`, in dem der Paketverlust auf der Leitung zwischen den zwei Switches auf 10% erhöht wurde.
 
 1. Erstellen Sie einen UDP-Datenstrom mit einer maximalen Bandbreite von 10 Mbit/s vom Client `c1` zum Server `sv1`. Messen Sie nun sowohl die gesendeten Daten auf Client-Seite als auch empfangenen Daten auf Server-Seite jeweils mit `cpunetlog`. Was fällt Ihnen bezüglich der Datenrate auf, wenn Sie den Durchsatz beider Aufzeichnungen vergleichen? Was ist der Grund für dieses Verhalten?
-
-1. Welcher elementare Teil von TCP ist dafür verantwortlich, dass das Verhalten in den Aufgaben 3.x signifikant anders war?
