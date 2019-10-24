@@ -40,6 +40,6 @@ https://docs.oracle.com/javase/tutorial/networking/datagrams/clientServer.html
 	
 Implementieren Sie in `Sender.java` eine Funktion, die einen String von der Konsole liest und ihn in einzelne Worte zerlegt. Anschließend wird jedes Wort einzeln in ein Paket verpackt und über das Medium an den Empfänger gesendet.
 
-Erst nach dem Erhalt des entsprechenden ACKs wird das nächste Paket verschickt. Erhält der Sender nach einem Timeout von 5 Sekunden kein ACK, überträgt er das Paket erneut.
+Erst nach dem Erhalt des ensprchenden ACKs wird das nächste Paket verschickt. Erhält der Sender nach einem Timeout von 5 Sekunden nicht das korrekte oder gar kein ACK, überträgt er das Paket erneut.
 
 Senden Sie, nachdem alle Zeichen übertragen wurden, zusätzlich den String `EOT` um den Empfänger dazu zu veranlassen, die empfangene Zeichenfolge nochmals am Stück auszugeben.
