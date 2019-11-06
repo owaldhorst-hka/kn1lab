@@ -1,154 +1,60 @@
-# Versuch 4 - Leistungsmessung
+# Versuch 3 - Vermittlungsschicht
 
-## Einführung
+## Generelle Hinweise
 
-In dieser Aufgabe werden wir die Leistung von verschiedenen Transportprotokollen untersuchen und dabei Stationen betrachten, die auch in realen Netzen vorkommen können. Dazu werden wir die nachfolgend beschriebenen Werkzeuge und virtuellen Netztopologien verwenden.
+* Mit dem Befehl `<knotenname> ifconfig` können Sie sich die Liste aller Netzwerkschnittstellen dieses Netzwerkknotens mit ihren jeweiligen Konfigurationen ausgeben lassen, dies schließt auch die zugewiesene IP-Adresse ein (`inet`).
 
-### Erzeugung von Paketströmen mit `iperf3`
+## Aufgabe 1
 
-Das Programm `iperf3` ermöglicht das Erzeugen von TCP- und UDP-Datenströmen zwischen zwei Rechnern. `iperf3` ist eine Client-Server-Anwendung. Der Server wartet auf eingehende `iperf3`-Verbindungen. Er kann mit dem Kommando
+Wie viele erfolgreiche Start-Ups haben auch wir eine kleine Garage gemietet, in der wir die Entwicklung an unserer streng geheimen neuen Idee fortführen wollen. Unser Team besteht im Moment aus Lukas, Lisa, Ela, Ben und Elias.
 
-```bash
-iperf3 -s
-```
+Leider ist unser alter Netzwerkadministrator unerwartet ausgeschieden, deswegen sind wir sehr froh, dass Sie uns unterstützen möchten! Wir haben für das Netzwerk leider keine Zeit...
 
-gestartet werden.
+Jedes Teammitglied soll seinen eigenen Arbeitsplatz mit PC erhalten. Ein Network Attached Storage als Dateiserver (`NAS`), einen Router (`r1`) und einen Switch (`sw1`) haben wir bereits angeschafft. Unser alter Administrator hat die Geräte notdürftig verkabelt und konfiguriert – wir wissen nur leider nicht wie!
 
-Wenn der Rechner, auf dem der Server laufen soll, wie im betrachteten Fall mehrere Netzschnittstellen besitzt, kann der Server mit 
+1. Bitte öffnen Sie das Mininet-Skript unter `~/Schreibtisch/kn1lab/versuch3/scripts/mininet_1.py` mit einem Texteditor und rekonstruieren (zeichnen) Sie die Netzwerkumgebung mit den Verbindungen!
 
-```bash
-iperf3 -s -B <IP-Adresse>
-```
+1. Bitte bezeichnen Sie zusätzlich in ihrer Zeichnung die Netzwerkschnittstellen mit den richtigen IP-Adressen. Vermerken Sie auch von den Routing-Tabellen-Einträgen die Attribute `Ziel` und `Router`. Starten Sie dazu die Mininet Topologie mit `sudo python ~/Schreibtisch/kn1lab/versuch3/scripts/mininet_1.py`. Das benötigte Passwort ist `password`. Anschließend können Sie mit `<knotenname> route` die Routing-Tabellen-Einträge ausgeben lassen. Falls Sie in der Ausgabe unerwartete Rechnernamen (z.B. `_gateway`) statt IP-Adressen sehen und dies nicht wollen, dann geben Sie das Argument `-n` mit (z.B. `host1 route -n`).
 
-gezielt an die Schnittstellen mit der angegebenen IP-Adresse gebunden werden. Bitte geben die IP-Adresse immer mit an und verwenden Sie **NICHT** die Adressen aus dem Subnetz `10.0.0.0/24`, denn dieses Subnetz ist nur zum Aufbau der SSH-Verbindung gedacht und im Gegensatz zu den anderen Netzen nicht bandbreitenlimitiert.
+1. Testen Sie nun die Verbindung der PCs untereinander mit Hilfe des Tools `ping`, indem sie in der Mininet-Konsole den Befehl `<knotenname-quelle> ping -c 3 <ip-ziel>` verwenden. Dadurch wird das Ziel 3 mal angepingt. Können sich alle Teammitglieder gegenseitig erreichen?
 
-Einen Client, der einen TCP-Datenstrom erzeugt, kann man mit
+1. Ben hat festgestellt, dass er den `NAS` nicht erreichen kann. Prüfen Sie dies ebenfalls mit `ping` nach und notieren Sie sich die Statistik. Pingen Sie hier das Ziel 5 mal an.
 
-```bash
-iperf3 -c <IP-Adresse des Servers> -Z -t <Dauer der Übertragung>
-```
+1. Wir haben festgestellt, dass wir den `NAS` leider von keinem der PCs aus erreichen können. Da scheint etwas mit den Routing-Tabellen nicht zu stimmen, beheben Sie den Fehler bitte schnellstmöglich!<br>
+Tipp: Sehen Sie sich die IP-Adressen in den Tabellen genau an! Der Befehl `<knotenname-quelle> traceroute -m 5 <ziel-ip>` könnte Ihnen ebenfalls helfen. Die Argumente `-m 5` geben an, dass nach 5 Hops abgebrochen wird. Auch hier gilt, dass Sie das Argument `-n` mitgeben können, um alle Ergebnisse als IP-Adressen anzeigen zu lassen (z.B. `host1 traceroute -n host2`).
 
-starten. `-Z` bedeutet dabei "Zero copy", was die Leistung des Clients erhöht.
+## Aufgabe 2
 
-Einen Client, der einen UDP-Datenstrom erzeugt, kann man mit 
+Wir haben ein Büro in einem Gründerhaus bekommen! Es ist zwar nicht so groß, dass wir alle dort Platz haben können, aber es schafft wenigstens Platz für neue Mitarbeiter. Ihr Arbeitsplatz wird in dem neuen Büro sein, suchen Sie sich einen schönen Platz aus. Unsere alten Teammitglieder werden vorerst weiterhin von der Garage aus arbeiten.
 
-```bash
-iperf3 -c <IP-Adresse des Servers> -Z -t <Dauer der Übertragung> -u -b <Bandbreitenlimit>
-```
+In unserem neuen Büro gibt es außer Ihrem PC (`Burak`) noch einen Switch, der die PCs verbindet (`sw2`), sowie einen neuen Router (`r2`). Der Plan ist, dass die PCs aus dem Gründerhaus von den Geräten in der Garage nur den `NAS` erreichen können sollen, die PCs der alten Teammitglieder sollen aber nicht erreichbar sein.
 
-erzeugen. Das Bandbreitenlimit ist standardmäßig auf 1 Mbit/s begrenzt und kann z.B. mit `-b 10M` auf 10 Mbit/s gesetzt werden. 
+Hier ist die aktualisierte Liste. Schauen Sie sich die neuen Geräte und deren IPs genau an, diese habe ich für Sie **fett markiert**.
 
-### Anzeigen / aufzeichnen des Durchsatzes mit `cpunetlog`
+| Gerät             | Typ        | IP                                        |
+|-------------------|------------|-------------------------------------------|
+| r1 (Garage)       | Router     | 10.0.0.1/24, 10.0.3.1/24, **10.0.2.1/24** |
+| **r2 (Buero)**    | **Router** | **10.0.2.2/24, 10.0.4.1/24**              |
+| sw1               | Switch     | Keine IP                                  |
+| **sw2**           | **Switch** | **Keine IP**                              |
+| NAS               | Host       | 10.0.3.2                                  |
+| Ela               | PC         | 10.0.0.2                                  |
+| Lisa              | PC         | 10.0.0.3                                  |
+| Ben               | PC         | 10.0.0.4                                  |
+| Lukas             | PC         | 10.0.0.5                                  |
+| Elias             | PC         | 10.0.0.6                                  |
+| **Burak**         | **PC**     | **10.0.4.2**                              |
 
-Das Werkzeug `cpunetlog` kann die aktuelle CPU-Auslastung und den aktuellen Netzdurchsatz eines Rechners anzeigen. Die CPU-Auslastung ist für diesen Versuch nicht relevant, daher werden wir auf den Durchsatz fokussieren. `cpunetlog` kann einfach mit dem Kommando 
+1. Für das neue Büro stehen uns `/24` IP-Adressen zur Verfügung. Wie viele Geräte können hier maximal genutzt werden?
 
-```bash
-cpunetlog
-```
+1. Fügen Sie die neuen Geräte und ihre IP-Adressen in die Zeichnung ein. Realisieren Sie die beschriebene Topologie mit IP-Adressen, Subnetzen und Routen im Mininet-Skript `mininet_2.py`.
 
-gestartet werden. *Abbildung 1* zeigt eine typische Ausgabe von `cpunetlog` auf einem Rechner mit drei Netzschnittstellen `sv1-eth0`, `sv1-eth1` und `sv1-eth2`. Das Programm kann durch Drücken der Taste `q` beendet werden.
+### Hinweise zu Aufgabe 2.2:
 
-![Ausgabe von cpunetlog](images/ausgabe-cpunetlog.png)<br>
-*Abbildung 1: Ausgabe von `cpunetlog`*
+* Zur Vereinfachung gehen wir davon aus, dass die beiden Router `r1` (Garage) und `r2` (Buero) eine direkte Verbindung haben. Dies bedeutet auch, dass Sie für `r1` eine weitere Netzwerkschnittstelle hinzufügen müssen. 
 
-Außerdem erlaubt `cpunetlog` das Aufzeichnen des zeitlichen Verlaufs von CPU-Auslastung und Netzdurchsatz zur späteren Auswertung. Diese kann mit
+* Orientieren Sie sich bei den Routen am Aufbau von Router 1. Einen Routing-Eintrag für ein Subnetz, dessen nächster Hop ein Router ist, erstellen Sie mit dem Aufruf `net['<router>'].cmd('ip route add <subnetz> via <next-hop-ip>')`.
 
-```bash
-cpunetlog -l
-# bzw. in unserem Fall mit
-cpunetlog -l --nics <Liste der Schnittstellen>
-```
+* Wenn Sie Netzwerkknoten per `addLink()` mit einem Router verbinden, dann bestimmt die Reihenfolge dieser Aufrufe mit welcher Netzwerkschnittstelle des Routers die Netzwerkknoten verbunden werden (z.B. erster Aufruf von `addLink(r2, <host>)` = `eth0`, zweiter Aufruf = `eth1`, usw.). Hier kann es hilfreich sein, wenn Sie über `ifconfig` in Erfahrung bringen, welcher Netzwerkschnittstelle welche IP-Adresse zugewiesen ist und Sie dies zusätzlich in Ihrer Zeichnung vermerken.
 
-gestartet werden, wenn der Netzdurchsatz der in der Liste angegebenen Schnittstellen aufgezeichnet werden soll (vgl. *Tabelle 1*). Im Fenster sollte dann oben rechts in der Ecke `Logging: enabled` stehen. Die Log-Dateien werden nach `/tmp/cpunetlog` geschrieben und können mit dem Kommando
-
-```bash
-cnl_plot.py -nsc 0.01 <Log-Datei>
-```
-
-grafisch dargestellt werden. `-nsc 0.01` setzt die maximale Datenrate auf 10 Mbit/s. *Abbildung 2* zeigt eine beispielhafte Ausgabe. Speichern Sie bitte immer das Ergebnis von `cnl_plot.py` auf dem Schreibtisch ab und bewahren Sie es für die Abnahme auf.<br>
-**Achtung: Das Plotten funktioniert nicht über eine SSH-Verbindung, daher muss das Plot-Kommando auf dem "echten" PC gestartet werden!**
-
-![Ausgabe von cnl_plot.py](images/ausgabe-plot.png)<br>
-*Abbildung 2: Ausgabe von `cnl_plot.py`*
-
-Für eine Aufzeichnung lassen sich Durchschnittswerte mit dem Kommando
-
-```bash
-summary.py <Log-Datei>
-```
-
-berechnen.
-
-## Verwendete Mininet-Topologie
-
-Für den Versuch haben wir Ihnen in den Skripten unter `~/Schreibtisch/kn1lab/versuch4/scripts` eine Mininet-Topologie vorgegeben, die in *Abbildung 3* dargestellt ist. Die Namen der Schnittstellen aller Hosts kann *Tabelle 1* entnommen werden.
-
-![Verwendete Mininet-Topologie](images/topologie.png)<br>
-*Abbildung 3: Verwendete Mininet-Topologie*
-
-| Server (`sv1`)             | Client-1 (`c1`)      | Client-2 (`c2`)      |
-|----------------------------|----------------------|----------------------|
-| sv1-eth0 (11.0.0.3)        | c1-eth0 (11.0.0.1)   | c2-eth0 (12.0.0.2)   |
-| sv1-eth1 (12.0.0.3)        | c1-eth1 (SSH)        | c2-eth1 (SSH)        |
-| sv1-eth2 (SSH)             |                      |                      |
-| `--nics sv1-eth0 sv1-eth1` | `--nics c1-eth0`     | `--nics c2-eth0`     |
-
-*Tabelle 1: Schnittstellen der Hosts in der Mininet-Topologie inkl. Parameter für `cpunetlog`*
-
-Die Leistungsmessung zwischen den Rechnern `c1`, `c2` und `sv1` wird über die schwarz dargestellten Netzverbindungen und die Switches `S1` und `S2` erfolgen. Die rot dargestellten Netzverbindungen und der Switch `S3` werden lediglich zur Steuerung der Experimente verwendet. Das Mininet-Netz kann beispielsweise mit
-
-```bash
-sudo python ~/Schreibtisch/kn1lab/versuch4/scripts/mininet_1.py
-```
-
-gestartet werden. Das benötigte Passwort ist `password`.
-
-Um `iperf3` oder `cpunetlog` auf einem der Rechner `c1`, `c2` oder `sv1` zu starten, ist das Mininet-CLI nicht ausreichend. Stattdessen müssen Sie sich, während das Mininet-Skript läuft, über ein weiteres Terminal mithilfe von
-
-```bash
-ssh <IP-Adresse des Ziels>
-```
-
-mit dem gewünschten Rechner verbinden. Verwenden Sie die IP-Adressen aus dem Subnetz `10.0.0.0/24`. Das benötigte Passwort ist auch hier `password`.
-
-## Hinweise
-- Das Python Script einer Mininet-Topologie kann mit dem Befehl **quit** beendet werden.
-- Alle SSH-Sessions auf Clients und Server einer Mininet-Topolgie sollten getrennt werden bevor diese geschlossen wird. Anderenfalls kann sich die VM aufhängen und sie muss neu gestartet werden!
-- Je iperf-Instanz wird ein eigenes Terminal benötigt.
-
-
-## Aufgabe 1 - Ein TCP-Strom
-
-Verwenden Sie für diese Aufgabe die Mininet-Topologie `mininet_1.py`.
-
-1. Generieren Sie mit Hilfe von `iperf3` einen TCP-Datenstrom zwischen Client `c1` und Server `sv1`. Dabei soll der `iperf3`-Client auf `c1` und der `iperf3`-Server auf `sv1` laufen. Ob Sie die IP-Adresse `11.0.0.3` oder `12.0.0.3` verwenden, ist Ihnen überlassen. `iperf3` gibt das Staukontrollfenster `CWND` des TCP-Datenstroms aus. Wie verhält sich dieses und wie hoch ist es, nachdem der Strom eine Weile gelaufen ist?
-
-1. Zeichen Sie diesen Datenstrom nun auf dem Server `sv1` mit Hilfe von `cpunetlog` für 1 Minute auf und stellen Sie das Ergebnis grafisch dar. Dazu müssen Sie über ein anderes Terminal eine weitere SSH-Verbindung zu `sv1` aufbauen. Achten Sie darauf, nur die Daten der relevanten Netzwerkschnittstelle aufzuzeichnen, sowie die Plots entsprechend zu skalieren und denken Sie daran das Ergebnis für die Abgabe auf dem Schreibtisch abzuspeichern.
-
-1. Bestimmen Sie mit `summary.py` die durchschnittliche Auslastung der Netzschnittstelle (`receive`). 
-
-## Aufgabe 2 - Fairness
-
-Verwenden Sie für diese Aufgabe ebenfalls die Mininet-Topologie `mininet_1.py`. Wir wollen nun untersuchen, ob sich zwei TCP-Datenströme die verfügbare Bandbreite fair teilen. Dazu benötigen wir zwei Datenströme, jeweils einen von Client `c1` bzw. Client `c2` zu Server `sv1`. Zu beachten sind die zwei Netzschnittstellen des Servers `sv1`; jede befindet sich in einem anderen Subnetz. Um die zwei Datenströme mit `cpunetlog` unterscheiden zu können, ist es notwendig, dass die TCP-Ströme jeweils an einem eigenen `iperf3`-Server je Schnittstelle ankommen. Anderenfalls kann nicht zentral auf dem Server gemessen werden, welcher Datenstrom welchen Durchsatz erreicht. 
-
-1. Erstellen Sie die notwendigen Datenströme mit `iperf3`, zeichnen Sie diese auf den Server mit `cpunetlog` für 1 Minute auf und stellen Sie das Ergebnis grafisch dar.
-
-1. Wie war diesmal die durchschnittliche Auslastung der Netzverbindung, war diese besser oder schlechter als für einen einzelnen Strom?
-
-1. War die Aufteilung der Bandbreite fair?
-
-1. Wiederholen Sie das Experiment, indem sie nun einen TCP-Strom gegen einen UDP-Strom mit einem Bandbreiten-Limit von 10 Mbit/s testen. Was ist das Ergebnis?
-
-## Aufgabe 3 - Auswirkungen von hohem Paketverlust auf den TCP-Durchsatz
-
-In dieser Aufgabe simulieren wir eine schlechte Verbindung vom Client zum Server, indem wir den Paketverlust auf der Leitung zwischen den zwei Switches von 0% auf 5% erhöhen. Verwenden Sie für diese Aufgabe die Mininet-Topologie `mininet_2.py`.
-
-1. Erstellen Sie einen TCP-Datenstrom vom Client `c1` zum Server `sv1` und zeichnen Sie diesen auf dem Server für 1 Minute auf. Wenn Sie den Wert `CWND`, den `iperf3` ausgibt, beobachten und mit dem aus Aufgabe 1.1 vergleichen, was fällt Ihnen auf? Warum ist dies so?
-
-1. Stellen Sie das Ergebnis grafisch dar und vergleichen Sie es mit dem aus Aufgabe 1.2, achten Sie vor allem auf den durchschnittlichen Durchsatz. Weichen die Ergebnisse signifikant ab? Wenn ja, warum könnte dies so sein?
-
-## Aufgabe 4 - Auswirkungen von hohem Paketverlust auf den UDP-Durchsatz
-
-Verwenden Sie für diese Aufgabe die Mininet-Topologie `mininet_3.py`, in dem der Paketverlust auf der Leitung zwischen den zwei Switches auf 10% erhöht wurde.
-
-1. Erstellen Sie einen UDP-Datenstrom mit einer maximalen Bandbreite von 10 Mbit/s vom Client `c1` zum Server `sv1`. Messen Sie nun sowohl die gesendeten Daten auf Client-Seite als auch empfangenen Daten auf Server-Seite jeweils mit `cpunetlog`. Was fällt Ihnen bezüglich der Datenrate auf, wenn Sie den Durchsatz beider Aufzeichnungen vergleichen? Was ist der Grund für dieses Verhalten?
+* Wenn Sie bei einem Befehl als Ziel einen Router angeben wollen, dann sollten Sie anstatt des Hostnamens die IP-Adresse der jeweiligen Netzwerkschnittstelle verwenden (z.B. mit `host1 ping 10.0.0.1`), denn über den Hostnamen eines Routers lässt sich nur *eine* seiner Netzwerkschnittstellen erreichen. Dies kann auch den Fehler `connect: Das Netzwerk ist nicht erreichbar` verursachen.

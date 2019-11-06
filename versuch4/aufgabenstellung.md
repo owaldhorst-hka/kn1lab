@@ -111,6 +111,12 @@ ssh <IP-Adresse des Ziels>
 
 mit dem gewünschten Rechner verbinden. Verwenden Sie die IP-Adressen aus dem Subnetz `10.0.0.0/24`. Das benötigte Passwort ist auch hier `password`.
 
+## Hinweise
+- Das Python Script einer Mininet-Topologie kann mit dem Befehl **quit** beendet werden.
+- Alle SSH-Sessions auf Clients und Server einer Mininet-Topolgie sollten getrennt werden bevor diese geschlossen wird. Anderenfalls kann sich die VM aufhängen und sie muss neu gestartet werden!
+- Je iperf-Instanz wird ein eigenes Terminal benötigt.
+
+
 ## Aufgabe 1 - Ein TCP-Strom
 
 Verwenden Sie für diese Aufgabe die Mininet-Topologie `mininet_1.py`.
