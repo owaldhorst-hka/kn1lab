@@ -14,7 +14,7 @@ MailDir-Ordner: `/home/user/Maildir`
 
 Die zweite Aufgabe umfasst das Senden einer E-Mail mit Hilfe der Java Mail API. Die Dokumentation dazu finden sie auf der Oracle Website unter:
 
-https://eclipse-ee4j.github.io/javamail/docs/api/javax/mail/package-summary.html
+https://javaee.github.io/javamail/docs/api/
 
 Die Vorlage für diese Aufgabe finden Sie in Eclipse unter `versuch1/src/(default package)/Send_Mail.java`.
 
