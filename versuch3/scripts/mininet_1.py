@@ -43,10 +43,6 @@ class MyTopo(Topo):
 
 # configuration
 def conf(net):
-    # router interfaces
-    net['r1'].cmd('ifconfig r1-eth0 0')
-    net['r1'].cmd('ifconfig r1-eth1 0')
-
     # router addresses
     net['r1'].cmd('ip addr add 10.0.0.1/24 brd + dev r1-eth0')
     net['r1'].cmd('ip addr add 10.0.2.1/24 brd + dev r1-eth1')
