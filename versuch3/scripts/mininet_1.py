@@ -28,7 +28,7 @@ class MyTopo(Topo):
         sw1 = self.addSwitch('sw1')
 
         # create router
-        r1 = self.addHost('r1', mac='00:00:00:00:01:00', ip='10.0.0.1/24')
+        r1 = self.addHost('r1', ip='10.0.0.1/24')
 
         # do the wiring
         ## hosts to switch
@@ -46,8 +46,6 @@ def conf(net):
     # router interfaces
     net['r1'].cmd('ifconfig r1-eth0 0')
     net['r1'].cmd('ifconfig r1-eth1 0')
-    net['r1'].cmd('ifconfig r1-eth0 hw ether 00:00:00:00:01:01')
-    net['r1'].cmd('ifconfig r1-eth1 hw ether 00:00:00:00:01:02')
 
     # router addresses
     net['r1'].cmd('ip addr add 10.0.0.1/24 brd + dev r1-eth0')
