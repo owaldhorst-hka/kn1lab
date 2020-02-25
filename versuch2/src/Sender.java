@@ -55,24 +55,4 @@ public class Sender {
         
         System.exit(0);
     }
-
-    /**
-     * Nimmt ACKs des {@link Receiver} entgegen.
-     * @param socketIn {@link Socket} auf dem ACKs erwartet wird.
-     * @return Empfangene ACK-Nummer
-     * @throws IOException Wird geworfen wenn nicht von {@link Socket} gelesen werden kann.
-     * @throws ClassNotFoundException Wird geworfen falls {@link Packet} Klasse nicht gefunden wird.
-     * @throws SocketTimeoutException Wird geworfen wenn empfangenes {@link Packet} kein ACK ist um wiederholte Übertagung
-     * auszulösen.
-     */
-    private int getAck(DatagramSocket socketIn) throws IOException, ClassNotFoundException, SocketTimeoutException {
-        /* Paket empfangen und in "Packet"-Objekt deserialisieren */
-
-        if (/* Prüfen ob es sich um ACK handelt */) {
-            return /* Neue ACK Nummer zurückgeben */;
-        }
-
-        /* Falls Packet kein ACK ist, wiederholte Übertagung durch Exception auslösen */
-        throw new SocketTimeoutException();
-    }
 }
