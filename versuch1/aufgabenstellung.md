@@ -8,15 +8,18 @@ MailDir-Ordner: `/home/user/Maildir`
 
 ## Aufgabe 1
 
-Öffnen Sie die unter `~/Schreibtisch/kn1lab/versuch1/beispiel-nachricht.eml` abgelegte Beispiel-Nachricht mit einem Texteditor und erklären Sie grob den Aufbau der Nachricht, sowie die Aufgaben der einzelnen Bestandteile.
+Öffnen Sie die unter `kn1lab/versuch1/beispiel-nachricht.eml` abgelegte Beispiel-Nachricht mit einem Texteditor und erklären Sie grob den Aufbau der Nachricht, sowie die Aufgaben der einzelnen Bestandteile.
 
 ## Aufgabe 2
 
 Die zweite Aufgabe umfasst das Senden einer E-Mail mit Hilfe der Java Mail API. Die Dokumentation dazu finden sie auf der Oracle Website unter:
 
-https://javaee.github.io/javamail/docs/api/
+https://docs.oracle.com/javaee/7/api/javax/mail/package-summary.html
 
-Die Vorlage für diese Aufgabe finden Sie in Eclipse unter `versuch1/src/(default package)/Send_Mail.java`.
+https://docs.oracle.com/cd/E26576_01/doc.312/e24930/javamail.htm#GSDVG00079
+
+Für diese Aufgabe können Sie `kn1lab/versuch1` in IntelliJ öffnen. 
+Die Vorlage für diese Aufgabe finden Sie in IntelliJ unter `versuch1/src/Send_Mail.java`.
 
 Der Mail-Server läuft auf `localhost`, d.h. die E-Mail-Adressen für Sender und Empfänger müssen auf `@localhost` enden, sind aber sonst frei wählbar. Um später erfolgreich eine Sitzung aufzubauen, benötigen Sie nur den Name des Hosts. Die E-Mail dürfen Sie direkt über den Code erzeugen.
 
@@ -32,7 +35,7 @@ Die dritte Aufgabe dreht sich darum, alle versendeten E-Mails aus Aufgabe 2 abzu
 * Das Versanddatum der E-Mail
 * Der Inhalt der E-Mail
 
-Die Vorlage für diese Aufgabe finden Sie in Eclipse unter `versuch1/src/(default package)/Receive_Mail.java`.
+Die Vorlage für diese Aufgabe finden Sie in IntelliJ unter `versuch1/src/Receive_Mail.java`.
 
 Um erfolgreich eine Sitzung aufzubauen, werden der Name des Hosts, dessen Store-Type und die Anmeldeinformationen benötigt.<br>
 Zur Erinnerung: es handelt sich um einen POP3-Server mit unverschlüsselter Verbindung.

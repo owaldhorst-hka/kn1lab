@@ -47,7 +47,7 @@ Hier ist die aktualisierte Liste. Schauen Sie sich die neuen Geräte und deren I
 
 1. Für das neue Büro stehen uns `/24` IP-Adressen zur Verfügung. Wie viele Geräte können hier maximal genutzt werden?
 
-1. Fügen Sie die neuen Geräte und ihre IP-Adressen in die Zeichnung ein. Realisieren Sie die beschriebene Topologie mit IP-Adressen, Subnetzen und Routen im Mininet-Skript `mininet_2.py`.
+1. Fügen Sie die neuen Geräte und ihre IP-Adressen in die Zeichnung ein. Erweitern Sie die beschriebene Topologie mit IP-Adressen, Subnetzen und Routen im Mininet-Skript `mininet_1.py`.
 
 ### Hinweise zu Aufgabe 2.2:
 

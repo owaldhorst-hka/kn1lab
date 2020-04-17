@@ -36,7 +36,7 @@ Einen Client, der einen UDP-Datenstrom erzeugt, kann man mit
 iperf3 -c <IP-Adresse des Servers> -Z -t <Dauer der Übertragung> -u -b <Bandbreitenlimit>
 ```
 
-erzeugen. Das Bandbreitenlimit ist standardmäßig auf 1 Mbit/s begrenzt und kann z.B. mit `-b 10M` auf 10 Mbit/s gesetzt werden. 
+erzeugen. Das Bandbreitenlimit ist standardmäßig auf 10 Mbit/s begrenzt und kann z.B. mit `-b 1M` auf 1 Mbit/s gesetzt werden. 
 
 ### Anzeigen / aufzeichnen des Durchsatzes mit `cpunetlog`
 
@@ -62,10 +62,10 @@ cpunetlog -l --nics <Liste der Schnittstellen>
 gestartet werden, wenn der Netzdurchsatz der in der Liste angegebenen Schnittstellen aufgezeichnet werden soll (vgl. *Tabelle 1*). Im Fenster sollte dann oben rechts in der Ecke `Logging: enabled` stehen. Die Log-Dateien werden nach `/tmp/cpunetlog` geschrieben und können mit dem Kommando
 
 ```bash
-cnl_plot.py -nsc 0.01 <Log-Datei>
+cnl_plot.py -nsc 0.001 <Log-Datei>
 ```
 
-grafisch dargestellt werden. `-nsc 0.01` setzt die maximale Datenrate auf 10 Mbit/s. *Abbildung 2* zeigt eine beispielhafte Ausgabe. Speichern Sie bitte immer das Ergebnis von `cnl_plot.py` auf dem Schreibtisch ab und bewahren Sie es für die Abnahme auf.<br>
+grafisch dargestellt werden. `-nsc 0.001` setzt die maximale Datenrate auf 1 Mbit/s. *Abbildung 2* zeigt eine beispielhafte Ausgabe. Speichern Sie bitte immer das Ergebnis von `cnl_plot.py` auf dem Schreibtisch ab und bewahren Sie es für die Abnahme auf.<br>
 **Achtung: Das Plotten funktioniert nicht über eine SSH-Verbindung, daher muss das Plot-Kommando auf dem "echten" PC gestartet werden!**
 
 ![Ausgabe von cnl_plot.py](images/ausgabe-plot.png)<br>
@@ -120,6 +120,12 @@ mit dem gewünschten Rechner verbinden. Verwenden Sie die IP-Adressen aus dem Su
 ## Aufgabe 1 - Ein TCP-Strom
 
 Verwenden Sie für diese Aufgabe die Mininet-Topologie `mininet_1.py`.
+
+Wichtig: Durch zu große Fluktutation sehen die Kurven der Bandbreite-Beschränkung nicht so aus, wie man diese Erwarten würde. Testen Sie daher mit der Banbreite-Beschränkung von 1Mbit/s.
+
+```bash
+iperf3 -c <IP-Addresse des Servers> -Z -t 60 -b 1M
+```
 
 1. Generieren Sie mit Hilfe von `iperf3` einen TCP-Datenstrom zwischen Client `c1` und Server `sv1`. Dabei soll der `iperf3`-Client auf `c1` und der `iperf3`-Server auf `sv1` laufen. Ob Sie die IP-Adresse `11.0.0.3` oder `12.0.0.3` verwenden, ist Ihnen überlassen. `iperf3` gibt das Staukontrollfenster `CWND` des TCP-Datenstroms aus. Wie verhält sich dieses und wie hoch ist es, nachdem der Strom eine Weile gelaufen ist?
 
