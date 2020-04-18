@@ -106,10 +106,10 @@ gestartet werden. Das benötigte Passwort ist `password`.
 Um `iperf3` oder `cpunetlog` auf einem der Rechner `c1`, `c2` oder `sv1` zu starten, ist das Mininet-CLI nicht ausreichend. Stattdessen müssen Sie sich, während das Mininet-Skript läuft, über ein weiteres Terminal mithilfe von
 
 ```bash
-ssh <IP-Adresse des Ziels>
+ssh <Rechnername>
 ```
 
-mit dem gewünschten Rechner verbinden. Verwenden Sie die IP-Adressen aus dem Subnetz `10.0.0.0/24`. Das benötigte Passwort ist auch hier `password`.
+mit dem gewünschten Rechner verbinden. 
 
 ## Hinweise
 - Das Python Script einer Mininet-Topologie kann mit dem Befehl **quit** beendet werden.
