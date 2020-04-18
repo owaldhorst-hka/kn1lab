@@ -12,9 +12,9 @@ Leider ist unser alter Netzwerkadministrator unerwartet ausgeschieden, deswegen 
 
 Jedes Teammitglied soll seinen eigenen Arbeitsplatz mit PC erhalten. Ein Network Attached Storage als Dateiserver (`NAS`), einen Router (`r1`) und einen Switch (`sw1`) haben wir bereits angeschafft. Unser alter Administrator hat die Geräte notdürftig verkabelt und konfiguriert – wir wissen nur leider nicht wie!
 
-1. Bitte öffnen Sie das Mininet-Skript unter `~/Schreibtisch/kn1lab/versuch3/scripts/mininet_1.py` mit einem Texteditor und rekonstruieren (zeichnen) Sie die Netzwerkumgebung mit den Verbindungen!
+1. Bitte öffnen Sie das Mininet-Skript unter `~/kn1lab/versuch3/scripts/topology.py` mit PyCharm und rekonstruieren (zeichnen) Sie die Netzwerkumgebung mit den Verbindungen!
 
-1. Bitte bezeichnen Sie zusätzlich in ihrer Zeichnung die Netzwerkschnittstellen mit den richtigen IP-Adressen. Vermerken Sie auch von den Routing-Tabellen-Einträgen die Attribute `Ziel` und `Router`. Starten Sie dazu die Mininet Topologie mit `sudo python ~/Schreibtisch/kn1lab/versuch3/scripts/mininet_1.py`. Das benötigte Passwort ist `password`. Anschließend können Sie mit `<knotenname> route` die Routing-Tabellen-Einträge ausgeben lassen. Falls Sie in der Ausgabe unerwartete Rechnernamen (z.B. `_gateway`) statt IP-Adressen sehen und dies nicht wollen, dann geben Sie das Argument `-n` mit (z.B. `host1 route -n`).
+1. Bitte bezeichnen Sie zusätzlich in ihrer Zeichnung die Netzwerkschnittstellen mit den richtigen IP-Adressen. Vermerken Sie auch von den Routing-Tabellen-Einträgen die Attribute `Ziel` und `Router`. Starten Sie dazu die Mininet Topologie mit PyCharm oder mit `sudo python ~/kn1lab/versuch3/scripts/topology.py`. Das benötigte Passwort ist `password`. Anschließend können Sie mit `<knotenname> route` die Routing-Tabellen-Einträge ausgeben lassen. Falls Sie in der Ausgabe unerwartete Rechnernamen (z.B. `_gateway`) statt IP-Adressen sehen und dies nicht wollen, dann geben Sie das Argument `-n` mit (z.B. `host1 route -n`).
 
 1. Testen Sie nun die Verbindung der PCs untereinander mit Hilfe des Tools `ping`, indem sie in der Mininet-Konsole den Befehl `<knotenname-quelle> ping -c 3 <ip-ziel>` verwenden. Dadurch wird das Ziel 3 mal angepingt. Können sich alle Teammitglieder gegenseitig erreichen?
 
@@ -47,7 +47,7 @@ Hier ist die aktualisierte Liste. Schauen Sie sich die neuen Geräte und deren I
 
 1. Für das neue Büro stehen uns `/24` IP-Adressen zur Verfügung. Wie viele Geräte können hier maximal genutzt werden?
 
-1. Fügen Sie die neuen Geräte und ihre IP-Adressen in die Zeichnung ein. Realisieren Sie die beschriebene Topologie mit IP-Adressen, Subnetzen und Routen im Mininet-Skript `mininet_2.py`.
+1. Fügen Sie die neuen Geräte und ihre IP-Adressen in die Zeichnung ein. Erweitern Sie die existierende Topologie in `~/kn1lab/versuch3/scripts/topology.py` mit den neuen Geräten, IP-Adressen, Subnetzen und Routen.
 
 ### Hinweise zu Aufgabe 2.2:
 

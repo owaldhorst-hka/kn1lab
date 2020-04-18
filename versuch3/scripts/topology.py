@@ -1,15 +1,11 @@
 #!/usr/bin/python
 
-import sys
-
 from mininet.net import Mininet
 from mininet.cli import CLI
 from mininet.log import lg
-from mininet.node import Node
-from mininet.topolib import TreeTopo
-from mininet.util import waitListening
 from mininet.topo import Topo
 from mininet.link import TCLink
+
 
 class MyTopo(Topo):
     def __init__(self):
@@ -31,43 +27,46 @@ class MyTopo(Topo):
         r1 = self.addHost('r1', ip='10.0.0.1/24')
 
         # do the wiring
-        ## hosts to switch
+        # - hosts to switch
         self.addLink(lukas, sw1)
         self.addLink(lisa, sw1)
         self.addLink(ela, sw1)
         self.addLink(ben, sw1)
         self.addLink(elias, sw1)
-        ## nas over router to switch
+        # - nas over router to switch
         self.addLink(r1, sw1)
         self.addLink(nas, r1)
 
+
 # configuration
-def conf(net):
+def conf(network):
     # router addresses
-    net['r1'].cmd('ip addr add 10.0.0.1/24 brd + dev r1-eth0')
-    net['r1'].cmd('ip addr add 10.0.3.1/24 brd + dev r1-eth1')
-    net['r1'].cmd('echo 1 > /proc/sys/net/ipv4/ip_forward')
+    network['r1'].cmd('ip addr add 10.0.0.1/24 brd + dev r1-eth0')
+    network['r1'].cmd('ip addr add 10.0.2.1/24 brd + dev r1-eth1')
+    network['r1'].cmd('echo 1 > /proc/sys/net/ipv4/ip_forward')
 
     # router routing
-    net['r1'].cmd('ip route add 10.0.0.0/24 dev r1-eth0')
-    net['r1'].cmd('ip route add 10.0.3.0/24 dev r1-eth1')
+    network['r1'].cmd('ip route add 10.0.0.0/24 dev r1-eth0')
+    network['r1'].cmd('ip route add 10.0.3.0/24 dev r1-eth1')
 
     # client routing
-    net['ela'].cmd('ip route add default via 10.0.0.1')
-    net['lisa'].cmd('ip route add default via 10.0.0.1')
-    net['ben'].cmd('ip route add default via 10.0.0.1')
-    net['lukas'].cmd('ip route add default via 10.0.0.1')
-    net['elias'].cmd('ip route add default via 10.0.0.1')
+    network['ela'].cmd('ip route add default via 10.0.0.1')
+    network['lisa'].cmd('ip route add default via 10.0.0.1')
+    network['ben'].cmd('ip route add default via 10.0.0.1')
+    network['lukas'].cmd('ip route add default via 10.0.0.1')
+    network['elias'].cmd('ip route add default via 10.0.0.1')
 
-    net['nas'].cmd('ip route add default via 10.0.3.1')
+    network['nas'].cmd('ip route add default via 10.0.3.1')
 
-def NetTopo(**kwargs):
+
+def nettopo(**kwargs):
     topo = MyTopo()
     return Mininet(topo=topo, link=TCLink, **kwargs)
 
+
 if __name__ == '__main__':
     lg.setLogLevel('info')
-    net = NetTopo()
+    net = nettopo()
     net.start()
     conf(net)
     CLI(net)
