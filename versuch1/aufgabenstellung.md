@@ -14,16 +14,16 @@ MailDir-Ordner: `/home/user/Maildir`
 
 Die zweite Aufgabe umfasst das Senden einer E-Mail mit Hilfe der Java Mail API. Die Dokumentation dazu finden sie auf der Oracle Website unter:
 
-https://docs.oracle.com/javaee/7/api/javax/mail/package-summary.html
+<https://docs.oracle.com/javaee/7/api/javax/mail/package-summary.html>
 
-https://docs.oracle.com/cd/E26576_01/doc.312/e24930/javamail.htm#GSDVG00079
+<https://docs.oracle.com/cd/E26576_01/doc.312/e24930/javamail.htm#GSDVG00079>
 
 Für diese Aufgabe können Sie `kn1lab/versuch1` in IntelliJ öffnen. 
 Die Vorlage für diese Aufgabe finden Sie in IntelliJ unter `versuch1/src/Send_Mail.java`.
 
 Der Mail-Server läuft auf `localhost`, d.h. die E-Mail-Adressen für Sender und Empfänger müssen auf `@localhost` enden, sind aber sonst frei wählbar. Um später erfolgreich eine Sitzung aufzubauen, benötigen Sie nur den Name des Hosts. Die E-Mail dürfen Sie direkt über den Code erzeugen.
 
-Um zu kontrollieren, ob die E-Mail erfolgreich versendet wurde kann im Ordner `home/user/Maildir` im Unterordner `new` nachgeschaut werden. 
+Um zu kontrollieren, ob die E-Mail erfolgreich versendet wurde kann im Ordner `/home/user/Maildir` im Unterordner `new` nachgeschaut werden. 
 
 ## Aufgabe 3
 
