@@ -16,11 +16,11 @@ class NetTopo(Topo):
         s2 = self.addSwitch('s2')
         s3 = self.addSwitch('s3')
 
-        self.addLink(c1, s1, bw=10)
-        self.addLink(c2, s1, bw=10)
-        self.addLink(s1, s2, bw=10, loss=loss)
-        self.addLink(sv1, s2, bw=10)
-        self.addLink(sv1, s2, bw=10)
+        self.addLink(c1, s1, bw=1)
+        self.addLink(c2, s1, bw=1)
+        self.addLink(s1, s2, bw=1, loss=loss)
+        self.addLink(sv1, s2, bw=1)
+        self.addLink(sv1, s2, bw=1)
 
         self.addLink(s3, c1)
         self.addLink(s3, c2)
