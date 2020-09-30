@@ -5,6 +5,7 @@ from mininet.cli import CLI
 from mininet.log import lg
 from mininet.topo import Topo
 from mininet.link import TCLink
+from mininet.node import OVSController
 
 
 class MyTopo(Topo):
@@ -61,7 +62,7 @@ def conf(network):
 
 def nettopo(**kwargs):
     topo = MyTopo()
-    return Mininet(topo=topo, link=TCLink, **kwargs)
+    return Mininet(topo=topo, link=TCLink, controller = OVSController, **kwargs)
 
 
 if __name__ == '__main__':

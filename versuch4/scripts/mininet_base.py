@@ -6,6 +6,10 @@ from mininet.node import Node
 from mininet.topo import Topo
 from mininet.util import waitListening
 
+
+from mininet.node import OVSController
+
+
 class NetTopo(Topo):
     def __init__(self, loss):
         Topo.__init__(self)
@@ -47,7 +51,7 @@ def sshd(net):
 def start(loss):
     lg.setLogLevel('info')
     topo = NetTopo(loss=loss)
-    net = Mininet(topo=topo, link=TCLink)
+    net = Mininet(topo = topo, controller = OVSController)
 
     conf(net)
     sshd(net)
