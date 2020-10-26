@@ -81,15 +81,15 @@ berechnen.
 
 ## Verwendete Mininet-Topologie
 
-Für den Versuch haben wir Ihnen in den Skripten unter `~/Schreibtisch/kn1lab/versuch4/scripts` eine Mininet-Topologie vorgegeben, die in *Abbildung 3* dargestellt ist. Die Namen der Schnittstellen aller Hosts kann *Tabelle 1* entnommen werden.
+Für den Versuch haben wir Ihnen in den Skripten unter `~/kn1lab/versuch4/scripts` eine Mininet-Topologie vorgegeben, die in *Abbildung 3* dargestellt ist. Die Namen der Schnittstellen aller Hosts kann *Tabelle 1* entnommen werden.
 
 ![Verwendete Mininet-Topologie](images/topologie.png)<br>
 *Abbildung 3: Verwendete Mininet-Topologie*
 
 | Server (`sv1`)             | Client-1 (`c1`)      | Client-2 (`c2`)      |
 |----------------------------|----------------------|----------------------|
-| sv1-eth0 (11.0.0.3)        | c1-eth0 (11.0.0.1)   | c2-eth0 (12.0.0.2)   |
-| sv1-eth1 (12.0.0.3)        | c1-eth1 (SSH)        | c2-eth1 (SSH)        |
+| sv1-eth0 (10.11.0.3)       | c1-eth0 (10.11.0.1)  | c2-eth0 (10.12.0.2)  |
+| sv1-eth1 (10.12.0.3)       | c1-eth1 (SSH)        | c2-eth1 (SSH)        |
 | sv1-eth2 (SSH)             |                      |                      |
 | `--nics sv1-eth0 sv1-eth1` | `--nics c1-eth0`     | `--nics c2-eth0`     |
 
@@ -98,7 +98,7 @@ Für den Versuch haben wir Ihnen in den Skripten unter `~/Schreibtisch/kn1lab/ve
 Die Leistungsmessung zwischen den Rechnern `c1`, `c2` und `sv1` wird über die schwarz dargestellten Netzverbindungen und die Switches `S1` und `S2` erfolgen. Die rot dargestellten Netzverbindungen und der Switch `S3` werden lediglich zur Steuerung der Experimente verwendet. Das Mininet-Netz kann beispielsweise mit
 
 ```bash
-sudo python ~/Schreibtisch/kn1lab/versuch4/scripts/mininet_1.py
+sudo python ~/kn1lab/versuch4/scripts/mininet_1.py
 ```
 
 gestartet werden. Das benötigte Passwort ist `password`.
@@ -127,7 +127,7 @@ Wichtig: Durch zu große Fluktutation sehen die Kurven der Bandbreite-Beschränk
 iperf3 -c <IP-Addresse des Servers> -Z -t 60 -b 1M
 ```
 
-1. Generieren Sie mit Hilfe von `iperf3` einen TCP-Datenstrom zwischen Client `c1` und Server `sv1`. Dabei soll der `iperf3`-Client auf `c1` und der `iperf3`-Server auf `sv1` laufen. Ob Sie die IP-Adresse `11.0.0.3` oder `12.0.0.3` verwenden, ist Ihnen überlassen. `iperf3` gibt das Staukontrollfenster `CWND` des TCP-Datenstroms aus. Wie verhält sich dieses und wie hoch ist es, nachdem der Strom eine Weile gelaufen ist?
+1. Generieren Sie mit Hilfe von `iperf3` einen TCP-Datenstrom zwischen Client `c1` und Server `sv1`. Dabei soll der `iperf3`-Client auf `c1` und der `iperf3`-Server auf `sv1` laufen. Ob Sie die IP-Adresse `10.11.0.3` oder `10.12.0.3` verwenden, ist Ihnen überlassen. `iperf3` gibt das Staukontrollfenster `CWND` des TCP-Datenstroms aus. Wie verhält sich dieses und wie hoch ist es, nachdem der Strom eine Weile gelaufen ist?
 
 1. Zeichen Sie diesen Datenstrom nun auf dem Server `sv1` mit Hilfe von `cpunetlog` für 1 Minute auf und stellen Sie das Ergebnis grafisch dar. Dazu müssen Sie über ein anderes Terminal eine weitere SSH-Verbindung zu `sv1` aufbauen. Achten Sie darauf, nur die Daten der relevanten Netzwerkschnittstelle aufzuzeichnen, sowie die Plots entsprechend zu skalieren und denken Sie daran das Ergebnis für die Abgabe auf dem Schreibtisch abzuspeichern.
 

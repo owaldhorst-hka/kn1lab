@@ -2,9 +2,9 @@
 
 ## Anmeldeinformationen und MailDir-Ordner
 
-Benutzername: `user`<br>
-Passwort: `password`<br>
-MailDir-Ordner: `/home/user/Maildir`
+Benutzername: `labrat`<br>
+Passwort: `kn1lab`<br>
+MailDir-Ordner: `/home/labrat/Maildir`
 
 ## Aufgabe 1
 

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#! /usr/bin/env python3
 
 from mininet.net import Mininet
 from mininet.cli import CLI
@@ -13,19 +13,19 @@ class MyTopo(Topo):
         Topo.__init__(self)
 
         # create hosts
-        lukas = self.addHost('lukas', ip='10.0.0.2/24')
-        lisa = self.addHost('lisa', ip='10.0.0.3/24')
-        ela = self.addHost('ela', ip='10.0.0.4/24')
-        ben = self.addHost('ben', ip='10.0.0.5/24')
-        elias = self.addHost('elias', ip='10.0.0.6/24')
+        lukas = self.addHost('lukas', ip='10.0.0.2/26')
+        lisa = self.addHost('lisa', ip='10.0.0.3/26')
+        ela = self.addHost('ela', ip='10.0.0.4/26')
+        ben = self.addHost('ben', ip='10.0.0.5/26')
+        elias = self.addHost('elias', ip='10.0.0.6/26')
 
-        nas = self.addHost('nas', ip='10.0.3.2/24')
+        nas = self.addHost('nas', ip='10.0.1.2/29')
 
         # create switch
         sw1 = self.addSwitch('sw1')
 
         # create router
-        r1 = self.addHost('r1', ip='10.0.0.1/24')
+        r1 = self.addHost('r1', ip='10.0.0.1/26')
 
         # do the wiring
         # - hosts to switch
@@ -42,13 +42,9 @@ class MyTopo(Topo):
 # configuration
 def conf(network):
     # router addresses
-    network['r1'].cmd('ip addr add 10.0.0.1/24 brd + dev r1-eth0')
-    network['r1'].cmd('ip addr add 10.0.2.1/24 brd + dev r1-eth1')
-    network['r1'].cmd('echo 1 > /proc/sys/net/ipv4/ip_forward')
-
-    # router routing
-    network['r1'].cmd('ip route add 10.0.0.0/24 dev r1-eth0')
-    network['r1'].cmd('ip route add 10.0.3.0/24 dev r1-eth1')
+    network['r1'].cmd('ip addr add 10.0.0.1/26 dev r1-eth0')
+    network['r1'].cmd('ip addr add 10.0.2.1/29 dev r1-eth1')
+    network['r1'].cmd('sysctl net.ipv4.conf.all.forwarding=1')
 
     # client routing
     network['ela'].cmd('ip route add default via 10.0.0.1')
@@ -57,7 +53,7 @@ def conf(network):
     network['lukas'].cmd('ip route add default via 10.0.0.1')
     network['elias'].cmd('ip route add default via 10.0.0.1')
 
-    network['nas'].cmd('ip route add default via 10.0.3.1')
+    network['nas'].cmd('ip route add default via 10.0.1.1')
 
 
 def nettopo(**kwargs):
