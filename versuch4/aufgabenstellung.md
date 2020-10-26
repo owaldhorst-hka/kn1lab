@@ -91,7 +91,7 @@ Für den Versuch haben wir Ihnen in den Skripten unter `~/kn1lab/versuch4/script
 | sv1-eth0 (10.11.0.3)       | c1-eth0 (10.11.0.1)  | c2-eth0 (10.12.0.2)  |
 | sv1-eth1 (10.12.0.3)       | c1-eth1 (SSH)        | c2-eth1 (SSH)        |
 | sv1-eth2 (SSH)             |                      |                      |
-| `--nics sv1-eth1 sv1-eth2` | `--nics c1-eth1`     | `--nics c2-eth2`     |
+| `--nics sv1-eth1 sv1-eth2` | `--nics c1-eth1`     | `--nics c2-eth1`     |
 
 *Tabelle 1: Schnittstellen der Hosts in der Mininet-Topologie inkl. Parameter für `cpunetlog`*
 
