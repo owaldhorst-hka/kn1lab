@@ -13,9 +13,9 @@ from mininet.node import OVSController
 class NetTopo(Topo):
     def __init__(self, loss):
         Topo.__init__(self)
-        c1 = self.addHost('c1', ip='11.0.0.1/24')
-        c2 = self.addHost('c2', ip='12.0.0.2/24')
-        sv1 = self.addHost('sv1', ip='11.0.0.3/24')
+        c1 = self.addHost('c1', ip='10.11.0.1/24')
+        c2 = self.addHost('c2', ip='10.12.0.2/24')
+        sv1 = self.addHost('sv1', ip='10.11.0.3/24')
         s1 = self.addSwitch('s1')
         s2 = self.addSwitch('s2')
         s3 = self.addSwitch('s3')
@@ -31,11 +31,11 @@ class NetTopo(Topo):
         self.addLink(s3, sv1)
 
 def conf(net):
-    net['c1'].cmd('ifconfig c1-eth1 10.0.0.1/24')
-    net['c2'].cmd('ifconfig c2-eth1 10.0.0.2/24')
-    net['sv1'].cmd('ifconfig sv1-eth2 10.0.0.3/24')
+    net['c1'].cmd('ip addr add 10.0.0.1/24 dev c1-eth1')
+    net['c2'].cmd('ip addr add 10.0.0.2/24 dev c2-eth1')
+    net['sv1'].cmd('ip addr add 10.0.0.3/24 dev sv1-eth2')
 
-    net['sv1'].cmd('ifconfig sv1-eth1 12.0.0.3/24')
+    net['sv1'].cmd('ip addr add 10.12.0.3/24 dev sv1-eth1')
 
 def sshd(net):
     root = Node('root', inNamespace=False)
