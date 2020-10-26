@@ -42,13 +42,9 @@ class MyTopo(Topo):
 # configuration
 def conf(network):
     # router addresses
-    network['r1'].cmd('ip addr add 10.0.0.1/26 brd + dev r1-eth0')
-    network['r1'].cmd('ip addr add 10.0.2.1/29 brd + dev r1-eth1')
-    network['r1'].cmd('echo 1 > /proc/sys/net/ipv4/ip_forward')
-
-    # router routing
-    network['r1'].cmd('ip route add 10.0.0.0/26 dev r1-eth0')
-    network['r1'].cmd('ip route add 10.0.1.0/29 dev r1-eth1')
+    network['r1'].cmd('ip addr add 10.0.0.1/26 dev r1-eth0')
+    network['r1'].cmd('ip addr add 10.0.2.1/29 dev r1-eth1')
+    network['r1'].cmd('sysctl net.ipv4.conf.all.forwarding=1')
 
     # client routing
     network['ela'].cmd('ip route add default via 10.0.0.1')
