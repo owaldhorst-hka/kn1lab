@@ -5,7 +5,7 @@ import java.util.concurrent.*;
 
 /**
  * Die "Klasse" Sender liest einen String von der Konsole und zerlegt ihn in einzelne Worte. Jedes Wort wird in ein
- * einzelnes {@link Packet} verpackt und an das {@link Medium} verschickt. Erst nach dem Erhalt eines entsprechenden
+ * einzelnes {@link Packet} verpackt und an das Medium verschickt. Erst nach dem Erhalt eines entsprechenden
  * ACKs wird das nächste {@link Packet} verschickt. Erhält der Sender nach einem Timeout von 5 Sekunden kein ACK,
  * überträgt er das {@link Packet} erneut.
  */
@@ -25,20 +25,22 @@ public class Sender {
 
     /**
      * Erzeugt neuen Socket. Liest Text von Konsole ein und zerlegt diesen. Packt einzelne Worte in {@link Packet}
-     * und schickt diese an {@link Medium}. Nutzt {@link SocketTimeoutException}, um 5 Sekunden auf ACK zu
+     * und schickt diese an Medium. Nutzt {@link SocketTimeoutException}, um 5 Sekunden auf ACK zu
      * warten und das {@link Packet} ggf. nochmals zu versenden.
      * @throws IOException Wird geworfen falls Sockets nicht erzeugt werden können.
      */
     private void send() throws IOException {
-    	/* Text einlesen und in Worte zerlegen */
+/*   	//Text einlesen und in Worte zerlegen
 
-        /* Socket erzeugen auf Port 9998 und Timeout auf 5 Sekunden setzen */
-        
-        while (/* Iteration über den Konsolentext */ true) {
-        	/* Paket an Port 9997 senden */
+        // Socket erzeugen auf Port 9998 und Timeout auf 5 Sekunden setzen
+
+        // Iteration über den Konsolentext
+        while (true) {
+        	// Paket an Port 9997 senden
         	
             try {
-                /* Auf ACK warten und erst dann Schleifenzähler inkrementieren */
+                // Auf ACK warten und erst dann Schleifenzähler inkrementieren
+
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             } catch (SocketTimeoutException e) {
@@ -46,13 +48,13 @@ public class Sender {
             }
         }
         
-        /* Wenn alle Packete versendet und von der Gegenseite bestätigt sind, Programm beenden */
+        // Wenn alle Packete versendet und von der Gegenseite bestätigt sind, Programm beenden
         clientSocket.close();
         
         if(System.getProperty("os.name").equals("Linux")) {
             clientSocket.disconnect();
         }
-        
+*/
         System.exit(0);
     }
 }
