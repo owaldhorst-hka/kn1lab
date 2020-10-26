@@ -31,7 +31,7 @@ class NetTopo(Topo):
         self.addLink(s3, sv1)
 
 def conf(net):
-    net['c1'].cmd('ifconfig c1-eth1 10.0.0.1/16')
+    net['c1'].cmd('ifconfig c1-eth1 10.0.1/16')
     net['c2'].cmd('ifconfig c2-eth1 10.0.0.2/16')
     net['sv1'].cmd('ifconfig sv1-eth2 10.0.0.3/16')
 
