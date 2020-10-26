@@ -81,7 +81,7 @@ berechnen.
 
 ## Verwendete Mininet-Topologie
 
-Für den Versuch haben wir Ihnen in den Skripten unter `~/Schreibtisch/kn1lab/versuch4/scripts` eine Mininet-Topologie vorgegeben, die in *Abbildung 3* dargestellt ist. Die Namen der Schnittstellen aller Hosts kann *Tabelle 1* entnommen werden.
+Für den Versuch haben wir Ihnen in den Skripten unter `~/kn1lab/versuch4/scripts` eine Mininet-Topologie vorgegeben, die in *Abbildung 3* dargestellt ist. Die Namen der Schnittstellen aller Hosts kann *Tabelle 1* entnommen werden.
 
 ![Verwendete Mininet-Topologie](images/topologie.png)<br>
 *Abbildung 3: Verwendete Mininet-Topologie*
@@ -98,7 +98,7 @@ Für den Versuch haben wir Ihnen in den Skripten unter `~/Schreibtisch/kn1lab/ve
 Die Leistungsmessung zwischen den Rechnern `c1`, `c2` und `sv1` wird über die schwarz dargestellten Netzverbindungen und die Switches `S1` und `S2` erfolgen. Die rot dargestellten Netzverbindungen und der Switch `S3` werden lediglich zur Steuerung der Experimente verwendet. Das Mininet-Netz kann beispielsweise mit
 
 ```bash
-sudo python ~/Schreibtisch/kn1lab/versuch4/scripts/mininet_1.py
+sudo python ~/kn1lab/versuch4/scripts/mininet_1.py
 ```
 
 gestartet werden. Das benötigte Passwort ist `password`.
