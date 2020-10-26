@@ -33,8 +33,8 @@ Hier ist die aktualisierte Liste. Schauen Sie sich die neuen Geräte und deren I
 
 | Gerät             | Typ        | IP                                        |
 |-------------------|------------|-------------------------------------------|
-| r1 (Garage)       | Router     | 10.0.0.1/24, 10.0.3.1/24, **10.0.2.1/24** |
-| **r2 (Buero)**    | **Router** | **10.0.2.2/24, 10.0.4.1/24**              |
+| r1 (Garage)       | Router     | 10.0.0.1/26, 10.0.1.1/29, **10.0.1.64/31** |
+| **r2 (Buero)**    | **Router** | **10.0.2.1/25, 10.0.1.65/31**              |
 | sw1               | Switch     | Keine IP                                  |
 | **sw2**           | **Switch** | **Keine IP**                              |
 | NAS               | Host       | 10.0.3.2                                  |
@@ -43,9 +43,9 @@ Hier ist die aktualisierte Liste. Schauen Sie sich die neuen Geräte und deren I
 | Ben               | PC         | 10.0.0.4                                  |
 | Lukas             | PC         | 10.0.0.5                                  |
 | Elias             | PC         | 10.0.0.6                                  |
-| **Burak**         | **PC**     | **10.0.4.2**                              |
+| **Burak**         | **PC**     | **10.0.2.2**                              |
 
-1. Für das neue Büro stehen uns `/24` IP-Adressen zur Verfügung. Wie viele Geräte können hier maximal genutzt werden?
+1. Für das neue Büro stehen uns `/25` IP-Adressen zur Verfügung. Wie viele Geräte können hier maximal genutzt werden?
 
 1. Fügen Sie die neuen Geräte und ihre IP-Adressen in die Zeichnung ein. Erweitern Sie die existierende Topologie in `~/kn1lab/versuch3/scripts/topology.py` mit den neuen Geräten, IP-Adressen, Subnetzen und Routen.
 
