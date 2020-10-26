@@ -20,7 +20,7 @@ Wenn der Rechner, auf dem der Server laufen soll, wie im betrachteten Fall mehre
 iperf3 -s -B <IP-Adresse>
 ```
 
-gezielt an die Schnittstellen mit der angegebenen IP-Adresse gebunden werden. Bitte geben die IP-Adresse immer mit an und verwenden Sie **NICHT** die Adressen aus dem Subnetz `10.0.0.0/24`, denn dieses Subnetz ist nur zum Aufbau der SSH-Verbindung gedacht und im Gegensatz zu den anderen Netzen nicht bandbreitenlimitiert.
+gezielt an die Schnittstellen mit der angegebenen IP-Adresse gebunden werden. Bitte geben die IP-Adresse immer mit an und verwenden Sie **NICHT** die Adressen aus dem Subnetz `10.0.0.0/24`, denn dieses Subnetz ist nur zum Aufbau der SSH-Verbindung gedacht und hat im Gegensatz zu den anderen Netzen kein Limit für die Datenrate.
 
 Einen Client, der einen TCP-Datenstrom erzeugt, kann man mit
 
@@ -33,10 +33,10 @@ starten. `-Z` bedeutet dabei "Zero copy", was die Leistung des Clients erhöht.
 Einen Client, der einen UDP-Datenstrom erzeugt, kann man mit 
 
 ```bash
-iperf3 -c <IP-Adresse des Servers> -Z -t <Dauer der Übertragung> -u -b <Bandbreitenlimit>
+iperf3 -c <IP-Adresse des Servers> -Z -t <Dauer der Übertragung> -u -b <datenratenlimit>
 ```
 
-erzeugen. Das Bandbreitenlimit ist standardmäßig auf 10 Mbit/s begrenzt und kann z.B. mit `-b 1M` auf 1 Mbit/s gesetzt werden. 
+erzeugen. Das Datenratenlimit ist standardmäßig auf 10 Mbit/s begrenzt und kann z.B. mit `-b 1M` auf 1 Mbit/s gesetzt werden. 
 
 ### Anzeigen / aufzeichnen des Durchsatzes mit `cpunetlog`
 
@@ -65,7 +65,7 @@ gestartet werden, wenn der Netzdurchsatz der in der Liste angegebenen Schnittste
 cnl_plot.py -nsc 0.001 <Log-Datei>
 ```
 
-grafisch dargestellt werden. `-nsc 0.001` setzt die maximale Datenrate auf 1 Mbit/s. *Abbildung 2* zeigt eine beispielhafte Ausgabe. Speichern Sie bitte immer das Ergebnis von `cnl_plot.py` auf dem Schreibtisch ab und bewahren Sie es für die Abnahme auf.<br>
+grafisch dargestellt werden. `-nsc 0.001` setzt das Maximum der Datenrate auf der Y-Achse auf 1 Mbit/s. *Abbildung 2* zeigt eine beispielhafte Ausgabe. Speichern Sie bitte immer das Ergebnis von `cnl_plot.py` auf dem Schreibtisch ab und bewahren Sie es für die Abnahme auf.<br>
 **Achtung: Das Plotten funktioniert nicht über eine SSH-Verbindung, daher muss das Plot-Kommando auf dem "echten" PC gestartet werden!**
 
 ![Ausgabe von cnl_plot.py](images/ausgabe-plot.png)<br>
@@ -91,14 +91,14 @@ Für den Versuch haben wir Ihnen in den Skripten unter `~/kn1lab/versuch4/script
 | sv1-eth0 (10.11.0.3)       | c1-eth0 (10.11.0.1)  | c2-eth0 (10.12.0.2)  |
 | sv1-eth1 (10.12.0.3)       | c1-eth1 (SSH)        | c2-eth1 (SSH)        |
 | sv1-eth2 (SSH)             |                      |                      |
-| `--nics sv1-eth0 sv1-eth1` | `--nics c1-eth0`     | `--nics c2-eth0`     |
+| `--nics sv1-eth1 sv1-eth2` | `--nics c1-eth1`     | `--nics c2-eth2`     |
 
 *Tabelle 1: Schnittstellen der Hosts in der Mininet-Topologie inkl. Parameter für `cpunetlog`*
 
 Die Leistungsmessung zwischen den Rechnern `c1`, `c2` und `sv1` wird über die schwarz dargestellten Netzverbindungen und die Switches `S1` und `S2` erfolgen. Die rot dargestellten Netzverbindungen und der Switch `S3` werden lediglich zur Steuerung der Experimente verwendet. Das Mininet-Netz kann beispielsweise mit
 
 ```bash
-sudo python ~/kn1lab/versuch4/scripts/mininet_1.py
+sudo ~/kn1lab/versuch4/scripts/mininet_1.py
 ```
 
 gestartet werden. Das benötigte Passwort ist `password`.
@@ -121,10 +121,8 @@ mit dem gewünschten Rechner verbinden.
 
 Verwenden Sie für diese Aufgabe die Mininet-Topologie `mininet_1.py`.
 
-Wichtig: Durch zu große Fluktutation sehen die Kurven der Bandbreite-Beschränkung nicht so aus, wie man diese Erwarten würde. Testen Sie daher mit der Banbreite-Beschränkung von 1Mbit/s.
-
 ```bash
-iperf3 -c <IP-Addresse des Servers> -Z -t 60 -b 1M
+iperf3 -c <IP-Addresse des Servers> -Z
 ```
 
 1. Generieren Sie mit Hilfe von `iperf3` einen TCP-Datenstrom zwischen Client `c1` und Server `sv1`. Dabei soll der `iperf3`-Client auf `c1` und der `iperf3`-Server auf `sv1` laufen. Ob Sie die IP-Adresse `10.11.0.3` oder `10.12.0.3` verwenden, ist Ihnen überlassen. `iperf3` gibt das Staukontrollfenster `CWND` des TCP-Datenstroms aus. Wie verhält sich dieses und wie hoch ist es, nachdem der Strom eine Weile gelaufen ist?
@@ -135,15 +133,15 @@ iperf3 -c <IP-Addresse des Servers> -Z -t 60 -b 1M
 
 ## Aufgabe 2 - Fairness
 
-Verwenden Sie für diese Aufgabe ebenfalls die Mininet-Topologie `mininet_1.py`. Wir wollen nun untersuchen, ob sich zwei TCP-Datenströme die verfügbare Bandbreite fair teilen. Dazu benötigen wir zwei Datenströme, jeweils einen von Client `c1` bzw. Client `c2` zu Server `sv1`. Zu beachten sind die zwei Netzschnittstellen des Servers `sv1`; jede befindet sich in einem anderen Subnetz. Um die zwei Datenströme mit `cpunetlog` unterscheiden zu können, ist es notwendig, dass die TCP-Ströme jeweils an einem eigenen `iperf3`-Server je Schnittstelle ankommen. Anderenfalls kann nicht zentral auf dem Server gemessen werden, welcher Datenstrom welchen Durchsatz erreicht. 
+Verwenden Sie für diese Aufgabe ebenfalls die Mininet-Topologie `mininet_1.py`. Wir wollen nun untersuchen, ob sich zwei TCP-Datenströme die verfügbare Datenrate fair teilen. Dazu benötigen wir zwei Datenströme, jeweils einen von Client `c1` bzw. Client `c2` zu Server `sv1`. Zu beachten sind die zwei Netzschnittstellen des Servers `sv1`; jede befindet sich in einem anderen Subnetz. Um die zwei Datenströme mit `cpunetlog` unterscheiden zu können, ist es notwendig, dass die TCP-Ströme jeweils an einem eigenen `iperf3`-Server je Schnittstelle ankommen. Anderenfalls kann nicht zentral auf dem Server gemessen werden, welcher Datenstrom welchen Durchsatz erreicht. 
 
 1. Erstellen Sie die notwendigen Datenströme mit `iperf3`, zeichnen Sie diese auf den Server mit `cpunetlog` für 1 Minute auf und stellen Sie das Ergebnis grafisch dar.
 
 1. Wie war diesmal die durchschnittliche Auslastung der Netzverbindung, war diese besser oder schlechter als für einen einzelnen Strom?
 
-1. War die Aufteilung der Bandbreite fair?
+1. War die Aufteilung der Datenrate fair?
 
-1. Wiederholen Sie das Experiment, indem sie nun einen TCP-Strom gegen einen UDP-Strom mit einem Bandbreiten-Limit von 10 Mbit/s testen. Was ist das Ergebnis?
+1. Wiederholen Sie das Experiment, indem sie nun einen TCP-Strom gegen einen UDP-Strom testen. Was ist das Ergebnis?
 
 ## Aufgabe 3 - Auswirkungen von hohem Paketverlust auf den TCP-Durchsatz
 
@@ -157,4 +155,4 @@ In dieser Aufgabe simulieren wir eine schlechte Verbindung vom Client zum Server
 
 Verwenden Sie für diese Aufgabe die Mininet-Topologie `mininet_3.py`, in dem der Paketverlust auf der Leitung zwischen den zwei Switches auf 10% erhöht wurde.
 
-1. Erstellen Sie einen UDP-Datenstrom mit einer maximalen Bandbreite von 10 Mbit/s vom Client `c1` zum Server `sv1`. Messen Sie nun sowohl die gesendeten Daten auf Client-Seite als auch empfangenen Daten auf Server-Seite jeweils mit `cpunetlog`. Was fällt Ihnen bezüglich der Datenrate auf, wenn Sie den Durchsatz beider Aufzeichnungen vergleichen? Was ist der Grund für dieses Verhalten?
+1. Erstellen Sie einen UDP-Datenstrom vom Client `c1` zum Server `sv1`. Messen Sie nun sowohl die gesendeten Daten auf Client-Seite als auch empfangenen Daten auf Server-Seite jeweils mit `cpunetlog`. Was fällt Ihnen bezüglich der Datenrate auf, wenn Sie den Durchsatz beider Aufzeichnungen vergleichen? Was ist der Grund für dieses Verhalten?
