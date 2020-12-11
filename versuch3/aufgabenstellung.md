@@ -37,7 +37,7 @@ Hier ist die aktualisierte Liste. Schauen Sie sich die neuen Geräte und deren I
 | **r2 (Buero)**    | **Router** | **10.0.2.1/25, 10.0.1.65/31**              |
 | sw1               | Switch     | Keine IP                                  |
 | **sw2**           | **Switch** | **Keine IP**                              |
-| NAS               | Host       | 10.0.3.2                                  |
+| NAS               | Host       | 10.0.1.2                                  |
 | Ela               | PC         | 10.0.0.2                                  |
 | Lisa              | PC         | 10.0.0.3                                  |
 | Ben               | PC         | 10.0.0.4                                  |
