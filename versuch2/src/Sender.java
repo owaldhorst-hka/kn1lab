@@ -32,7 +32,7 @@ public class Sender {
     private void send() throws IOException {
 /*   	//Text einlesen und in Worte zerlegen
 
-        // Socket erzeugen auf Port 9998 und Timeout auf 5 Sekunden setzen
+        // Socket erzeugen auf Port 9998 und Timeout auf eine Sekunde setzen
 
         // Iteration über den Konsolentext
         while (true) {
