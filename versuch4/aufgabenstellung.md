@@ -115,7 +115,7 @@ mit dem gewünschten Rechner verbinden.
 - Das Python Script einer Mininet-Topologie kann mit dem Befehl **quit** beendet werden.
 - Alle SSH-Sessions auf Clients und Server einer Mininet-Topolgie sollten getrennt werden bevor diese geschlossen wird. Anderenfalls kann sich die VM aufhängen und sie muss neu gestartet werden!
 - Je iperf-Instanz wird ein eigenes Terminal benötigt.
-
+- Damit `cnl_plot.py` korrekt funktioniert, müssen der virtuelle Maschine mindestens zwei virtuelle Prozessoren zugeordnet werden. Die besten Ergebnisse haben wir in der Regel erzielt, wenn es **genau zwei Prozessoren** sind. Bei mehr Prozessoren werden die gemessenen Kurven nichtmehr so eindeutig. 
 
 ## Aufgabe 1 - Ein TCP-Strom
 
