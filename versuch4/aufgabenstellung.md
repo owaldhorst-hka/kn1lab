@@ -111,6 +111,8 @@ ssh <Rechnername>
 
 mit dem gewünschten Rechner verbinden. 
 
+**Achtung: Bevor Sie sich mit den Rechnern verbinden können, müssen Sie einmalig das Skript [`keygen.sh`](https://github.com/owaldhorst-hka/kn1lab/blob/master/versuch4/scripts/keygen.sh) ausführen.**
+
 ## Hinweise
 - Das Python Script einer Mininet-Topologie kann mit dem Befehl **quit** beendet werden.
 - Alle SSH-Sessions auf Clients und Server einer Mininet-Topolgie sollten getrennt werden bevor diese geschlossen wird. Anderenfalls kann sich die VM aufhängen und sie muss neu gestartet werden!
