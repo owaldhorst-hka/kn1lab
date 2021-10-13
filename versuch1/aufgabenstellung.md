@@ -37,7 +37,8 @@ Die dritte Aufgabe dreht sich darum, alle versendeten E-Mails aus Aufgabe 2 abzu
 
 Die Vorlage für diese Aufgabe finden Sie in IntelliJ unter `versuch1/src/Receive_Mail.java`.
 
-Um erfolgreich eine Sitzung aufzubauen, werden der Name des Hosts, dessen Store-Type und die Anmeldeinformationen benötigt.<br>
+Um erfolgreich eine Sitzung aufzubauen, werden der Name des Hosts, dessen Store-Type und die Anmeldeinformationen (siehe ganz oben in diesem Dokument) benötigt.
+
 Zur Erinnerung: es handelt sich um einen POP3-Server mit unverschlüsselter Verbindung.
 
 Bei Problemen können die folgenden Parameter gesetzt werden:
