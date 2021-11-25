@@ -6,7 +6,7 @@ import java.util.concurrent.*;
 /**
  * Die "Klasse" Sender liest einen String von der Konsole und zerlegt ihn in einzelne Worte. Jedes Wort wird in ein
  * einzelnes {@link Packet} verpackt und an das Medium verschickt. Erst nach dem Erhalt eines entsprechenden
- * ACKs wird das nächste {@link Packet} verschickt. Erhält der Sender nach einem Timeout von 5 Sekunden kein ACK,
+ * ACKs wird das nächste {@link Packet} verschickt. Erhält der Sender nach einem Timeout von einer Sekunde kein ACK,
  * überträgt er das {@link Packet} erneut.
  */
 public class Sender {
