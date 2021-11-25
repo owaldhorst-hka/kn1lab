@@ -25,7 +25,7 @@ public class Sender {
 
     /**
      * Erzeugt neuen Socket. Liest Text von Konsole ein und zerlegt diesen. Packt einzelne Worte in {@link Packet}
-     * und schickt diese an Medium. Nutzt {@link SocketTimeoutException}, um 5 Sekunden auf ACK zu
+     * und schickt diese an Medium. Nutzt {@link SocketTimeoutException}, um eine Sekunde auf ACK zu
      * warten und das {@link Packet} ggf. nochmals zu versenden.
      * @throws IOException Wird geworfen falls Sockets nicht erzeugt werden können.
      */
