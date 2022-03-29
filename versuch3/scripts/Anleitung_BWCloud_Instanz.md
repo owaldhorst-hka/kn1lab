@@ -19,8 +19,8 @@ scp -r ~/kn1lab-master/versuch4/scripts/bwcloud.sh ubuntu@<IP-Adresse>:/home/ubu
 ```
     
 
-7.	Führen Sie die beiden eben kopierten Skripte in einem Terminal mit einer offenen SSH-Verbindung zu Ihrer Instanz aus. Wie sie ein Skript ausführen, ist in Schritt 1 erklärt. Falls Sie einen `Permission denied` Fehler bekommen, müssen Sie folgenden Befehl im gleichen Terminal ausführen.
+7.	Führen Sie die beiden eben kopierten Skripte in einem Terminal mit einer offenen SSH-Verbindung zu Ihrer Instanz aus. Wie sie ein Skript ausführen, ist in Schritt 1 erklärt. Das Ausführen des `bwcloud.sh` Skripts kann etwas länger dauern, da alle nötigen Anwendungen dadurch installiert werden. Falls Sie einen `Permission denied` Fehler bekommen, müssen Sie folgenden Befehl im gleichen Terminal ausführen. 
 ```bash
 chmod -x bwcloud.sh
 ```
-    Das Ausführen des `bwcloud.sh` Skripts kann etwas länger dauern, da alle nötigen Anwendungen dadurch installiert werden.
+    
