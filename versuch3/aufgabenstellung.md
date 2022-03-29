@@ -4,6 +4,9 @@
 
 * Mit dem Befehl `<knotenname> ifconfig` können Sie sich die Liste aller Netzwerkschnittstellen dieses Netzwerkknotens mit ihren jeweiligen Konfigurationen ausgeben lassen, dies schließt auch die zugewiesene IP-Adresse ein (`inet`).
 
+* Für das Bearbeiten der Versuche 3 und 4 an der Hochschule sollten Sie statt der VM eine Ubuntu-Instanz in der BWCloud erstellen und darauf die Aufgaben bearbeiten. Eine Anleitung und die nötigen Skripte liegen unter `~/kn1lab/versuch3/scripts/`, wobei der Speicherort des Projekts auf Ihrem PC abweichen kann. Die Ausführung dieser Anleitung ist, solange Sie die Instanz nicht löschen nur einmal nötig, danach können Sie sowohl Versuch 3 als auch Versuch 4 damit bearbeiten. Bedenken Sie jedoch, dass Sie nach jeder Bearbeitung des Python Skripts dieses wieder auf die Instanz kopieren und dort wieder Ausführen müssen.
+
+
 ## Aufgabe 1
 
 Wie viele erfolgreiche Start-Ups haben auch wir eine kleine Garage gemietet, in der wir die Entwicklung an unserer streng geheimen neuen Idee fortführen wollen. Unser Team besteht im Moment aus Lukas, Lisa, Ela, Ben und Elias.
@@ -14,7 +17,9 @@ Jedes Teammitglied soll seinen eigenen Arbeitsplatz mit PC erhalten. Ein Network
 
 1. Bitte öffnen Sie das Mininet-Skript unter `~/kn1lab/versuch3/scripts/topology.py` mit PyCharm und rekonstruieren (zeichnen) Sie die Netzwerkumgebung mit den Verbindungen!
 
-1. Bitte bezeichnen Sie zusätzlich in ihrer Zeichnung die Netzwerkschnittstellen mit den richtigen IP-Adressen. Vermerken Sie auch von den Routing-Tabellen-Einträgen die Attribute `Ziel` und `Router`. Starten Sie dazu die Mininet Topologie mit PyCharm oder mit `sudo python ~/kn1lab/versuch3/scripts/topology.py`. Das benötigte Passwort ist `password`. Anschließend können Sie mit `<knotenname> route` die Routing-Tabellen-Einträge ausgeben lassen. Falls Sie in der Ausgabe unerwartete Rechnernamen (z.B. `_gateway`) statt IP-Adressen sehen und dies nicht wollen, dann geben Sie das Argument `-n` mit (z.B. `host1 route -n`).
+1. Bitte bezeichnen Sie zusätzlich in ihrer Zeichnung die Netzwerkschnittstellen mit den richtigen IP-Adressen. Vermerken Sie auch von den Routing-Tabellen-Einträgen die Attribute `Ziel` und `Router`. Starten Sie dazu die Mininet Topologie mit PyCharm oder mit `sudo python ~/kn1lab/versuch3/scripts/topology.py`. Das benötigte Passwort ist `password`. Die Passworteingabe entfällt auf der Ubuntu-Instanz, dafür müssen Sie das Skript mit `scp -r ~<Pfad zu Skripts>/topology.py ubuntu@<IP-Adresse>:~/scripts` auf die Instanz kopieren und dort mit `sudo python3 ~/scripts/topology.py` ausführen<br>
+
+ Anschließend können Sie mit `<knotenname> route` die Routing-Tabellen-Einträge ausgeben lassen. Falls Sie in der Ausgabe unerwartete Rechnernamen (z.B. `_gateway`) statt IP-Adressen sehen und dies nicht wollen, dann geben Sie das Argument `-n` mit (z.B. `host1 route -n`).
 
 1. Testen Sie nun die Verbindung der PCs untereinander mit Hilfe des Tools `ping`, indem sie in der Mininet-Konsole den Befehl `<knotenname-quelle> ping -c 3 <ip-ziel>` verwenden. Dadurch wird das Ziel 3 mal angepingt. Können sich alle Teammitglieder gegenseitig erreichen?
 
