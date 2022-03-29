@@ -74,7 +74,7 @@ Durch diese Einschränkung müssen Sie das Plot-Kommando für das Arbeiten mit e
 ~/CPUnetPLOT/cnl_plot.py -nsc 0.001 --output <Ergebnis-Datei> <Log-Datei>
 ```
 
-Mit dieser Anpassung werden die gemessenen Werte in eine PDF-Datei geplotet, deren Name Sie bei `<Ergebnis-Datei>` angeben müssen. Erstellt wird diese jedoch automatisch 
+Mit dieser Anpassung werden die gemessenen Werte in eine PDF-Datei geplotet, deren Name Sie bei `<Ergebnis-Datei>` angeben müssen. Erstellt wird diese jedoch automatisch.
 
 ![Ausgabe von cnl_plot.py](images/ausgabe-plot.png)<br>
 *Abbildung 2: Ausgabe von `cnl_plot.py`*
@@ -93,7 +93,7 @@ Um Ihre erstellten Ergebnisdateien auf Ihren lokalen PC zu ziehen, können Sie a
 scp -r ubuntu@<IP-Adresse>:~/<Pfad von Ergebnis-Datei> ~/<Pfad von Ziel-Ordner>
 ```
 
-Um wiederum Skripte von Ihrem lokalen PC auf Ihre Ubuntu-Instanz zu kopieren, können Sie folgenden Befehl nutzen.
+Um wiederum Skripte von Ihrem lokalen PC auf Ihre Ubuntu-Instanz zu kopieren, können Sie auf diesem folgenden Befehl nutzen.
 ```bash
 scp -r ~/<Pfad von benötigter Datei> ubuntu@<IP-Adresse>:~/<Pfad von Ziel-Ordner>
 ```
@@ -120,7 +120,7 @@ Die Leistungsmessung zwischen den Rechnern `c1`, `c2` und `sv1` wird über die s
 sudo ~/kn1lab/versuch4/scripts/mininet_1.py
 ```
 
-gestartet werden. Das benötigte Passwort ist `password`, die Passwortabfrage entfällt jedoch auf der Ubuntu-Instanz, dafür müssen Sie bedenken, dass Sie das Skript selbst, aber auch das Skript mininet_base auf die Instanz kopieren und dort mit folgendem Befehl ausführen müssen.
+gestartet werden. Das benötigte Passwort ist `password`, die Passwortabfrage entfällt jedoch auf der Ubuntu-Instanz, dafür müssen Sie bedenken, dass Sie das Skript selbst, aber auch das Skript `mininet_base` auf die Instanz kopieren und dort mit folgendem Befehl ausführen müssen.
 
 ```bash
 sudo python3 ~/scripts/mininet_1.py
