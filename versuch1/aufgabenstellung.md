@@ -1,5 +1,53 @@
 # Versuch 1 - Anwendungsschicht
 
+Zur Lösung dieses Versuchs steht ihnen neben einer virtuelle Maschine seit dem SS22 auch ein Docker-Container 
+zur Verfügung.
+Wir empfehlen ihnen dessen Nutzung, insofern Sie die Aufgaben Vor-Ort an einem Pool-Rechner lösen möchten.
+Innerhalb des Docker-Containers befindet sich ein Mail-Server der unter anderem den notwendigen Mail Transfer Agent 
+Postfix und Mail Delivery Agent Dovecot enthält.
+
+## Installation Docker / Docker Compose
+
+Prüfen Sie ob auf ihrem Rechner Docker installiert ist und installieren Sie es bei Bedarf
+```bash
+docker --version # Prüfe ob Docker schon installiert ist
+# Docker version 20.10.7, build 20.10.7-0ubuntu5~20.04.2
+sudo apt install docker.io # Installiere Docker bei Bedarf
+```
+
+Installieren Sie Docker Compose
+```bash
+# Download Docker Compose
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+# Make its Binary executable
+sudo chmod +x /usr/local/bin/docker-compose
+# Show version if installed correctly
+docker-compose --version
+# docker-compose version 1.29.2, build 5becea4c
+```
+
+## Konfiguration des Mail-Servers
+
+Um den Mail-Server korrekt nutzen zu können, müssen Sie vor dessen Start noch dessen Konfiguration anpassen.
+Öffnen dafür zuerst die Datei "docker-compose.yml" und tragen Sie in Zeile 7 den Hostname ihres Rechners ein.
+Den Hostname erhalten sie z.B. mit diesem Befehl
+```bash
+hostname
+```
+
+## Starten des Mail-Servers
+
+Um den Mail-Server zu starten, führen Sie folgenden Befehl aus.
+```bash
+sudo docker-compose up
+```
+
+Um den Mail-Server zu stoppen, führen Sie folgenden Befehl aus.
+```bash
+sudo docker-compose down
+```
+
+
 ## Anmeldeinformationen und MailDir-Ordner
 
 Benutzername: `labrat`<br>
