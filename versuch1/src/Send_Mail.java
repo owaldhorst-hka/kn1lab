@@ -14,7 +14,21 @@ public class Send_Mail {
 	
 	public static void sendMail() {
 		try {
-			// your code here
+			Properties props = new Properties();
+			props.put("mail.smtp.host", "localhost");
+			Session session = Session.getInstance(props, null);
+			InternetAddress me = new InternetAddress("me@localhost", "labrat");
+
+			try {
+				MimeMessage msg = new MimeMessage(session);
+				msg.setFrom(me);
+				msg.setRecipients(Message.RecipientType.TO, "<labrat@localhost>");
+				msg.setSubject("KN1-Lab 1 Aufgabe 2 Test 4");
+				msg.setText("Testing, testing. 1 2 3. Hello?");
+				Transport.send(msg);
+			} catch (MessagingException mex) {
+				System.out.println("send failed, exception: " + mex);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
