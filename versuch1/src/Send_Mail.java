@@ -17,11 +17,11 @@ public class Send_Mail {
 			Properties props = new Properties();
 			props.put("mail.smtp.host", "localhost");
 			Session session = Session.getInstance(props, null);
-			InternetAddress me = new InternetAddress("me@localhost", "labrat");
+			InternetAddress from = new InternetAddress("user@localhost", "user");
 
 			try {
 				MimeMessage msg = new MimeMessage(session);
-				msg.setFrom(me);
+				msg.setFrom(from);
 				msg.setRecipients(Message.RecipientType.TO, "<labrat@localhost>");
 				msg.setSubject("KN1-Lab 1 Aufgabe 2 Test 4");
 				msg.setText("Testing, testing. 1 2 3. Hello?");
