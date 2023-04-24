@@ -49,7 +49,7 @@ public class Sender {
         // Iteration über den Konsolentext
         do {
             // Paket an Port 9997 senden
-            Packet packetOut = new Packet(seq, ack, true, split[i].getBytes());
+            Packet packetOut = new Packet(seq, ack, false, split[i].getBytes());
 
             ByteArrayOutputStream b = new ByteArrayOutputStream();
             ObjectOutputStream o = new ObjectOutputStream(b);
@@ -67,10 +67,11 @@ public class Sender {
 
                 ObjectInputStream is = new ObjectInputStream(new ByteArrayInputStream(rcvPacketRaw.getData()));
                 Packet packetIn = (Packet) is.readObject();
-                System.out.println(seq+split[i].getBytes().length);
-                if (packetIn.getAckNum() == (seq + split[i].getBytes().length)) {
-                    seq += split[i].getBytes().length;
-                    ack = seq;
+
+                int newSeq = seq + split[i].getBytes().length;
+
+                if (packetIn.getAckNum() == newSeq) {
+                    seq = newSeq;
                     i++;
                 }
             } catch (ClassNotFoundException e) {
