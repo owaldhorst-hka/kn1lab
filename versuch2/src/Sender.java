@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.*;
 import java.time.Duration;
+import java.util.Scanner;
 import java.util.concurrent.*;
 
 /**
@@ -30,23 +31,55 @@ public class Sender {
      * @throws IOException Wird geworfen falls Sockets nicht erzeugt werden können.
      */
     private void send() throws IOException {
-/*   	//Text einlesen und in Worte zerlegen
+      	//Text einlesen und in Worte zerlegen
+        Scanner in = new Scanner(System.in);
+        String input = in.nextLine();
+        input += " EOT";
+        String[] split = input.split(" ");
 
         // Socket erzeugen auf Port 9998 und Timeout auf eine Sekunde setzen
+        DatagramSocket clientSocket = new DatagramSocket(9998);
+        int timeout = 1000;
+        clientSocket.setSoTimeout(timeout);
+
+        int seq = 1;
+        int ack = 1;
+        int i = 0;
 
         // Iteration über den Konsolentext
-        while (true) {
-        	// Paket an Port 9997 senden
-        	
+        do {
+            // Paket an Port 9997 senden
+            Packet packetOut = new Packet(seq, ack, true, split[i].getBytes());
+
+            ByteArrayOutputStream b = new ByteArrayOutputStream();
+            ObjectOutputStream o = new ObjectOutputStream(b);
+            o.writeObject(packetOut);
+            byte[] buf = b.toByteArray();
+            DatagramPacket packet
+                    = new DatagramPacket(buf, buf.length, InetAddress.getLocalHost(), 9997);
+            clientSocket.send(packet);
+
             try {
                 // Auf ACK warten und erst dann Schleifenzähler inkrementieren
+                byte[] recBuf = new byte[256];
+                DatagramPacket rcvPacketRaw = new DatagramPacket(recBuf, recBuf.length);
+                clientSocket.receive(rcvPacketRaw);
 
+                ObjectInputStream is = new ObjectInputStream(new ByteArrayInputStream(rcvPacketRaw.getData()));
+                Packet packetIn = (Packet) is.readObject();
+                System.out.println(seq+split[i].getBytes().length);
+                if (packetIn.getAckNum() == (seq + split[i].getBytes().length)) {
+                    seq += split[i].getBytes().length;
+                    ack = seq;
+                    i++;
+                }
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             } catch (SocketTimeoutException e) {
-            	System.out.println("Receive timed out, retrying...");
+                System.out.println("Receive timed out, retrying...");
             }
-        }
+
+        } while (i < split.length);
         
         // Wenn alle Packete versendet und von der Gegenseite bestätigt sind, Programm beenden
         clientSocket.close();
@@ -54,7 +87,7 @@ public class Sender {
         if(System.getProperty("os.name").equals("Linux")) {
             clientSocket.disconnect();
         }
-*/
+
         System.exit(0);
     }
 }
