@@ -1,4 +1,9 @@
 # Versuch 4 - Leistungsmessung
+## Disclaimer für Visual Studio Code
+Bei diesem Versuch gibt es mit der Nutzung von Visual Studio ein paar Dinge zu beachten:
+
+1. Plotten geht über Jupyter Notebooks. Dafür einfach den Pfad zu einer cnl-Datei in die vorgegebenen Befehle einsetzen und im Notebook ausführen.
+2. Für die Ausführung von Mininet werden Admin-Rechte benötigt. Wenn Sie also eines der gegebenen Python Skripte ausführen wollen, wird dies wegen dem Fehlen von `sudo` fehlschlagen. Entweder Sie kopieren den Befehl und fügen davor `sudo` hinzu oder Sie führen das Skript `/versuch4/scripts/runTopo.sh` in dem eben genannten Unterordner mit `./runTopo.sh <Skriptindex>` aus. Der Platzhalter Skriptindex repräsentiert dabei einen Eingabeparameter, mit dem Sie angeben können, welches der drei verfügbaren Mininet-Skripte ausgeführt werden soll (`1`, `2` oder `3`).
 
 ## Einführung
 

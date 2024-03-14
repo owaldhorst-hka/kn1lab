@@ -3,11 +3,11 @@ from mininet.link import TCLink
 from mininet.log import setLogLevel, info, lg
 from mininet.net import Mininet
 from mininet.node import Node
+from mininet.nodelib import LinuxBridge
 from mininet.topo import Topo
 from mininet.util import waitListening
+import os
 
-
-from mininet.node import OVSController
 
 
 class NetTopo(Topo):
@@ -20,8 +20,7 @@ class NetTopo(Topo):
         s2 = self.addSwitch('s2')
         s3 = self.addSwitch('s3')
 
-        self.addLink(s1, s2, cls=TCLink, bw=1, loss=loss)
-
+        self.addLink(s1, s2, cls=TCLink, bw = 1, loss=loss)
         self.addLink(s3, c1)
         self.addLink(s3, c2)
         self.addLink(s3, sv1)
@@ -54,10 +53,12 @@ def sshd(net):
 def start(loss):
     lg.setLogLevel('info')
     topo = NetTopo(loss=loss)
-    net = Mininet(topo = topo, controller = OVSController)
+    net = Mininet(topo = topo, controller = None, switch = LinuxBridge)
 
     conf(net)
     sshd(net)
-
+    os.system('ethtool -K s1-eth1 tso off')
+    os.system('ethtool -K s2-eth1 tso off')
+    
     CLI(net)
     net.stop()

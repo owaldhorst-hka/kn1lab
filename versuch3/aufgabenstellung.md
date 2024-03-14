@@ -1,5 +1,9 @@
 # Versuch 3 - Vermittlungsschicht
 
+## Hinweise zur Bearbeitung mit Visual Studio Code
+
+Für die Ausführung von Mininet werden Admin-Rechte benötigt. Wenn Sie also eines der gegebenen Python Skripte ausführen wollen, wird dies wegen dem Fehlen von `sudo` fehlschlagen. Entweder Sie kopieren den Befehl und fügen davor `sudo` hinzu oder Sie führen das Skript `/versuch3/scripts/runTopo.sh` in dem eben genannten Unterordner mit `./runTopo.sh` aus.
+
 ## Generelle Hinweise
 
 * Mit dem Befehl `<knotenname> ifconfig` können Sie sich die Liste aller Netzwerkschnittstellen dieses Netzwerkknotens mit ihren jeweiligen Konfigurationen ausgeben lassen, dies schließt auch die zugewiesene IP-Adresse ein (`inet`).
@@ -38,10 +42,10 @@ Hier ist die aktualisierte Liste. Schauen Sie sich die neuen Geräte und deren I
 | sw1               | Switch     | Keine IP                                  |
 | **sw2**           | **Switch** | **Keine IP**                              |
 | NAS               | Host       | 10.0.1.2                                  |
-| Lukas             | PC         | 10.0.0.2                                  |
+| Ela               | PC         | 10.0.0.2                                  |
 | Lisa              | PC         | 10.0.0.3                                  |
-| Ela               | PC         | 10.0.0.4                                  |
-| Ben               | PC         | 10.0.0.5                                  |
+| Ben               | PC         | 10.0.0.4                                  |
+| Lukas             | PC         | 10.0.0.5                                  |
 | Elias             | PC         | 10.0.0.6                                  |
 | **Burak**         | **PC**     | **10.0.2.2**                              |
 
