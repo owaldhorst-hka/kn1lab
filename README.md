@@ -20,7 +20,7 @@ multipass set local.driver=virtualbox
 ```
 Nach dieser Änderung müssen Sie Ihren Computer neu starten.
 
-Bei der Verwendung von Virtualbox müssen Sie jedoch auch den Befehl zum Starten der Maschine ändern. SIe benötigen dafür den Namen ihres Netzwerks. Diesen können Sie mit `multipass networks` auslesen und müssen diesen dann in den untweren Befehl einsetzen. Ohne diese Änderung des Befehls ist SSH in Ihrer virtuellen Maschine nicht verfügbar.
+Bei der Verwendung von Virtualbox müssen Sie jedoch auch den Befehl zum Starten der Maschine ändern. Sie benötigen dafür den Namen ihres Netzwerks. Diesen können Sie mit `multipass networks` auslesen und müssen diesen dann in den untweren Befehl einsetzen. Ohne diese Änderung des Befehls ist SSH in Ihrer virtuellen Maschine nicht verfügbar.
 ```bash
 multipass launch jammy --cpus 2 --disk 10G --memory 4G --cloud-init cloud-config.yaml --network name="<Netzwerk-Name>"
 ```
