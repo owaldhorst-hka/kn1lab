@@ -1,5 +1,9 @@
 # Versuch 2 - Transportschicht
 
+
+## Hinweise zur Bearbeitung mit Visual Studio Code
+Teilweise kann es bei der Ausführung von Sender.java dazu kommen, dass die benötigte Klasse Packet nicht gefunden wird, diesen Fehler können Sie beheben, indem Sie für diesen Versuch durch die `Open Folder` Funktion von Visual Studio Code den Ordner `versuch 2` öffnen, statt dem Home-Verzeichnis Ihres Nutzers.
+
 ## Aufgabe
 
 Realisieren Sie in Java aufbauend auf UDP einen zuverlässigen Transport. Hierzu müssen UDP-Segmente innerhalb der Payload um Sequenz- und Acknowledgement-Nummern ergänzt werden (bereits in `Packet.java` implementiert). Implementieren Sie einen Sender, der über ein "Medium"-Prozess mit einem Empfänger-Prozess kommuniziert.

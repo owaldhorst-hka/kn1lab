@@ -3,6 +3,21 @@
   <groupId>de.hs-karlsruhe.iwi-i.kn1lab</groupId>
   <artifactId>versuch1</artifactId>
   <version>0.1.0</version>
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.11.0</version>
+            <configuration>
+                <source>11</source> <!-- Adjust this according to your project's Java version -->
+                <target>11</target>
+            </configuration>
+        </plugin>
+    </plugins>
+  </build>
+
   <dependencies>
   	<dependency>
   		<groupId>com.sun.mail</groupId>
