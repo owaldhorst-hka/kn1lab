@@ -3,6 +3,13 @@
 ## Änderungen durch Nutzung von Multipass
 Ihr Mailpostfach befindet sich ebenfalls in dem in dieser Beschreibung genannten Ordner, sollten Sie jedoch direkt das Repository in Visual Studio Code geöffnet haben, ist dieser für Sie nicht einsehbar und Sie müssen dafür das Home-Verzeichnis Ihres Benutzers wechseln. Dies geht mit der Funktion `Open Folder`.
 
+
+## Anmeldeinformationen und MailDir-Ordner
+
+Benutzername: `labrat`<br>
+Passwort: `kn1lab`<br>
+MailDir-Ordner: `/home/labrat/Maildir`
+
 ## Aufgabe 1
 
 Öffnen Sie die unter `versuch1/beispiel-nachricht.eml` abgelegte Beispiel-Nachricht mit einem Texteditor und erklären Sie grob den Aufbau der Nachricht, sowie die Aufgaben der einzelnen Bestandteile.
