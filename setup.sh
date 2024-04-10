@@ -1,4 +1,6 @@
- sudo DEBIAN_FRONTEND=noninteractive apt-get install mininet python3-pip iperf3 python3-tk raceroute bridge-utils iputils-ping python3-psutil python3-netifaces default-jdk dovecot-pop3d postfix
+ sudo apt-get DEBIAN_FRONTEND=noninteractive -y update
+ sudo apt-get DEBIAN_FRONTEND=noninteractive -y upgrade
+ sudo apt-get DEBIAN_FRONTEND=noninteractive -y install mininet python3-pip iperf3 python3-tk traceroute bridge-utils iputils-ping python3-psutil python3-netifaces default-jdk dovecot-pop3d postfix
  pip3 install --upgrade pip
  pip3 install cpunetlog 
  pip3 install matplotlib 

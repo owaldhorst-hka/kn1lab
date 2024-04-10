@@ -4,11 +4,11 @@ users:
     sudo: ALL=(ALL) NOPASSWD:ALL
     shell: /bin/bash
     ssh_authorized_keys: 
-    - <Öffentlicher SSH Schlüssel>
+    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDOTsmmR948UEN0ficEp8sIdwTo38MZbSzNAD7RmuY4k4L1fY+ttSFtM2icJL9e3GVQXYYPNYmv994NnHeonGOc0yQXe+9xfJQow0+McZwLPAWJyCP+sXVXzzhsA65eliXQ6oBZfu9+ANIgBouRmhk26wLNYj/5rSkl07B7xh3zuWXtnApqZekKzHqtZn+1GoUd7gKSinIAzIrCOhJd2QpcFowKkX3LpxmpvBRRTRfuQSfj9BTPCPk2ibYMYSDZtZ5m2Zw90eeI683F2qbwSLyzJyETvA06mx5M6SN4vEod2Km3m1NhwmfoLYML+T8TTgLkHscKpUZK3Z2Vwfs28i6SoUx4YM3eV36AW59XBw3sZ7ET5uXRloawm78UqJqB0HRjfl3XpKl7Oy/dnv39qLPj76UfnEOhrhY6/Zx+HopFBHEudPr185ZVzZWOjn6Q8brdZTWzn1DAp+u7hr75y3PrSnJVDa27U/AR7R02oyolJLZlHSIeCmGvoEPCKooxjqs= klaus@klaus-LIFEBOOK-U7411
 runcmd:
  - [ git, clone, https://github.com/owaldhorst-hka/CPUnetPLOT ]
  - [ cd, /home/labrat]
- - [ git, clone, https://github.com/owaldhorst-hka/kn1lab ]
+ - [ git, clone, https://github.com/bekl1011/kn1lab ]
  - [ mkdir, -m, 777, /home/labrat/Maildir]
  - [ mkdir, -m, 777, /home/labrat/Maildir/new]
  - [ mkdir, -m, 777, /home/labrat/Maildir/cur]
