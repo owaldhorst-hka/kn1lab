@@ -1,3 +1,24 @@
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
+
+#install necessary packages
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y mininet
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y python3-pip
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y iperf3
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y python3-tk
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y traceroute
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y bridge-utils
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y iputils-ping
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y python3-psutil
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y python3-netifaces
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y default-jdk
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y dovecot-pop3d
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y postfix
+
+pip3 install --upgrade pip 
+pip3 install cpunetlog
+pip3 install matplotlib
+pip3 install ipykernel
 #delete all existing dovecot and postfix config files and replace them with the config fils from the repo
 sudo rm -rf /etc/postfix
 sudo cp -r /home/labrat/kn1lab/msConfig/postfix /etc
