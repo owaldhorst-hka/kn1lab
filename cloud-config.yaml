@@ -5,29 +5,7 @@ users:
     shell: /bin/bash
     ssh_authorized_keys: 
     - <Öffentlicher SSH Schlüssel>
-    
-
-package_update: true
-package_upgrade: true
-packages:
- - mininet
- - python3-pip 
- - iperf3 
- - python3-tk 
- - traceroute 
- - bridge-utils 
- - iputils-ping 
- - python3-psutil 
- - python3-netifaces
- - default-jdk
- - dovecot-pop3d
- - postfix
-
 runcmd:
- - [ pip3, install, --upgrade, pip ]
- - [ pip3, install, cpunetlog ]
- - [ pip3, install, matplotlib ]
- - [ pip3, install, ipykernel ]
  - [ git, clone, https://github.com/owaldhorst-hka/CPUnetPLOT ]
  - [ cd, /home/labrat]
  - [ git, clone, https://github.com/owaldhorst-hka/kn1lab ]

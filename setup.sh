@@ -1,3 +1,8 @@
+ sudo DEBIAN_FRONTEND=noninteractive apt-get install mininet python3-pip iperf3 python3-tk raceroute bridge-utils iputils-ping python3-psutil python3-netifaces default-jdk dovecot-pop3d postfix
+ pip3 install --upgrade pip
+ pip3 install cpunetlog 
+ pip3 install matplotlib 
+ pip3 install ipykernel 
 #delete all existing dovecot and postfix config files and replace them with the config fils from the repo
 sudo rm -rf /etc/postfix
 sudo cp -r /home/labrat/kn1lab/msConfig/postfix /etc
