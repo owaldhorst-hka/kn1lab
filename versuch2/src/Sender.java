@@ -30,66 +30,21 @@ public class Sender {
      * @throws IOException Wird geworfen falls Sockets nicht erzeugt werden können.
      */
     private void send() throws IOException {
-//Text einlesen und in Worte zerlegen
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String input = reader.readLine();
-        String[] words = input.split("\\s+");
-        // Socket erzeugen auf Port 9998 und Timeout auf 5 Sekunden setzen
+/*   	//Text einlesen und in Worte zerlegen
+
+        // Socket erzeugen auf Port 9998 und Timeout auf eine Sekunde setzen
 
         // Iteration über den Konsolentext
-        DatagramSocket clientSocket = new DatagramSocket(9998);
-        clientSocket.setSoTimeout(5000);
-        int index = 0;
-        int ackNum = 1;
-        int seqNum = 1;
-        InetAddress address = InetAddress.getByName("localhost");
-
-        while (index <= words.length) {
-            // Paket an Port 9997 senden
-            byte[] byteArray;
-
-            if(words.length == index){
-                byteArray = (input + "EOT").getBytes();
-            } else {
-                byteArray = words[index].getBytes();
-            }
-            if(seqNum == ackNum) {
-                ackNum = ackNum + byteArray.length;
-            }
-            Packet packetOut = new Packet(seqNum,ackNum,true,byteArray);
-            ByteArrayOutputStream b = new ByteArrayOutputStream();
-            ObjectOutputStream o = new ObjectOutputStream(b);
-            o.writeObject(packetOut);
-            byte[] buf = b.toByteArray();
-            DatagramPacket dgp = new DatagramPacket(buf,buf.length,address,9997);
-            clientSocket.send(dgp);
+        while (true) {
+        	// Paket an Port 9997 senden
+        	
             try {
                 // Auf ACK warten und erst dann Schleifenzähler inkrementieren
-                byte[] recBuf = new byte[buf.length];
-                dgp = new DatagramPacket(recBuf,recBuf.length);
-                while(true) {
-                    clientSocket.receive(dgp);
-                    ObjectInputStream is = new ObjectInputStream(new ByteArrayInputStream(dgp.getData()));
-                    Packet packetIn = (Packet) is.readObject();
 
-                    if(ackNum != seqNum+packetIn.getPayload().length) {
-                        break;
-                    } else {
-                        seqNum = seqNum + packetIn.getPayload().length;
-                    }
-                    String in = new String(packetIn.getPayload());
-                    if(in.endsWith("EOT")) {
-                        System.out.println(in.replace("EOT", ""));
-                    } else {
-                        System.out.println(in);
-                    }
-                    index++;
-                    break;
-                }
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             } catch (SocketTimeoutException e) {
-                System.out.println("Receive timed out, retrying...");
+            	System.out.println("Receive timed out, retrying...");
             }
         }
         
@@ -99,7 +54,7 @@ public class Sender {
         if(System.getProperty("os.name").equals("Linux")) {
             clientSocket.disconnect();
         }
-
+*/
         System.exit(0);
     }
 }
