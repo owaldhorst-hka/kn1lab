@@ -16,8 +16,8 @@ multipass launch jammy --cpus 2 --disk 10G --memory 4G --cloud-init cloud-config
 * Mit dem Befehl `multipass info` Können Sie sich die IP-Adresse ihrer virtuellen Maschine ausgeben lassen.
 * Mit dieser IP können Sie sich mit der Maschine über ssh verbinden, indem Sie diese als Host in Visual Studio Code anlegen. Dafür können Sie über den blauen Remote-Window-Knopf im linken unteren Eck mit der Option `Connect to Host` und der darauffolgenden Option `Add new SSH Host` unter Angabe von `ssh labrat@<IPAdresse>` die Einrichtung durchführen.
 * Nach der Einrichtung können Sie sich mit der Maschine über deren Auswahl in der Option `Connect to Host` verbinden.
-* Sobald Sie mit der Maschine verbunden sind, müssen Sie durch die Option `Open Folder` das Home-Verzeichnis Ihres Nutzers (`labrat`) öffnen und das Skript `setup.sh` im Unterordner `kn1lab` ausführen.
-* Dafür müssen Sie ein Terminal öffnen, mit dem Befehl `cd kn1lab` in den Unterordner wechseln und das Skript mit `./setup.sh` ausführen.
+* Sobald Sie mit der Maschine verbunden sind, müssen Sie durch die Option `Open Folder` das Verzeichnis `kn1lab` öffnen und das Skript `setup.sh` ausführen.
+* Dafür müssen Sie ein Terminal öffnen und das Skript mit dem Befehl `./setup.sh` ausführen.
 * Dieses Skript setzt Ihre Umgebung final auf und installiert auch alle benötigten Erweiterungen für Visual Studio Code, sodass Sie danach alle Versuche bearbeiten können.
 
 ## Installation von Multipass in Windows mit Virtualbox
