@@ -1,12 +1,10 @@
 # Versuch 3 - Vermittlungsschicht
 
-## Hinweise zur Bearbeitung mit Visual Studio Code
-
-Für die Ausführung von Mininet werden Admin-Rechte benötigt. Wenn Sie also eines der gegebenen Python Skripte ausführen wollen, wird dies wegen dem Fehlen von `sudo` fehlschlagen. Entweder Sie kopieren den Befehl und fügen davor `sudo` hinzu oder Sie führen das Skript `/versuch3/scripts/runTopo.sh` in dem eben genannten Unterordner mit `./runTopo.sh` aus.
-
 ## Generelle Hinweise
 
 * Mit dem Befehl `<knotenname> ifconfig` können Sie sich die Liste aller Netzwerkschnittstellen dieses Netzwerkknotens mit ihren jeweiligen Konfigurationen ausgeben lassen, dies schließt auch die zugewiesene IP-Adresse ein (`inet`).
+
+* Für die Ausführung von Mininet werden Admin-Rechte benötigt. Wenn Sie also das gegebene Python Skript über den Startknopf von Visual Studio Code ausführen wollen, wird dies wegen dem Fehlen von `sudo` fehlschlagen. Entweder Sie kopieren den Befehl und fügen davor `sudo` hinzu oder Sie führen das Skript `/versuch3/scripts/runTopo.sh` in dem eben genannten Unterordner mit `./runTopo.sh` aus.
 
 ## Aufgabe 1
 
@@ -16,9 +14,9 @@ Leider ist unser alter Netzwerkadministrator unerwartet ausgeschieden, deswegen 
 
 Jedes Teammitglied soll seinen eigenen Arbeitsplatz mit PC erhalten. Ein Network Attached Storage als Dateiserver (`NAS`), einen Router (`r1`) und einen Switch (`sw1`) haben wir bereits angeschafft. Unser alter Administrator hat die Geräte notdürftig verkabelt und konfiguriert – wir wissen nur leider nicht wie!
 
-1. Bitte öffnen Sie das Mininet-Skript unter `~/kn1lab/versuch3/scripts/topology.py` mit PyCharm und rekonstruieren (zeichnen) Sie die Netzwerkumgebung mit den Verbindungen!
+1. Bitte öffnen Sie das Mininet-Skript unter `~/kn1lab/versuch3/scripts/topology.py` mit Visual Studio Code und rekonstruieren (zeichnen) Sie die Netzwerkumgebung mit den Verbindungen!
 
-1. Bitte bezeichnen Sie zusätzlich in ihrer Zeichnung die Netzwerkschnittstellen mit den richtigen IP-Adressen. Vermerken Sie auch von den Routing-Tabellen-Einträgen die Attribute `Ziel` und `Router`. Starten Sie dazu die Mininet Topologie mit PyCharm oder mit `sudo python ~/kn1lab/versuch3/scripts/topology.py`. Das benötigte Passwort ist `password`. Anschließend können Sie mit `<knotenname> route` die Routing-Tabellen-Einträge ausgeben lassen. Falls Sie in der Ausgabe unerwartete Rechnernamen (z.B. `_gateway`) statt IP-Adressen sehen und dies nicht wollen, dann geben Sie das Argument `-n` mit (z.B. `host1 route -n`).
+1. Bitte bezeichnen Sie zusätzlich in ihrer Zeichnung die Netzwerkschnittstellen mit den richtigen IP-Adressen. Vermerken Sie auch von den Routing-Tabellen-Einträgen die Attribute `Ziel` und `Router`. Starten Sie dazu die Mininet Topologie, indem Sie das Skript `/versuch3/scripts/runTopo.sh` in dem eben genannten Unterordner mit `./runTopo.sh` ausführen. Anschließend können Sie mit `<knotenname> route` die Routing-Tabellen-Einträge ausgeben lassen. Falls Sie in der Ausgabe unerwartete Rechnernamen (z.B. `_gateway`) statt IP-Adressen sehen und dies nicht wollen, dann geben Sie das Argument `-n` mit (z.B. `host1 route -n`).
 
 1. Testen Sie nun die Verbindung der PCs untereinander mit Hilfe des Tools `ping`, indem sie in der Mininet-Konsole den Befehl `<knotenname-quelle> ping -c 3 <ip-ziel>` verwenden. Dadurch wird das Ziel 3 mal angepingt. Können sich alle Teammitglieder gegenseitig erreichen?
 

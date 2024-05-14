@@ -1,3 +1,4 @@
+manage_etc_hosts: false
 users:
   - default
   - name: labrat

@@ -1,9 +1,8 @@
 # Versuch 4 - Leistungsmessung
-## Disclaimer für Visual Studio Code
-Bei diesem Versuch gibt es mit der Nutzung von Visual Studio ein paar Dinge zu beachten:
 
-1. Plotten geht über Jupyter Notebooks. Dafür einfach den Pfad zu einer cnl-Datei in die vorgegebenen Befehle einsetzen und im Notebook ausführen.
-2. Für die Ausführung von Mininet werden Admin-Rechte benötigt. Wenn Sie also eines der gegebenen Python Skripte ausführen wollen, wird dies wegen dem Fehlen von `sudo` fehlschlagen. Entweder Sie kopieren den Befehl und fügen davor `sudo` hinzu oder Sie führen das Skript `/versuch4/scripts/runTopo.sh` in dem eben genannten Unterordner mit `./runTopo.sh <Skriptindex>` aus. Der Platzhalter Skriptindex repräsentiert dabei einen Eingabeparameter, mit dem Sie angeben können, welches der drei verfügbaren Mininet-Skripte ausgeführt werden soll (`1`, `2` oder `3`).
+## Allgemeine Hinweise
+
+* Für die Ausführung von Mininet werden Admin-Rechte benötigt. Wenn Sie also eines der gegebenen Python Skripte ausführen wollen, wird dies wegen dem Fehlen von `sudo` fehlschlagen. Entweder Sie kopieren den Befehl und fügen davor `sudo` hinzu oder Sie führen das Skript `/versuch4/scripts/runTopo.sh` in dem eben genannten Unterordner mit `./runTopo.sh <Skriptindex>` aus. Der Platzhalter Skriptindex repräsentiert dabei einen Eingabeparameter, mit dem Sie angeben können, welches der drei verfügbaren Mininet-Skripte ausgeführt werden soll (`1`, `2` oder `3`).
 
 ## Einführung
 
@@ -67,11 +66,10 @@ cpunetlog -l --nics <Liste der Schnittstellen>
 gestartet werden, wenn der Netzdurchsatz der in der Liste angegebenen Schnittstellen aufgezeichnet werden soll (vgl. *Tabelle 1*). Im Fenster sollte dann oben rechts in der Ecke `Logging: enabled` stehen. Die Log-Dateien werden nach `/tmp/cpunetlog` geschrieben und können mit dem Kommando
 
 ```bash
-cnl_plot.py -nsc 0.001 <Log-Datei>
+%run /CPUnetPLOT/cnl_plot.py  -nsc 0.0011 /tmp/cpunetlog/<Log-Datei>
 ```
 
-grafisch dargestellt werden. `-nsc 0.001` setzt das Maximum der Datenrate auf der Y-Achse auf 1 Mbit/s. *Abbildung 2* zeigt eine beispielhafte Ausgabe. Speichern Sie bitte immer das Ergebnis von `cnl_plot.py` auf dem Schreibtisch ab und bewahren Sie es für die Abnahme auf.<br>
-**Achtung: Das Plotten funktioniert nicht über eine SSH-Verbindung, daher muss das Plot-Kommando auf dem "echten" PC gestartet werden!**
+im Jupyter-Notebook `plotting.ipynb` grafisch dargestellt werden. `-nsc 0.0011` setzt das Maximum der Datenrate auf der Y-Achse auf 1,1 Mbit/s. *Abbildung 2* zeigt eine beispielhafte Ausgabe. Legen Sie bitte für jede Messung, die Sie machen eine eigene Zelle Code in Ihrem Jupyter-Notebook an und speichern die Ausgabe dieser Zelle für Ihre Abgabe.<br>
 
 ![Ausgabe von cnl_plot.py](images/ausgabe-plot.png)<br>
 *Abbildung 2: Ausgabe von `cnl_plot.py`*
@@ -79,10 +77,10 @@ grafisch dargestellt werden. `-nsc 0.001` setzt das Maximum der Datenrate auf de
 Für eine Aufzeichnung lassen sich Durchschnittswerte mit dem Kommando
 
 ```bash
-summary.py <Log-Datei>
+%run /CPUnetPLOT/summary.py /tmp/cpunetlog/<Log-Datei>
 ```
 
-berechnen.
+in Ihrem Jupyter Notebook berechnen. Bitte legen Sie für jede Messung eine eigene Zelle Code in Ihrem Jupyter-Notebook an und speichern das Ergebnis darin ab, sodass Sie diese in Ihrer Abgabe präsentieren können.
 
 ## Verwendete Mininet-Topologie
 
@@ -103,10 +101,10 @@ Für den Versuch haben wir Ihnen in den Skripten unter `~/kn1lab/versuch4/script
 Die Leistungsmessung zwischen den Rechnern `c1`, `c2` und `sv1` wird über die schwarz dargestellten Netzverbindungen und die Switches `S1` und `S2` erfolgen. Die rot dargestellten Netzverbindungen und der Switch `S3` werden lediglich zur Steuerung der Experimente verwendet. Das Mininet-Netz kann beispielsweise mit
 
 ```bash
-sudo ~/kn1lab/versuch4/scripts/mininet_1.py
+./runTopo.sh 1
 ```
 
-gestartet werden. Das benötigte Passwort ist `password`.
+gestartet werden.
 
 Um `iperf3` oder `cpunetlog` auf einem der Rechner `c1`, `c2` oder `sv1` zu starten, ist das Mininet-CLI nicht ausreichend. Stattdessen müssen Sie sich, während das Mininet-Skript läuft, über ein weiteres Terminal mithilfe von
 
@@ -116,13 +114,11 @@ ssh <Rechnername>
 
 mit dem gewünschten Rechner verbinden. 
 
-**Achtung: Bevor Sie sich mit den Rechnern verbinden können, müssen Sie einmalig das Skript [`keygen.sh`](https://github.com/owaldhorst-hka/kn1lab/blob/master/versuch4/scripts/keygen.sh) ausführen.**
-
 ## Hinweise
 - Das Python Script einer Mininet-Topologie kann mit dem Befehl **quit** beendet werden.
 - Alle SSH-Sessions auf Clients und Server einer Mininet-Topolgie sollten getrennt werden bevor diese geschlossen wird. Anderenfalls kann sich die VM aufhängen und sie muss neu gestartet werden!
 - Je iperf-Instanz wird ein eigenes Terminal benötigt.
-- Damit `cnl_plot.py` korrekt funktioniert, müssen der virtuelle Maschine mindestens zwei virtuelle Prozessoren zugeordnet werden. Die besten Ergebnisse haben wir in der Regel erzielt, wenn es **genau zwei Prozessoren** sind. Bei mehr Prozessoren werden die gemessenen Kurven nichtmehr so eindeutig. 
+- Damit `cnl_plot.py` korrekt funktioniert, müssen der virtuelle Maschine mindestens zwei virtuelle Prozessoren zugeordnet werden. Die besten Ergebnisse haben wir in der Regel erzielt, wenn es **genau zwei Prozessoren** sind. Bei mehr Prozessoren werden die gemessenen Kurven nicht mehr so eindeutig. 
 
 ## Aufgabe 1 - Ein TCP-Strom
 
@@ -132,11 +128,11 @@ Verwenden Sie für diese Aufgabe die Mininet-Topologie `mininet_1.py`.
 iperf3 -c <IP-Addresse des Servers> -Z
 ```
 
-1. Generieren Sie mit Hilfe von `iperf3` einen TCP-Datenstrom zwischen Client `c1` und Server `sv1`. Dabei soll der `iperf3`-Client auf `c1` und der `iperf3`-Server auf `sv1` laufen. Ob Sie die IP-Adresse `10.11.0.3` oder `10.12.0.3` verwenden, ist Ihnen überlassen. `iperf3` gibt das Staukontrollfenster `CWND` des TCP-Datenstroms aus. Wie verhält sich dieses und wie hoch ist es, nachdem der Strom eine Weile gelaufen ist?
+1. Generieren Sie mit Hilfe von `iperf3` einen TCP-Datenstrom zwischen Client `c1` und Server `sv1`. Dabei soll der `iperf3`-Client auf `c1` und der `iperf3`-Server auf `sv1` laufen. Ob Sie die IP-Adresse `10.11.0.3` oder `10.12.0.3` verwenden, ist Ihnen überlassen. `iperf3` gibt das Staukontrollfenster `CWND` des TCP-Datenstroms aus. Wie verhält sich dieses und wie hoch ist es, nachdem der Strom eine Weile gelaufen ist? Kopieren Sie die Ausgabe des Befehls am Besten in einer Markdown Zelle Ihres Jupyter-Notebooks.
 
-1. Zeichen Sie diesen Datenstrom nun auf dem Server `sv1` mit Hilfe von `cpunetlog` für 1 Minute auf und stellen Sie das Ergebnis grafisch dar. Dazu müssen Sie über ein anderes Terminal eine weitere SSH-Verbindung zu `sv1` aufbauen. Achten Sie darauf, nur die Daten der relevanten Netzwerkschnittstelle aufzuzeichnen, sowie die Plots entsprechend zu skalieren und denken Sie daran das Ergebnis für die Abgabe auf dem Schreibtisch abzuspeichern.
+1. Zeichen Sie diesen Datenstrom nun auf dem Server `sv1` mit Hilfe von `cpunetlog` für 1 Minute auf und stellen Sie das Ergebnis grafisch dar. Dazu müssen Sie über ein anderes Terminal eine weitere SSH-Verbindung zu `sv1` aufbauen. Achten Sie darauf, nur die Daten der relevanten Netzwerkschnittstelle aufzuzeichnen, sowie die Plots entsprechend zu skalieren und die Ergebnisse in Ihrem Jupyter-Notebook festzuhalten.
 
-1. Bestimmen Sie mit `summary.py` die durchschnittliche Auslastung der Netzschnittstelle (`receive`). 
+1. Bestimmen Sie mit `summary.py` die durchschnittliche Auslastung der Netzschnittstelle (`receive`) und dokumentieren Sie dieses Ergebniss ebenfalls in Ihrem Jupyter-Notebook. 
 
 ## Aufgabe 2 - Fairness
 
@@ -154,7 +150,7 @@ Verwenden Sie für diese Aufgabe ebenfalls die Mininet-Topologie `mininet_1.py`.
 
 In dieser Aufgabe simulieren wir eine schlechte Verbindung vom Client zum Server, indem wir den Paketverlust auf der Leitung zwischen den zwei Switches von 0% auf 5% erhöhen. Verwenden Sie für diese Aufgabe die Mininet-Topologie `mininet_2.py`.
 
-1. Erstellen Sie einen TCP-Datenstrom vom Client `c1` zum Server `sv1` und zeichnen Sie diesen auf dem Server für 1 Minute auf. Wenn Sie den Wert `CWND`, den `iperf3` ausgibt, beobachten und mit dem aus Aufgabe 1.1 vergleichen, was fällt Ihnen auf? Warum ist dies so?
+1. Erstellen Sie einen TCP-Datenstrom vom Client `c1` zum Server `sv1` und zeichnen Sie diesen auf dem Server für 1 Minute auf. Wenn Sie den Wert `CWND`, den `iperf3` ausgibt, beobachten und mit dem aus Aufgabe 1.1 vergleichen, was fällt Ihnen auf? Warum ist dies so? Kopieren Sie die Ausgabe dieses Befehls am Besten ebenfalls in einer Markdown Zelle Ihres Jupyter-Notebooks.
 
 1. Stellen Sie das Ergebnis grafisch dar und vergleichen Sie es mit dem aus Aufgabe 1.2, achten Sie vor allem auf den durchschnittlichen Durchsatz. Weichen die Ergebnisse signifikant ab? Wenn ja, warum könnte dies so sein?
 

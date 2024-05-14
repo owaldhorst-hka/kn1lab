@@ -1,14 +1,13 @@
 # Versuch 1 - Anwendungsschicht
 
-## Änderungen durch Nutzung von Multipass
-Ihr Mailpostfach befindet sich ebenfalls in dem in dieser Beschreibung genannten Ordner, sollten Sie jedoch direkt das Repository in Visual Studio Code geöffnet haben, ist dieser für Sie nicht einsehbar und Sie müssen dafür das Home-Verzeichnis Ihres Benutzers wechseln. Dies geht mit der Funktion `Open Folder`.
-
-
 ## Anmeldeinformationen und MailDir-Ordner
 
 Benutzername: `labrat`<br>
 Passwort: `kn1lab`<br>
 MailDir-Ordner: `/home/labrat/Maildir`
+
+
+Für diese Aufgabe können Sie das Verzeichnis `/home/labrat/kn1lab` in Visual Studio Code öffnen. Sie müssen dann aber noch das Verzeichnis `/home/labrat/Maildir` mit  der Option `Add Folder to Workspace/Ordner zu Arbeitsbereich hinzufügen` zu Ihrem aktuellen Verzeichnis hinzufügen.
 
 ## Aufgabe 1
 
@@ -22,12 +21,11 @@ Die zweite Aufgabe umfasst das Senden einer E-Mail mit Hilfe der Java Mail API. 
 
 <https://docs.oracle.com/cd/E26576_01/doc.312/e24930/javamail.htm#GSDVG00079>
 
-Für diese Aufgabe können Sie `versuch1` in Visual Studio Code öffnen. 
-Die Vorlage für diese Aufgabe finden Sie in Visual Studio Code unter `versuch1/src/Send_Mail.java`.
+Die Vorlage für diese Aufgabe finden Sie in Visual Studio Code unter `/kn1lab/versuch1/src/Send_Mail.java`.
 
 Der Mail-Server läuft auf `localhost`, d.h. die E-Mail-Adressen für Sender und Empfänger müssen auf `@localhost` enden. Da es auf dem Rechner (normalerweise) nur den Benutzer `labrat` gibt, sollten Sie die Nachricht an `labrat@localhost` senden. Um später erfolgreich eine Sitzung aufzubauen, benötigen Sie nur den Name des Hosts. Die E-Mail dürfen Sie direkt über den Code erzeugen.
 
-Um zu kontrollieren, ob die E-Mail erfolgreich versendet wurde, kann im Ordner `/home/user/Maildir` im Unterordner `new` nachgeschaut werden. 
+Um zu kontrollieren, ob die E-Mail erfolgreich versendet wurde, kann im Ordner `/home/labrat/Maildir` im Unterordner `new` nachgeschaut werden. 
 
 ## Aufgabe 3
 
@@ -39,7 +37,7 @@ Die dritte Aufgabe dreht sich darum, alle versendeten E-Mails aus Aufgabe 2 abzu
 * Das Versanddatum der E-Mail
 * Der Inhalt der E-Mail
 
-Die Vorlage für diese Aufgabe finden Sie in IntelliJ unter `versuch1/src/Receive_Mail.java`.
+Die Vorlage für diese Aufgabe finden Sie in Visual Studio Code unter `versuch1/src/Receive_Mail.java`.
 
 Um erfolgreich eine Sitzung aufzubauen, werden der Name des Hosts, dessen Store-Type und die Anmeldeinformationen (siehe ganz oben in diesem Dokument) benötigt.
 

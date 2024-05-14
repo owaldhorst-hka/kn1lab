@@ -1,9 +1,6 @@
 # Labor Kommunikationsnetze 1
 
-## Disclaimer zur Bearbeitung des Labors mit Multipass
-Die Bearbeitung der Aufgaben ist an mehreren Stellen anders als bei der vorherigen Virtualbox-Lösung. Die Aufgabenstellungen sind dementsprechend angepasst und bei wichtigen Änderungen findet sich am Anfang der Datei ein Disclaimer, was es dort zu beachten gibt.
-
-### Aufsetzen der Umgebung
+## Aufsetzen der Umgebung
 * Sie benötigen zur Bearbeitung [Visual Studio Code (VS Code)](https://code.visualstudio.com) mit der Erweiterung [Remote SSH](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh). 
 * Nachdem Sie die IDE mit der entsprechenden Erweiterung eingerichtet haben, benötigen Sie noch das Programm [Multipass](https://multipass.run/) und die in diesem Repo oder dem Ilias-Ordner `Setup` befindliche Datei `cloud-config.yaml`.
 * In diese Datei müssen Sie unter `ssh_authorized_keys` Ihren öffentlichen SSH-Schlüssel angeben. Dabei müssen Sie die vorhandenen Zeichen (`< und >`) löschen, den davor befindlichen Strich aber stehen lassen. 
@@ -23,7 +20,7 @@ multipass launch jammy --cpus 2 --disk 10G --memory 4G --cloud-init cloud-config
 * Dafür müssen Sie ein Terminal öffnen, mit dem Befehl `cd kn1lab` in den Unterordner wechseln und das Skript mit `./setup.sh` ausführen.
 * Dieses Skript setzt Ihre Umgebung final auf und installiert auch alle benötigten Erweiterungen für Visual Studio Code, sodass Sie danach alle Versuche bearbeiten können.
 
-### Installation von Multipass in Windows mit Virtualbox
+## Installation von Multipass in Windows mit Virtualbox
 * Multipass kann in Windows mit Hyper-V oder Virtualbox verwendet werden. Bei der Home-Version von Windows ist Hyper-V nicht verfügbar. Zur Verwendung von [Virtualbox](https://www.virtualbox.org/wiki/Downloads) müssen Sie es noch installieren.
 * Sollte beim Aufsetzen der virtuellen Maschine unter Windows der folgende Fehler auftauchen: `launch failed: Multipass support for Hyper-V requires Windows 10 or newer`, dann können Sie die Virtualisierung auf Virtualbox mit dem folgenden Befehl in einer Powershell mit Admin-Rechten umstellen:
 ```bash
@@ -38,7 +35,7 @@ multipass set local.driver=virtualbox
 multipass launch jammy --cpus 2 --disk 10G --memory 4G --cloud-init cloud-config.yaml --network name="<Netzwerk-Name>"
 ```
 
-### Probleme bei der Authentifizierung von Multipass unter Linux/Mac
+## Probleme bei der Authentifizierung von Multipass unter Linux/Mac
 * Nach der Installation von multipass auf einem Linux Rechner kann es sein, dass Sie diesen für multipass authentifizieren müssen. Sollten Sie damit Schwierigkeiten haben, kann dieser [Link](https://multipass.run/docs/authenticating-clients) helfen.
 
 * Sollten Sie mit dieser Anleitung mit einem Mac nicht weiterkommen, kann der Workaround aus diesem [GitHub-Issue](https://github.com/canonical/multipass/issues/2549) helfen:
