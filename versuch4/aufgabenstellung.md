@@ -64,22 +64,14 @@ cpunetlog -l
 cpunetlog -l --nics <Liste der Schnittstellen>
 ```
 
-gestartet werden, wenn der Netzdurchsatz der in der Liste angegebenen Schnittstellen aufgezeichnet werden soll (vgl. *Tabelle 1*). Im Fenster sollte dann oben rechts in der Ecke `Logging: enabled` stehen. Die Log-Dateien werden nach `/tmp/cpunetlog` geschrieben und können auf der VM mit dem Kommando
+gestartet werden, wenn der Netzdurchsatz der in der Liste angegebenen Schnittstellen aufgezeichnet werden soll (vgl. *Tabelle 1*). Im Fenster sollte dann oben rechts in der Ecke `Logging: enabled` stehen. Die Log-Dateien werden nach `/tmp/cpunetlog` geschrieben und können mit dem Kommando
 
 ```bash
 cnl_plot.py -nsc 0.001 <Log-Datei>
 ```
 
 grafisch dargestellt werden. `-nsc 0.001` setzt das Maximum der Datenrate auf der Y-Achse auf 1 Mbit/s. *Abbildung 2* zeigt eine beispielhafte Ausgabe. Speichern Sie bitte immer das Ergebnis von `cnl_plot.py` auf dem Schreibtisch ab und bewahren Sie es für die Abnahme auf.<br>
-**Achtung: Das Plotten funktioniert nicht über eine SSH-Verbindung, daher muss das Plot-Kommando auf dem "echten" PC gestartet werden!**<br>
-
-Durch diese Einschränkung müssen Sie das Plot-Kommando für das Arbeiten mit einer Ubuntu-Instanz anpassen.<br>
-
-```bash
-~/CPUnetPLOT/cnl_plot.py -nsc 0.001 --output <Ergebnis-Datei> <Log-Datei>
-```
-
-Mit dieser Anpassung werden die gemessenen Werte in eine PDF-Datei geplotet, deren Name Sie bei `<Ergebnis-Datei>` angeben müssen. Erstellt wird diese jedoch automatisch.
+**Achtung: Das Plotten funktioniert nicht über eine SSH-Verbindung, daher muss das Plot-Kommando auf dem "echten" PC gestartet werden!**
 
 ![Ausgabe von cnl_plot.py](images/ausgabe-plot.png)<br>
 *Abbildung 2: Ausgabe von `cnl_plot.py`*
@@ -91,17 +83,6 @@ summary.py <Log-Datei>
 ```
 
 berechnen.
-
-## Kopieren von Inhalten zwischen Ubuntu-Instanz und lokalen PC
-Um Ihre erstellten Ergebnisdateien auf Ihren lokalen PC zu ziehen, können Sie auf diesem folgenden Befehl nutzen
-```bash
-scp -r ubuntu@<IP-Adresse>:~/<Pfad von Ergebnis-Datei> ~/<Pfad von Ziel-Ordner>
-```
-
-Um wiederum Skripte von Ihrem lokalen PC auf Ihre Ubuntu-Instanz zu kopieren, können Sie auf diesem folgenden Befehl nutzen.
-```bash
-scp -r ~/<Pfad von benötigter Datei> ubuntu@<IP-Adresse>:~/<Pfad von Ziel-Ordner>
-```
 
 ## Verwendete Mininet-Topologie
 
@@ -125,11 +106,7 @@ Die Leistungsmessung zwischen den Rechnern `c1`, `c2` und `sv1` wird über die s
 sudo ~/kn1lab/versuch4/scripts/mininet_1.py
 ```
 
-gestartet werden. Das benötigte Passwort ist `password`, die Passwortabfrage entfällt jedoch auf der Ubuntu-Instanz, dafür müssen Sie bedenken, dass Sie das Skript selbst, aber auch das Skript `mininet_base` auf die Instanz kopieren und dort mit folgendem Befehl ausführen müssen.
-
-```bash
-sudo python3 ~/scripts/mininet_1.py
-```
+gestartet werden. Das benötigte Passwort ist `password`.
 
 Um `iperf3` oder `cpunetlog` auf einem der Rechner `c1`, `c2` oder `sv1` zu starten, ist das Mininet-CLI nicht ausreichend. Stattdessen müssen Sie sich, während das Mininet-Skript läuft, über ein weiteres Terminal mithilfe von
 
