@@ -2,15 +2,15 @@
 
 
 ## Hinweise zur Bearbeitung mit Visual Studio Code
-Teilweise kann es bei der Ausführung von Sender.java dazu kommen, dass die benötigte Klasse Packet nicht gefunden wird, diesen Fehler können Sie beheben, indem Sie für diesen Versuch durch die `Open Folder` Funktion von Visual Studio Code den Ordner `versuch 2` öffnen, statt dem Home-Verzeichnis Ihres Nutzers.
+Teilweise kann es bei der Ausführung von Sender.java dazu kommen, dass die benötigte Klasse Packet nicht gefunden wird, diesen Fehler können Sie beheben, indem Sie für diesen Versuch durch die `Open Folder` Funktion von Visual Studio Code den Ordner `versuch2` öffnen, statt dem Verzeichnis `kn1lab` Ihres Nutzers.
 
 ## Aufgabe
 
 Realisieren Sie in Java aufbauend auf UDP einen zuverlässigen Transport. Hierzu müssen UDP-Segmente innerhalb der Payload um Sequenz- und Acknowledgement-Nummern ergänzt werden (bereits in `Packet.java` implementiert). Implementieren Sie einen Sender, der über ein "Medium"-Prozess mit einem Empfänger-Prozess kommuniziert.
 
-Die Skripte zum Starten von Empfänger und Medium finden Sie im Ordner `~/kn1lab/versuch2/scripts`. Die beiden Skripts `StartMedium.sh` und `StartReceiver.sh` müssen jeweils in einem eigenen (!) Terminal-Fenster gestartet werden. Der Befehl dafür lautet `./StartMedium.sh` bzw. `./StartReceiver.sh`.
+Die Skripte zum Starten von Empfänger und Medium finden Sie im Ordner `~/kn1lab/versuch2/scripts`. Die beiden Skripte `StartMedium.sh` und `StartReceiver.sh` müssen jeweils in einem eigenen (!) Terminal-Fenster gestartet werden. Der Befehl dafür lautet `./StartMedium.sh` bzw. `./StartReceiver.sh`.
 
-Die Vorlagen für diese Aufgabe finden Sie in Eclipse unter `versuch2/src/`.
+Die Vorlagen für diese Aufgabe finden Sie in Visual Studio Code unter `versuch2/src/`.
 
 Beachten Sie, dass ein UDP-Socket nur Bytes versenden kann. Daher muss ein Objekt der Klasse `Packet` für die Übertragung in Bytes serialisiert werden. Sie können hierfür die Klasse `ByteArrayOutputStream` verwenden, z.B. so:
 
