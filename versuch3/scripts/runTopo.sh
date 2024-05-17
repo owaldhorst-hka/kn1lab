@@ -1,3 +1,3 @@
 #!/bin/bash
-sudo /usr/bin/python3 /home/labrat/kn1lab/versuch3/scripts/topology.py
+sudo /usr/bin/python3 "$PWD"/topology.py
 
