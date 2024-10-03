@@ -78,7 +78,7 @@ users:
 runcmd:
  - [ git, clone, https://github.com/owaldhorst-hka/CPUnetPLOT ]
  - [ cd, /home/labrat ]
- - [ git, clone, https://github.com/bekl1011/kn1lab ]
+ - [ git, clone, https://github.com/owaldhorst-hka/kn1lab ]
  - [ mkdir, -m, 777, /home/labrat/Maildir ]
  - [ mkdir, -m, 777, /home/labrat/Maildir/new ]
  - [ mkdir, -m, 777, /home/labrat/Maildir/cur ]

@@ -2,7 +2,7 @@
 
 ## Aufsetzen der Umgebung
 * Sie benötigen zur Bearbeitung [Visual Studio Code (VS Code)](https://code.visualstudio.com) mit der Erweiterung [Remote SSH](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh). 
-* Nachdem Sie die IDE mit der entsprechenden Erweiterung eingerichtet haben, benötigen Sie noch das Programm [Virtualbox](https://www.virtualbox.org/wiki/Downloads), wenn Sie Windows verwenden, benötigen Sie außerdem das Programm [CdrTools](https://sourceforge.net/projects/cdrtoolswin/), welches Sie ebenfalls vo dem Aufsetzen er Umgebung installieren müssen. Außerdem benötigen Sie die in diesem Repo oder dem Ilias-Ordner `Setup` befindliche Datei `kn1lab-install.sh`.
+* Nachdem Sie die IDE mit der entsprechenden Erweiterung eingerichtet haben, benötigen Sie noch das Programm [Virtualbox](https://www.virtualbox.org/wiki/Downloads), wenn Sie Windows verwenden, benötigen Sie außerdem das Programm [CdrTools](https://sourceforge.net/projects/cdrtoolswin/), welches Sie ebenfalls vor dem Aufsetzen der Umgebung installieren müssen. Außerdem benötigen Sie die in diesem Repo oder dem Ilias-Ordner `Setup` befindliche Datei `kn1lab-install.sh`.
 * In diese Datei müssen Sie unter `ssh_authorized_keys` Ihren öffentlichen SSH-Schlüssel angeben. Dabei müssen Sie die vorhandenen Zeichen (`< und >`) löschen, den davor befindlichen Strich aber stehen lassen. 
 * Sollten Sie SSH noch nie verwendet haben, so können Sie unter Linux und Mac ein Schlüsselpaar mit dem im Repo enthaltenen Skript `/versuch4/scripts/keygen.sh` erstellen. Auf einem Mac können Sie das Skript mit "sh keygen.sh" ausführen. 
 * In Windows können Sie den Befehl `ssh-keygen` in der Eingabeaufforderung verwenden. 
