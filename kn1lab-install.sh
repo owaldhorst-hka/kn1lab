@@ -1,5 +1,11 @@
 #!/bin/bash
 
+SSH_PUB_KEY=""
+if [ -z "$SSH_PUB_KEY" ]; then
+        echo "Please set variable \$SSH_PUB_KEY to your ssh public key."
+        exit -1
+fi
+
 # Get the directory where the script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -20,8 +26,8 @@ fi
 VM_NAME="kn1lab"
 MEMORY_SIZE=4096
 CPU_COUNT=2
-VDI_SIZE=20000 # Size in MB, equivalent to 20 GB
-SSH_HOST_PORT=22
+VDI_SIZE=20480 # Size in MB, equivalent to 20 GB
+SSH_HOST_PORT=2222
 SSH_GUEST_PORT=22
 CLOUD_INIT_ISO="cloud-init.iso"
 UBUNTU_IMG="ubuntu-22.04-cloud.img"
@@ -36,6 +42,10 @@ if [[ "$ARCH" == "x86_64" ]]; then
     VM_TYPE="VirtualBox"
 elif [[ "$ARCH" == "arm64" ]]; then
     # ARM-based (ARM64 architecture)
+    if [ -f pidfile.txt ]; then
+        echo "VM is already running, exiting..."
+        exit 0
+    fi
     CLOUD_IMG_URL="https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-arm64.img"
     VM_TYPE="QEMU"
 else
@@ -50,9 +60,13 @@ CLOUD_CONFIG_TMP_DIR="$SCRIPT_DIR/tmp"
 CLOUD_CONFIG_PATH="$CLOUD_CONFIG_TMP_DIR/user-data"
 CLOUD_INIT_ISO_PATH="$SCRIPT_DIR/$CLOUD_INIT_ISO"
 
+QEMU_EFI_PATH="$SCRIPT_DIR/QEMU_EFI.fd"
+QEMU_EFI_URL="https://releases.linaro.org/components/kernel/uefi-linaro/latest/release/qemu64/QEMU_EFI.fd"
+
 # Download the cloud image if not found
 if [[ ! -f "$CLOUD_IMG_PATH" ]]; then
     echo "Ubuntu Cloud Image not found, downloading..."
+    IMG_DOWNLOADED=1
     if [[ "$OS_TYPE" == "Linux" || "$OS_TYPE" == "Mac" ]]; then
         wget -O "$CLOUD_IMG_PATH" "$CLOUD_IMG_URL"
     else
@@ -84,7 +98,7 @@ users:
     lock_passwd: false
     passwd: $PASSWORD_HASH
     ssh_authorized_keys:
-      - <Öffentlicher SSH-Schlüssel>
+      - $SSH_PUB_KEY
 runcmd:
  - [ git, clone, https://github.com/owaldhorst-hka/CPUnetPLOT ]
  - [ cd, /home/labrat ]
@@ -143,15 +157,41 @@ create_virtualbox_vm() {
 create_qemu_vm() {
     echo "Setting up VM using QEMU (ARM-based system)..."
 
+    # Download the EFI image
+    if [[ ! -f "$QEMU_EFI_PATH" ]]; then
+        echo "QEMU EFI Image not found, downloading..."
+        wget -O "$QEMU_EFI_PATH" "$QEMU_EFI_URL"
+    else
+        echo "Using existing QEMU EFI Image at $QEMU_EFI_PATH"
+    fi
+
+    # Create cloud init iso image
+    if [[ ! -f "$CLOUD_INIT_ISO_PATH" ]]; then
+        echo "Cloud Init Image not found, createing..."
+        mkisofs -output "$CLOUD_INIT_ISO_PATH" -volid cidata -joliet -rock {"$CLOUD_CONFIG_PATH","$CLOUD_CONFIG_TMP_DIR/meta-data"}
+    else
+        echo "Using existing Cloud Init Image at $CLOUD_INIT_ISO_PATH"
+    fi
+
+    # Resize the IMG file to the specified size (in MB)
+    if [ -n "$IMG_DOWNLOADED" ]; then
+        echo "Rezising disk..."
+        qemu-img resize ubuntu-22.04-cloud.img "$VDI_SIZE"M
+    fi
+
     # Run the VM using QEMU with ARM architecture
     qemu-system-aarch64 \
-        -m $MEMORY_SIZE \
-        -cpu cortex-a57 \
+        -m "$MEMORY_SIZE"M \
+        -accel hvf \
+        -cpu host \
         -smp $CPU_COUNT \
-        -nographic \
-        -drive file="$CLOUD_IMG_PATH",format=qcow2 \
-        -drive file="$CLOUD_INIT_ISO_PATH",media=cdrom \
-        -net nic -net user,hostfwd=tcp::"$SSH_HOST_PORT"-:"$SSH_GUEST_PORT"
+        -M virt \
+        --display none -daemonize -pidfile pidfile.txt \
+        -bios QEMU_EFI.fd \
+ 	    -device virtio-net-pci,netdev=net0 \
+        -netdev user,id=net0,hostfwd=tcp::"$SSH_HOST_PORT"-:"$SSH_GUEST_PORT" \
+        -hda $CLOUD_IMG_PATH \
+        -cdrom $CLOUD_INIT_ISO_PATH
 }
 
 # Main logic to determine the VM setup based on architecture and OS
@@ -162,15 +202,18 @@ elif [[ "$VM_TYPE" == "QEMU" ]]; then
 fi
 
 # Reset known ssh hosts, because these tend to throw an error
-ssh-keygen -R localhost
-ssh-keygen -f "$HOME/.ssh/known_hosts" -R "[localhost]:2222"
+if [ "$VM_TYPE" != "QEMU" ] || [ -n "$IMG_DOWNLOADED" ]; then
+    ssh-keygen -f "$HOME/.ssh/known_hosts" -R "[localhost]:2222"
+fi
 
 # Clean up tmp folder if it was created by the script
 if [[ ! -f "$CLOUD_CONFIG_TMP_DIR" ]]; then
-    rm -rf "$CLOUD_CONFIG_TMP_DIR"
+     rm -rf "$CLOUD_CONFIG_TMP_DIR"
 fi
 
 echo "VM created and started."
-echo "You can SSH into the VM using: ssh labrat@localhost"
+echo "You can SSH into the VM using: ssh -p $SSH_HOST_PORT labrat@localhost"
+
+
 
 
