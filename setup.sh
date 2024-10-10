@@ -86,11 +86,8 @@ sudo tee -a /etc/hosts << EOF
 10.0.0.3 sv1
 EOF
 
-#Whn the vm is started, the owning rights for the files are wrong, so they can not be edited, unless the rights are changed
+#When the vm is started, the owning rights for the files are wrong, so they can not be edited, unless the rights are changed
 sudo chown -R labrat /home/labrat/kn1lab
-
-#The password is necessary to use postfix, which is why it is set here
-echo 'labrat:kn1lab' | sudo chpasswd
 
 #Change the congestion control algorithm for tcp from cubic to reno, to better see som congestion control mechanisms in versuch4
 echo "net.ipv4.tcp_congestion_control = reno" | sudo tee -a /etc/sysctl.conf
