@@ -3,9 +3,9 @@
 ## Aufsetzen der Umgebung
 * Sie benötigen zur Bearbeitung [Visual Studio Code (VS Code)](https://code.visualstudio.com) mit der Erweiterung [Remote SSH](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh). 
 * Nachdem Sie die IDE mit der entsprechenden Erweiterung eingerichtet haben, benötigen Sie noch folgendes:
-** Windows: Die Programme [Virtualbox](https://www.virtualbox.org/wiki/Downloads) und [CdrTools](https://sourceforge.net/projects/cdrtoolswin/).
-** Linux: Das Programm [Virtualbox](https://www.virtualbox.org/wiki/Downloads).
-** Mac(Silicon): Den Paket-Manager [Homebrew](https://brew.sh/), um damit die Pakete `qemu` und `cdrtools` zu instalieren. 
+  * Windows: Die Programme [Virtualbox](https://www.virtualbox.org/wiki/Downloads) und [CdrTools](https://sourceforge.net/projects/cdrtoolswin/).
+  * Linux: Das Programm [Virtualbox](https://www.virtualbox.org/wiki/Downloads).
+  * Mac(Silicon): Den Paket-Manager [Homebrew](https://brew.sh/), um damit die Pakete `qemu` und `cdrtools` zu instalieren. 
 * Außerdem benötigen Sie die in diesem Repo befindliche Datei `kn1lab-install.sh`.
 * In diese Datei müssen Sie die Variable `SSH_PUB_KEY` auf Ihren öffentlichen SSH-Schlüssel setzen. Dazu den Schlüssel zwischen die Anführungszeichen kopieren. 
 * Sollten Sie SSH noch nie verwendet haben, so können Sie unter Linux und Mac ein Schlüsselpaar mit dem im Repo enthaltenen Skript `/versuch4/scripts/keygen.sh` erstellen. Auf einem Mac können Sie das Skript mit "sh keygen.sh" ausführen. 
