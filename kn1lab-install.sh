@@ -162,7 +162,7 @@ elif [[ "$VM_TYPE" == "QEMU" ]]; then
 fi
 
 # Reset known ssh hosts, because these tend to throw an error
-#ssh-keygen -R localhost
+ssh-keygen -R localhost
 ssh-keygen -f "$HOME/.ssh/known_hosts" -R "[localhost]:2222"
 
 # Clean up tmp folder if it was created by the script
