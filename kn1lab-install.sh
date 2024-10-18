@@ -35,7 +35,7 @@ UBUNTU_VERSION="ubuntu-22.04-cloud"
 # Check architecture
 ARCH="$(uname -m)"
 
-# Set the appropriate Ubuntu OVA image based on architecture
+# Set the appropriate Ubuntu image based on architecture
 if [[ "$ARCH" == "x86_64" ]]; then
     # Intel (amd64 architecture)
     CLOUD_IMG_URL="https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.ova"
@@ -64,17 +64,17 @@ CLOUD_INIT_ISO_PATH="$SCRIPT_DIR/$CLOUD_INIT_ISO"
 QEMU_EFI_PATH="$SCRIPT_DIR/QEMU_EFI.fd"
 QEMU_EFI_URL="https://releases.linaro.org/components/kernel/uefi-linaro/latest/release/qemu64/QEMU_EFI.fd"
 
-# Download the cloud OVA image if not found
+# Download the cloud image if not found
 if [[ ! -f "$CLOUD_IMG_PATH" ]]; then
     echo "Ubuntu Cloud OVA not found, downloading..."
     IMG_DOWNLOADED=1
     if [[ "$OS_TYPE" == "Linux" || "$OS_TYPE" == "Mac" ]]; then
-        wget -O "$CLOUD_OVA_PATH" "$CLOUD_OVA_URL"
+        wget -O "$CLOUD_IMG_PATH" "$CLOUD_IMG_URL"
     else
         powershell.exe -Command "Invoke-WebRequest -Uri '$CLOUD_IMG_URL' -OutFile '$CLOUD_IMG_PATH'"
     fi
 else
-    echo "Using existing Ubuntu Cloud OVA at $CLOUD_IMG_PATH"
+    echo "Using existing Ubuntu Cloud IMG at $CLOUD_IMG_PATH"
 fi
 
 PASSWORD="kn1lab"
