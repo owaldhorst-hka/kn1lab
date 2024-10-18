@@ -67,6 +67,7 @@ QEMU_EFI_URL="https://releases.linaro.org/components/kernel/uefi-linaro/latest/r
 # Download the cloud OVA image if not found
 if [[ ! -f "$CLOUD_IMG_PATH" ]]; then
     echo "Ubuntu Cloud OVA not found, downloading..."
+    IMG_DOWNLOADED=1
     if [[ "$OS_TYPE" == "Linux" || "$OS_TYPE" == "Mac" ]]; then
         wget -O "$CLOUD_OVA_PATH" "$CLOUD_OVA_URL"
     else
