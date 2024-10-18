@@ -192,6 +192,7 @@ fi
 
 # Reset known ssh hosts, because these tend to throw an error
 if [ "$VM_TYPE" != "QEMU" ] || [ -n "$IMG_DOWNLOADED" ]; then
+    touch "$HOME/.ssh/known_hosts"
     ssh-keygen -f "$HOME/.ssh/known_hosts" -R "[localhost]:2222"
 fi
 
