@@ -4,8 +4,8 @@
 * Sie benötigen zur Bearbeitung [Visual Studio Code (VS Code)](https://code.visualstudio.com) mit der Erweiterung [Remote SSH](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh). 
 * Nachdem Sie die IDE mit der entsprechenden Erweiterung eingerichtet haben, benötigen Sie noch folgendes:
   * Windows: Die Programme [Virtualbox](https://www.virtualbox.org/wiki/Downloads) und [CdrTools](https://sourceforge.net/projects/cdrtoolswin/).
-  * Linux: Das Programm [Virtualbox](https://www.virtualbox.org/wiki/Downloads).
-  * Mac(Silicon): Den Paket-Manager [Homebrew](https://brew.sh/), um damit die Pakete `qemu` und `cdrtools` zu instalieren.
+  * Linux: Das Programm [Virtualbox](https://www.virtualbox.org/wiki/Downloads) und das Kommandozeilenprogramm `genisoimage`, welches in den meisten Ubuntu Varianten beriets installiert ist.
+  * Mac(Silicon): Den Paket-Manager [Homebrew](https://brew.sh/), um damit die Pakete `qemu` und `cdrtools` zu instalieren. Des Weiteren wird das Kommandozeilenprogramm `genisoimage` benötigt.
 * Unter Windows müssen Sie Virtualbox noch zur Umgebungsvariable `Path` hinzufügen. Dafür müssen Sie den Pfad zum Verzeichnis, in das Sie Virtualbox installiert haben (meistens C:/Programme/Oracle/Virtualbox oder C:/Program Files/Oracle/Virtualbox) zu dieser Variable hinzufügen. Eine [Anleitung](https://learn.microsoft.com/de-de/previous-versions/office/developer/sharepoint-2010/ee537574(v=office.14)), wie sie dies umsetzen können gibt es von Microsoft. `Wichtig!` Nach dem Setzen der Umgebungsvariablen müssen Sie Ihren Computer neu starten, damit Sie das benötigte Skript ausführen können.
 * Außerdem benötigen Sie die in diesem Repo befindliche Datei `kn1lab-install.sh`.
 * In diese Datei müssen Sie die Variable `SSH_PUB_KEY` auf Ihren öffentlichen SSH-Schlüssel setzen. Dazu den Schlüssel zwischen die Anführungszeichen kopieren. 
