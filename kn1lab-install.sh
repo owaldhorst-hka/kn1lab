@@ -26,11 +26,11 @@ fi
 VM_NAME="kn1lab"
 MEMORY_SIZE=4096
 CPU_COUNT=2
-VDI_SIZE=20480 # Size in MB, equivalent to 20 GB
+DISC_SIZE=20480 # Size in MB, equivalent to 20 GB
 SSH_HOST_PORT=2222
 SSH_GUEST_PORT=22
 CLOUD_INIT_ISO="cloud-init.iso"
-UBUNTU_IMG="ubuntu-22.04-cloud.img"
+UBUNTU_VERSION="ubuntu-22.04-cloud"
 
 # Check architecture
 ARCH="$(uname -m)"
@@ -38,8 +38,9 @@ ARCH="$(uname -m)"
 # Set the appropriate Ubuntu image based on architecture
 if [[ "$ARCH" == "x86_64" ]]; then
     # Intel (amd64 architecture)
-    CLOUD_IMG_URL="https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img"
+    CLOUD_IMG_URL="https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.ova"
     VM_TYPE="VirtualBox"
+    FILE_ENDING=".ova"
 elif [[ "$ARCH" == "arm64" ]]; then
     # ARM-based (ARM64 architecture)
     if [ -f pidfile.txt ]; then
@@ -48,14 +49,14 @@ elif [[ "$ARCH" == "arm64" ]]; then
     fi
     CLOUD_IMG_URL="https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-arm64.img"
     VM_TYPE="QEMU"
+    FILE_ENDING=".img"
 else
     echo "Unsupported architecture: $ARCH"
     exit 1
 fi
 
 # Set paths relative to the script's location
-CLOUD_IMG_PATH="$SCRIPT_DIR/$UBUNTU_IMG"
-VDI_PATH="$SCRIPT_DIR/vm_disk.vdi"
+CLOUD_IMG_PATH="$SCRIPT_DIR/$UBUNTU_VERSION$FILE_ENDING"
 CLOUD_CONFIG_TMP_DIR="$SCRIPT_DIR/tmp"
 CLOUD_CONFIG_PATH="$CLOUD_CONFIG_TMP_DIR/user-data"
 CLOUD_INIT_ISO_PATH="$SCRIPT_DIR/$CLOUD_INIT_ISO"
@@ -65,7 +66,7 @@ QEMU_EFI_URL="https://releases.linaro.org/components/kernel/uefi-linaro/latest/r
 
 # Download the cloud image if not found
 if [[ ! -f "$CLOUD_IMG_PATH" ]]; then
-    echo "Ubuntu Cloud Image not found, downloading..."
+    echo "Ubuntu Cloud OVA not found, downloading..."
     IMG_DOWNLOADED=1
     if [[ "$OS_TYPE" == "Linux" || "$OS_TYPE" == "Mac" ]]; then
         wget -O "$CLOUD_IMG_PATH" "$CLOUD_IMG_URL"
@@ -73,7 +74,7 @@ if [[ ! -f "$CLOUD_IMG_PATH" ]]; then
         powershell.exe -Command "Invoke-WebRequest -Uri '$CLOUD_IMG_URL' -OutFile '$CLOUD_IMG_PATH'"
     fi
 else
-    echo "Using existing Ubuntu Cloud Image at $CLOUD_IMG_PATH"
+    echo "Using existing Ubuntu Cloud IMG at $CLOUD_IMG_PATH"
 fi
 
 PASSWORD="kn1lab"
@@ -121,29 +122,18 @@ else
     echo "Using existing cloud-init ISO at $CLOUD_INIT_ISO_PATH"
 fi
 
-# Function to create a VM using VirtualBox (for Intel-based systems)
+# Function to create a VM using VirtualBox with OVA
 create_virtualbox_vm() {
-    echo "Setting up VM using VirtualBox (Intel-based system)..."
-    
-    # Convert the downloaded cloud image to a VDI file for VirtualBox
-    qemu-img convert -O vdi "$CLOUD_IMG_PATH" "$VDI_PATH"
+    echo "Setting up VM using VirtualBox and OVA..."
 
-    # Resize the VDI file to the specified size (in MB)
-    VBoxManage modifymedium disk "$VDI_PATH" --resize $VDI_SIZE
+    # Import OVA into VirtualBox
+    VBoxManage import "$CLOUD_IMG_PATH" --vsys 0 --vmname "$VM_NAME"
 
-    # Create VM
-    VBoxManage createvm --name "$VM_NAME" --ostype "Ubuntu_64" --register
-
-    # Modify VM
+    # Modify VM settings
     VBoxManage modifyvm "$VM_NAME" --memory $MEMORY_SIZE --cpus $CPU_COUNT
 
-    # Create and attach virtual hard disk
-    VBoxManage storagectl "$VM_NAME" --name "SATA Controller" --add sata --controller IntelAhci
-    VBoxManage storageattach "$VM_NAME" --storagectl "SATA Controller" --port 0 --device 0 --type hdd --medium "$VDI_PATH"
-
-    # Attach the cloud-init ISO
-    VBoxManage storagectl "$VM_NAME" --name "IDE Controller" --add ide --controller PIIX4
-    VBoxManage storageattach "$VM_NAME" --storagectl "IDE Controller" --port 1 --device 0 --type dvddrive --medium "$CLOUD_INIT_ISO_PATH"
+    # Attach the cloud-init ISO to the existing IDE controller (already included in the OVA)
+    VBoxManage storageattach "$VM_NAME" --storagectl "IDE" --port 1 --device 0 --type dvddrive --medium "$CLOUD_INIT_ISO_PATH"
 
     # Configure network (NAT with port forwarding)
     VBoxManage modifyvm "$VM_NAME" --nic1 nat
@@ -176,7 +166,7 @@ create_qemu_vm() {
     # Resize the IMG file to the specified size (in MB)
     if [ -n "$IMG_DOWNLOADED" ]; then
         echo "Rezising disk..."
-        qemu-img resize ubuntu-22.04-cloud.img "$VDI_SIZE"M
+        qemu-img resize $UBUNTU_VERSION$FILE_ENDING "$DISC_SIZE"M
     fi
 
     # Run the VM using QEMU with ARM architecture
@@ -203,6 +193,7 @@ fi
 
 # Reset known ssh hosts, because these tend to throw an error
 if [ "$VM_TYPE" != "QEMU" ] || [ -n "$IMG_DOWNLOADED" ]; then
+    touch "$HOME/.ssh/known_hosts"
     ssh-keygen -f "$HOME/.ssh/known_hosts" -R "[localhost]:2222"
 fi
 
@@ -213,6 +204,10 @@ fi
 
 echo "VM created and started."
 echo "You can SSH into the VM using: ssh -p $SSH_HOST_PORT labrat@localhost"
+
+
+
+
 
 
 
