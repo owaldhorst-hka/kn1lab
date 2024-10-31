@@ -10,7 +10,7 @@
 * Außerdem benötigen Sie die in diesem Repo befindliche Datei `kn1lab-install.sh`.
 * In diese Datei müssen Sie die Variable `SSH_PUB_KEY` auf Ihren öffentlichen SSH-Schlüssel setzen. Dazu den Schlüssel zwischen die Anführungszeichen kopieren. 
 * Sollten Sie SSH noch nie verwendet haben, so können Sie unter Linux und Mac ein Schlüsselpaar mit dem im Repo enthaltenen Skript `/versuch4/scripts/keygen.sh` erstellen. Auf einem Mac können Sie das Skript mit "sh keygen.sh" ausführen. 
-* In Windows können Sie den Befehl `ssh-keygen` in der Eingabeaufforderung verwenden. 
+* In Windows können Sie den Befehl `ssh-keygen -t rsa` in der Eingabeaufforderung verwenden. 
 * Den benötigten Key finden Sie unter Linux und Mac im Unterverzeichnis `.ssh` in Ihrem Wurzelverzeichnis in der Datei `id_rsa.pub`, deren Inhalt Sie vollständig kopieren müssen. 
 * Unter Windows finden Sie den Ordner `.ssh` im Verzeichnis `C:/Users/<User>/.ssh`, dabei müssen Sie die Datei `id_rsa.pub` mit einem Texteditor statt Microsoft Publisher öffnen.
 * Führen Sie unter Linux und Mac noch den Befehl `chmod +x kn1lab-install.sh` im entsprechenden Verzeichnis aus, um das Skript ausführbar zu machen.
