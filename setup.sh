@@ -1,3 +1,21 @@
+# Detect the operating system
+if [[ "$(uname -o)" == "Msys" || "$(uname -o)" == "Cygwin" || "$(uname -o)" == "MS/Windows"  || "$(uname)" == "Darwin" ]]; then
+  echo "This script should only be run inside the Linux VM. Since you are using another OS, the script was aborted!"
+  exit 1
+elif [[ "$(uname)" == "Linux" ]]; then
+  read -p "This script should only be run inside a VM. Do you want to proceed? (yes/no): " response
+  response=$(echo "$response" | tr '[:upper:]' '[:lower:]')
+  if [[ "$response" == "yes" ]]; then
+    echo "Proceeding with script execution..."
+  else
+    echo "Script execution aborted."
+    exit 1
+  fi
+else
+    echo "Unsupported OS type: $(uname)"
+    exit 1
+fi
+
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 
@@ -96,6 +114,4 @@ sudo sysctl -p
 #Automatically install the necessary Visual Studio Code extensions
 code --install-extension vscjava.vscode-java-pack
 code --install-extension ms-python.python
-code --install-extension ms-toolsai.jupyter
-
-
+code --install-extension ms-toolsai.jupyter  
