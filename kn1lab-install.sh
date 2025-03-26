@@ -1,10 +1,21 @@
 #!/bin/bash
 
-SSH_PUB_KEY=""
-if [ -z "$SSH_PUB_KEY" ]; then
-        echo "Please set variable \$SSH_PUB_KEY to your ssh public key."
-        exit -1
+SSH_KEY_FOLDER="$HOME/.ssh/id_rsa.pub"
+# Check if the public key exists
+if [ -f "$SSH_KEY_FOLDER" ]; then
+    echo "Public SSH key found:"
+else
+    echo "No SSH key found. Generating a new one..."
+    ssh-keygen -t rsa -b 4096 -N "" -f "$HOME/.ssh/id_rsa"
+    
+    if [ -f "$SSH_KEY_FOLDER" ]; then
+        echo "New SSH key generated:"
+    else
+        echo "Failed to generate SSH key."
+        exit 1
+    fi
 fi
+SSH_PUB_KEY=$(cat "$SSH_KEY_FOLDER")
 
 # Get the directory where the script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -114,7 +125,7 @@ EOF
     
     # Generate cloud-init ISO
     if [[ "$OS_TYPE" == "Linux" || "$OS_TYPE" == "Mac" ]]; then
-        genisoimage -output "$CLOUD_INIT_ISO_PATH" -volid cidata -joliet -rock "$CLOUD_CONFIG_TMP_DIR"
+        mkisofs -output "$CLOUD_INIT_ISO_PATH" -volid cidata -joliet -rock "$CLOUD_CONFIG_TMP_DIR"
     else
         powershell.exe -Command "& 'C:\Program Files (x86)\cdrtools\mkisofs.exe' -output '$CLOUD_INIT_ISO_PATH' -volid cidata -joliet -rock '$CLOUD_CONFIG_TMP_DIR'"
     fi
@@ -204,11 +215,3 @@ fi
 
 echo "VM created and started."
 echo "You can SSH into the VM using: ssh -p $SSH_HOST_PORT labrat@localhost"
-
-
-
-
-
-
-
-
