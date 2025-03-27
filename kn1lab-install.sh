@@ -19,15 +19,19 @@ SSH_PUB_KEY=$(cat "$SSH_KEY_FOLDER")
 
 # Get the directory where the script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SHA256SUMS_URL="https://cloud-images.ubuntu.com/jammy/current/SHA256SUMS"
 
 # Detect the operating system
 if [[ "$(uname -o)" == "Msys" || "$(uname -o)" == "Cygwin" || "$(uname -o)" == "MS/Windows" ]]; then
     OS_TYPE="Windows"
     SCRIPT_DIR=$(cygpath -w "$SCRIPT_DIR")
+    powershell.exe -Command "Start-BitsTransfer -Source '$SHA256SUMS_URL' -Destination SHA256SUMS"
 elif [[ "$(uname)" == "Darwin" ]]; then
     OS_TYPE="Mac"
+    wget -q -O SHA256SUMS "$SHA256SUMS_URL"
 elif [[ "$(uname)" == "Linux" ]]; then
     OS_TYPE="Linux"
+    wget -q -O SHA256SUMS "$SHA256SUMS_URL"
 else
     echo "Unsupported OS type: $(uname)"
     exit 1
@@ -42,8 +46,7 @@ SSH_HOST_PORT=2222
 SSH_GUEST_PORT=22
 CLOUD_INIT_ISO="cloud-init.iso"
 UBUNTU_VERSION="ubuntu-22.04-cloud"
-SHA256SUMS_URL="https://cloud-images.ubuntu.com/jammy/current/SHA256SUMS"
-wget -q -O SHA256SUMS "$SHA256SUMS_URL"
+
 
 # Check architecture
 ARCH="$(uname -m)"
@@ -76,7 +79,7 @@ download_cloud_iso() {
     if [[ "$OS_TYPE" == "Linux" || "$OS_TYPE" == "Mac" ]]; then
         wget -O "$CLOUD_IMG_PATH" "$CLOUD_IMG_URL"
     else
-        powershell.exe -Command "Invoke-WebRequest -Uri '$CLOUD_IMG_URL' -OutFile '$CLOUD_IMG_PATH'"
+        powershell.exe -Command "Start-BitsTransfer -Source '$CLOUD_IMG_URL' -Destination '$CLOUD_IMG_PATH'"
     fi
 }
 
@@ -96,15 +99,18 @@ else
     echo "Using existing Ubuntu Cloud IMG at $CLOUD_IMG_PATH"
 fi
 
-ACTUAL_HASH=$(sha256sum "$CLOUD_IMG_PATH" | awk '{print $1}')
+ACTUAL_HASH=$(sha256sum "$CLOUD_IMG_PATH" | awk '{print $1}' | tr -d '[:space:]' | tr -d '\\')
+
 
 if [ "$ACTUAL_HASH" != "$EXPECTED_HASH" ]; then
     echo "Checksum mismatch! Retrying download..."
     rm -f "$CLOUD_IMG_PATH"
     download_cloud_iso
-    ACTUAL_HASH=$(sha256sum "$CLOUD_IMG_PATH" | awk '{print $1}')
+    ACTUAL_HASH=$(sha256sum "$CLOUD_IMG_PATH" | awk '{print $1}' | tr -d '[:space:]' | tr -d '\\')
     if [ "$ACTUAL_HASH" != "$EXPECTED_HASH" ]; then
-        echo "Cloud Image ISO was twice not correctly downloaded, maybe retry with better connection?"+
+        echo "Cloud Image was twice not correctly downloaded, maybe retry with better connection?"
+        rm -f "$CLOUD_IMG_PATH"
+        rm -f SHA256SUMS
         exit 1
     fi
 fi
