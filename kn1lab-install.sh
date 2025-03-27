@@ -1,22 +1,37 @@
 #!/bin/bash
 
-SSH_PUB_KEY=""
-if [ -z "$SSH_PUB_KEY" ]; then
-        echo "Please set variable \$SSH_PUB_KEY to your ssh public key."
-        exit -1
+SSH_KEY_FOLDER="$HOME/.ssh/id_rsa.pub"
+# Check if the public key exists
+if [ -f "$SSH_KEY_FOLDER" ]; then
+    echo "Public SSH key found:"
+else
+    echo "No SSH key found. Generating a new one..."
+    ssh-keygen -t rsa -b 4096 -N "" -f "$HOME/.ssh/id_rsa"
+    
+    if [ -f "$SSH_KEY_FOLDER" ]; then
+        echo "New SSH key generated:"
+    else
+        echo "Failed to generate SSH key."
+        exit 1
+    fi
 fi
+SSH_PUB_KEY=$(cat "$SSH_KEY_FOLDER")
 
 # Get the directory where the script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SHA256SUMS_URL="https://cloud-images.ubuntu.com/jammy/current/SHA256SUMS"
 
 # Detect the operating system
 if [[ "$(uname -o)" == "Msys" || "$(uname -o)" == "Cygwin" || "$(uname -o)" == "MS/Windows" ]]; then
     OS_TYPE="Windows"
     SCRIPT_DIR=$(cygpath -w "$SCRIPT_DIR")
+    powershell.exe -Command "Start-BitsTransfer -Source '$SHA256SUMS_URL' -Destination SHA256SUMS"
 elif [[ "$(uname)" == "Darwin" ]]; then
     OS_TYPE="Mac"
+    wget -q -O SHA256SUMS "$SHA256SUMS_URL"
 elif [[ "$(uname)" == "Linux" ]]; then
     OS_TYPE="Linux"
+    wget -q -O SHA256SUMS "$SHA256SUMS_URL"
 else
     echo "Unsupported OS type: $(uname)"
     exit 1
@@ -32,6 +47,7 @@ SSH_GUEST_PORT=22
 CLOUD_INIT_ISO="cloud-init.iso"
 UBUNTU_VERSION="ubuntu-22.04-cloud"
 
+
 # Check architecture
 ARCH="$(uname -m)"
 
@@ -41,6 +57,7 @@ if [[ "$ARCH" == "x86_64" ]]; then
     CLOUD_IMG_URL="https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.ova"
     VM_TYPE="VirtualBox"
     FILE_ENDING=".ova"
+    EXPECTED_HASH=$(grep "jammy-server-cloudimg-amd64.ova" SHA256SUMS | awk '{print $1}')
 elif [[ "$ARCH" == "arm64" ]]; then
     # ARM-based (ARM64 architecture)
     if [ -f pidfile.txt ]; then
@@ -50,10 +67,21 @@ elif [[ "$ARCH" == "arm64" ]]; then
     CLOUD_IMG_URL="https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-arm64.img"
     VM_TYPE="QEMU"
     FILE_ENDING=".img"
+    EXPECTED_HASH=$(grep "jammy-server-cloudimg-arm64.img" SHA256SUMS | awk '{print $1}')
 else
     echo "Unsupported architecture: $ARCH"
     exit 1
 fi
+
+download_cloud_iso() {
+    echo "Ubuntu Cloud OVA not found, downloading..."
+    IMG_DOWNLOADED=1
+    if [[ "$OS_TYPE" == "Linux" || "$OS_TYPE" == "Mac" ]]; then
+        wget -O "$CLOUD_IMG_PATH" "$CLOUD_IMG_URL"
+    else
+        powershell.exe -Command "Start-BitsTransfer -Source '$CLOUD_IMG_URL' -Destination '$CLOUD_IMG_PATH'"
+    fi
+}
 
 # Set paths relative to the script's location
 CLOUD_IMG_PATH="$SCRIPT_DIR/$UBUNTU_VERSION$FILE_ENDING"
@@ -66,16 +94,28 @@ QEMU_EFI_URL="https://releases.linaro.org/components/kernel/uefi-linaro/latest/r
 
 # Download the cloud image if not found
 if [[ ! -f "$CLOUD_IMG_PATH" ]]; then
-    echo "Ubuntu Cloud OVA not found, downloading..."
-    IMG_DOWNLOADED=1
-    if [[ "$OS_TYPE" == "Linux" || "$OS_TYPE" == "Mac" ]]; then
-        wget -O "$CLOUD_IMG_PATH" "$CLOUD_IMG_URL"
-    else
-        powershell.exe -Command "Invoke-WebRequest -Uri '$CLOUD_IMG_URL' -OutFile '$CLOUD_IMG_PATH'"
-    fi
+    download_cloud_iso
 else
     echo "Using existing Ubuntu Cloud IMG at $CLOUD_IMG_PATH"
 fi
+
+ACTUAL_HASH=$(sha256sum "$CLOUD_IMG_PATH" | awk '{print $1}' | tr -d '[:space:]' | tr -d '\\')
+
+
+if [ "$ACTUAL_HASH" != "$EXPECTED_HASH" ]; then
+    echo "Checksum mismatch! Retrying download..."
+    rm -f "$CLOUD_IMG_PATH"
+    download_cloud_iso
+    ACTUAL_HASH=$(sha256sum "$CLOUD_IMG_PATH" | awk '{print $1}' | tr -d '[:space:]' | tr -d '\\')
+    if [ "$ACTUAL_HASH" != "$EXPECTED_HASH" ]; then
+        echo "Cloud Image was twice not correctly downloaded, maybe retry with better connection?"
+        rm -f "$CLOUD_IMG_PATH"
+        rm -f SHA256SUMS
+        exit 1
+    fi
+fi
+
+rm -f SHA256SUMS
 
 PASSWORD="kn1lab"
 PASSWORD_HASH=$(openssl passwd -6 "$PASSWORD")
@@ -114,7 +154,7 @@ EOF
     
     # Generate cloud-init ISO
     if [[ "$OS_TYPE" == "Linux" || "$OS_TYPE" == "Mac" ]]; then
-        genisoimage -output "$CLOUD_INIT_ISO_PATH" -volid cidata -joliet -rock "$CLOUD_CONFIG_TMP_DIR"
+        mkisofs -output "$CLOUD_INIT_ISO_PATH" -volid cidata -joliet -rock "$CLOUD_CONFIG_TMP_DIR"
     else
         powershell.exe -Command "& 'C:\Program Files (x86)\cdrtools\mkisofs.exe' -output '$CLOUD_INIT_ISO_PATH' -volid cidata -joliet -rock '$CLOUD_CONFIG_TMP_DIR'"
     fi
@@ -204,11 +244,3 @@ fi
 
 echo "VM created and started."
 echo "You can SSH into the VM using: ssh -p $SSH_HOST_PORT labrat@localhost"
-
-
-
-
-
-
-
-

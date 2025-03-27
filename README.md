@@ -5,13 +5,10 @@
 * Nachdem Sie die IDE mit der entsprechenden Erweiterung eingerichtet haben, benötigen Sie noch folgendes:
   * Windows: Die Programme [Virtualbox](https://www.virtualbox.org/wiki/Downloads) und [CdrTools](https://sourceforge.net/projects/cdrtoolswin/).
   * Linux: Das Programm [Virtualbox](https://www.virtualbox.org/wiki/Downloads) und das Kommandozeilenprogramm `genisoimage`, welches in den meisten Ubuntu Varianten beriets installiert ist.
-  * Mac(Silicon): Den Paket-Manager [Homebrew](https://brew.sh/), um damit die Pakete `qemu` und `cdrtools` zu instalieren. Des Weiteren wird das Kommandozeilenprogramm `genisoimage` benötigt.
-* Unter Windows müssen Sie Virtualbox noch zur Umgebungsvariable `Path` hinzufügen. Dafür müssen Sie den Pfad zum Verzeichnis, in das Sie Virtualbox installiert haben (meistens C:/Programme/Oracle/Virtualbox oder C:/Program Files/Oracle/Virtualbox) zu dieser Variable hinzufügen. Eine [Anleitung](https://learn.microsoft.com/de-de/previous-versions/office/developer/sharepoint-2010/ee537574(v=office.14)), wie sie dies umsetzen können gibt es von Microsoft. `Wichtig!` Nach dem Setzen der Umgebungsvariablen müssen Sie Ihren Computer neu starten, damit Sie das benötigte Skript ausführen können.
+  * Mac(Silicon): Den Paket-Manager [Homebrew](https://brew.sh/), um damit die Pakete `qemu` und `cdrtools` zu instalieren.
+  * Mac(Intel): Den Paket-Manager [Homebrew](https://brew.sh/), um damit die Pakete `virtualbox` und `cdrtools` zu instalieren.
+* Unter Windows müssen Sie Virtualbox noch zur Umgebungsvariable `Path` hinzufügen. Dafür müssen Sie den Pfad zum Verzeichnis, in das Sie Virtualbox installiert haben (meistens C:/Programme/Oracle/Virtualbox oder C:/Program Files/Oracle/Virtualbox) zu dieser Variable hinzufügen. Eine [Anleitung](https://www.windows-faq.de/2023/12/24/windows-path-variable/), wie sie dies umsetzen können gibt es von Windows FAQ. `Wichtig!` Nach dem Setzen der Umgebungsvariablen müssen Sie Ihren Computer neu starten, damit Sie das benötigte Skript ausführen können.
 * Außerdem benötigen Sie die in diesem Repo befindliche Datei `kn1lab-install.sh`.
-* In diese Datei müssen Sie die Variable `SSH_PUB_KEY` auf Ihren öffentlichen SSH-Schlüssel setzen. Dazu den Schlüssel zwischen die Anführungszeichen kopieren. 
-* Sollten Sie SSH noch nie verwendet haben, so können Sie ein Schlüsselpaar mit dem Befehl `ssh-keygen -t rsa -b 4096` in der Eingabeaufforderung erstellen. 
-* Den benötigten Key finden Sie unter Linux und Mac im Unterverzeichnis `.ssh` in Ihrem Wurzelverzeichnis in der Datei `id_rsa.pub`, deren Inhalt Sie vollständig kopieren müssen. 
-* Unter Windows finden Sie den Ordner `.ssh` im Verzeichnis `C:/Users/<User>/.ssh`, dabei müssen Sie die Datei `id_rsa.pub` mit einem Texteditor statt Microsoft Publisher öffnen.
 * Führen Sie unter Linux und Mac noch den Befehl `chmod +x kn1lab-install.sh` im entsprechenden Verzeichnis aus, um das Skript ausführbar zu machen.
 * Mit dem folgenden Befehl können Sie darufhin in einem Terminal (unter Windows am besten git Bash verwenden) eine Virtuelle Ubuntu Maschine aufsetzen `(unter Windows müssen Sie für die Ausführung des Skripts Git Bash verwenden, da das Skript in Powershell oder der Eingabeaufforderung nicht ausgeführt werden kann)`: 
 
