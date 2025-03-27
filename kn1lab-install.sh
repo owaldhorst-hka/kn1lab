@@ -16,6 +16,30 @@ else
     fi
 fi
 SSH_PUB_KEY=$(cat "$SSH_KEY_FOLDER")
+check_programs() {
+    missing=()
+    for prog in "$@"; do
+        if ! command -v "$prog" &>/dev/null; then
+            missing+=("$prog")
+        fi
+    done
+    if [[ ${#missing[@]} -ne 0 ]]; then
+        echo "Missing programs: ${missing[*]}"
+        exit 1
+    fi
+}
+check_homebrew_packages() {
+    missing=()
+    for pkg in "$@"; do
+        if ! brew list --formula | grep -q "^$pkg\$"; then
+            missing+=("$pkg")
+        fi
+    done
+    if [[ ${#missing[@]} -ne 0 ]]; then
+        echo "Missing Homebrew packages: ${missing[*]}"
+        exit 1
+    fi
+}
 
 # Get the directory where the script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -25,12 +49,24 @@ SHA256SUMS_URL="https://cloud-images.ubuntu.com/jammy/current/SHA256SUMS"
 if [[ "$(uname -o)" == "Msys" || "$(uname -o)" == "Cygwin" || "$(uname -o)" == "MS/Windows" ]]; then
     OS_TYPE="Windows"
     SCRIPT_DIR=$(cygpath -w "$SCRIPT_DIR")
+    if [[ -z $(echo "$PATH" | grep -i "virtualbox") ]]; then
+        echo "VirtualBox is not in PATH"
+        exit 1
+    fi
+    check_programs VBoxManage
+    if [[ ! -f "/c/Program Files (x86)/cdrtools/mkisofs.exe" ]]; then
+        echo "Missing: mkisofs (expected at C:\Program Files (x86)\cdrtools\mkisofs.exe)"
+        exit 1
+    fi
     powershell.exe -Command "Start-BitsTransfer -Source '$SHA256SUMS_URL' -Destination SHA256SUMS"
+
 elif [[ "$(uname)" == "Darwin" ]]; then
     OS_TYPE="Mac"
+    command -v brew &>/dev/null || { echo "Missing: Homebrew"; exit 1; }
     wget -q -O SHA256SUMS "$SHA256SUMS_URL"
 elif [[ "$(uname)" == "Linux" ]]; then
     OS_TYPE="Linux"
+    check_programs VBoxManage mkisofs
     wget -q -O SHA256SUMS "$SHA256SUMS_URL"
 else
     echo "Unsupported OS type: $(uname)"
@@ -53,6 +89,9 @@ ARCH="$(uname -m)"
 
 # Set the appropriate Ubuntu image based on architecture
 if [[ "$ARCH" == "x86_64" ]]; then
+    if [ "$OS_TYPE" == "Mac" ]; then
+        check_homebrew_packages virtualbox wget cdrtools
+    fi
     # Intel (amd64 architecture)
     CLOUD_IMG_URL="https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.ova"
     VM_TYPE="VirtualBox"
@@ -60,6 +99,7 @@ if [[ "$ARCH" == "x86_64" ]]; then
     EXPECTED_HASH=$(grep "jammy-server-cloudimg-amd64.ova" SHA256SUMS | awk '{print $1}')
 elif [[ "$ARCH" == "arm64" ]]; then
     # ARM-based (ARM64 architecture)
+    check_homebrew_packages qemu wget cdrtools
     if [ -f pidfile.txt ]; then
         echo "VM is already running, exiting..."
         exit 0
