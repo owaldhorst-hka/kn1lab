@@ -42,6 +42,8 @@ SSH_HOST_PORT=2222
 SSH_GUEST_PORT=22
 CLOUD_INIT_ISO="cloud-init.iso"
 UBUNTU_VERSION="ubuntu-22.04-cloud"
+SHA256SUMS_URL="https://cloud-images.ubuntu.com/jammy/current/SHA256SUMS"
+wget -q -O SHA256SUMS "$SHA256SUMS_URL"
 
 # Check architecture
 ARCH="$(uname -m)"
@@ -52,6 +54,7 @@ if [[ "$ARCH" == "x86_64" ]]; then
     CLOUD_IMG_URL="https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.ova"
     VM_TYPE="VirtualBox"
     FILE_ENDING=".ova"
+    EXPECTED_HASH=$(grep "jammy-server-cloudimg-amd64.ova" SHA256SUMS | awk '{print $1}')
 elif [[ "$ARCH" == "arm64" ]]; then
     # ARM-based (ARM64 architecture)
     if [ -f pidfile.txt ]; then
@@ -61,10 +64,21 @@ elif [[ "$ARCH" == "arm64" ]]; then
     CLOUD_IMG_URL="https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-arm64.img"
     VM_TYPE="QEMU"
     FILE_ENDING=".img"
+    EXPECTED_HASH=$(grep "jammy-server-cloudimg-arm64.img" SHA256SUMS | awk '{print $1}')
 else
     echo "Unsupported architecture: $ARCH"
     exit 1
 fi
+
+download_cloud_iso() {
+    echo "Ubuntu Cloud OVA not found, downloading..."
+    IMG_DOWNLOADED=1
+    if [[ "$OS_TYPE" == "Linux" || "$OS_TYPE" == "Mac" ]]; then
+        wget -O "$CLOUD_IMG_PATH" "$CLOUD_IMG_URL"
+    else
+        powershell.exe -Command "Invoke-WebRequest -Uri '$CLOUD_IMG_URL' -OutFile '$CLOUD_IMG_PATH'"
+    fi
+}
 
 # Set paths relative to the script's location
 CLOUD_IMG_PATH="$SCRIPT_DIR/$UBUNTU_VERSION$FILE_ENDING"
@@ -77,16 +91,25 @@ QEMU_EFI_URL="https://releases.linaro.org/components/kernel/uefi-linaro/latest/r
 
 # Download the cloud image if not found
 if [[ ! -f "$CLOUD_IMG_PATH" ]]; then
-    echo "Ubuntu Cloud OVA not found, downloading..."
-    IMG_DOWNLOADED=1
-    if [[ "$OS_TYPE" == "Linux" || "$OS_TYPE" == "Mac" ]]; then
-        wget -O "$CLOUD_IMG_PATH" "$CLOUD_IMG_URL"
-    else
-        powershell.exe -Command "Invoke-WebRequest -Uri '$CLOUD_IMG_URL' -OutFile '$CLOUD_IMG_PATH'"
-    fi
+    download_cloud_iso
 else
     echo "Using existing Ubuntu Cloud IMG at $CLOUD_IMG_PATH"
 fi
+
+ACTUAL_HASH=$(sha256sum "$CLOUD_IMG_PATH" | awk '{print $1}')
+
+if [ "$ACTUAL_HASH" != "$EXPECTED_HASH" ]; then
+    echo "Checksum mismatch! Retrying download..."
+    rm -f "$CLOUD_IMG_PATH"
+    download_cloud_iso
+    ACTUAL_HASH=$(sha256sum "$CLOUD_IMG_PATH" | awk '{print $1}')
+    if [ "$ACTUAL_HASH" != "$EXPECTED_HASH" ]; then
+        echo "Cloud Image ISO was twice not correctly downloaded, maybe retry with better connection?"+
+        exit 1
+    fi
+fi
+
+rm -f SHA256SUMS
 
 PASSWORD="kn1lab"
 PASSWORD_HASH=$(openssl passwd -6 "$PASSWORD")
