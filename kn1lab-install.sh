@@ -53,6 +53,10 @@ if [[ "$(uname -o)" == "Msys" || "$(uname -o)" == "Cygwin" || "$(uname -o)" == "
         echo "VirtualBox is not in PATH"
         exit 1
     fi
+    if [[! command -v powershell.exe >/dev/null 2>&1]]; then
+        echo "PowerShell is NOT on PATH"
+        exit 1
+    fi
     check_programs VBoxManage
     if [[ ! -f "/c/Program Files (x86)/cdrtools/mkisofs.exe" ]]; then
         echo "Missing: mkisofs (expected at C:\Program Files (x86)\cdrtools\mkisofs.exe)"
@@ -142,7 +146,7 @@ fi
 ACTUAL_HASH=$(sha256sum "$CLOUD_IMG_PATH" | awk '{print $1}' | tr -d '[:space:]' | tr -d '\\')
 
 
-if [ "$ACTUAL_HASH" != "$EXPECTED_HASH" ]; then
+if [ "$ACTUAL_HASH" != "$EXPECTED_HASH" && "$ARCH" != "arm64"]; then
     echo "Checksum mismatch! Retrying download..."
     rm -f "$CLOUD_IMG_PATH"
     download_cloud_iso

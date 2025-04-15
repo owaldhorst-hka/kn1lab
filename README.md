@@ -22,6 +22,13 @@
 * Dafür müssen Sie ein Terminal öffnen, mit dem Befehl `cd kn1lab` in den Unterordner wechseln und das Skript mit `./setup.sh` ausführen.
 * Dieses Skript setzt Ihre Umgebung final auf und installiert auch alle benötigten Erweiterungen für Visual Studio Code, sodass Sie danach alle Versuche bearbeiten können.
 
+## Anmerkungen zur weiteren Verwendung der virtuellen Maschine im Laufe des Semesters
+
+* Sie müssen die virtuelle Maschine nach jedem Neustart Ihres Computers ebenfalls erneut starten, damit Sie sich mit dieser verbinden können.
+* Bei der Verwendung von Virtualbox können Sie die VM innerhalb der Anwendung VirtualBox starten.
+* Bei Qemu müssen Sie das Skript `kn1lab-install.sh` erneut ausführen, das Ausführen des Setup-Skripts ist nicht notwendig.
+* Bei der Verwendung von Qemu gibt es außerdem die Möglichkeit, mit dem Skript `stop-vm.sh` die Virtuelle Maschine anzuhalten. Unter Umständen müssen Sie das Skript mit dem Befehl`chmod +x stop-vm.sh` ausführbar machen.
+
 
 ## Aufgabenstellungen
 
