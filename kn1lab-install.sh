@@ -44,8 +44,10 @@ check_homebrew_packages() {
 # Get the directory where the script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SHA256SUMS_URL="https://cloud-images.ubuntu.com/jammy/current/SHA256SUMS"
+# Check architecture
+ARCH="$(uname -m)"
 
-# Detect the operating system
+# Detect the operating system and look for missing programs
 if [[ "$(uname -o)" == "Msys" || "$(uname -o)" == "Cygwin" || "$(uname -o)" == "MS/Windows" ]]; then
     OS_TYPE="Windows"
     SCRIPT_DIR=$(cygpath -w "$SCRIPT_DIR")
@@ -67,7 +69,12 @@ if [[ "$(uname -o)" == "Msys" || "$(uname -o)" == "Cygwin" || "$(uname -o)" == "
 elif [[ "$(uname)" == "Darwin" ]]; then
     OS_TYPE="Mac"
     command -v brew &>/dev/null || { echo "Missing: Homebrew"; exit 1; }
-    wget -q -O SHA256SUMS "$SHA256SUMS_URL"
+    if [[ "$ARCH" == "x86_64" ]]; then
+        check_homebrew_packages virtualbox wget cdrtools
+        wget -q -O SHA256SUMS "$SHA256SUMS_URL"
+    else
+        check_homebrew_packages qemu wget cdrtools
+    fi
 elif [[ "$(uname)" == "Linux" ]]; then
     OS_TYPE="Linux"
     check_programs VBoxManage mkisofs
@@ -87,15 +94,8 @@ SSH_GUEST_PORT=22
 CLOUD_INIT_ISO="cloud-init.iso"
 UBUNTU_VERSION="ubuntu-22.04-cloud"
 
-
-# Check architecture
-ARCH="$(uname -m)"
-
 # Set the appropriate Ubuntu image based on architecture
 if [[ "$ARCH" == "x86_64" ]]; then
-    if [ "$OS_TYPE" == "Mac" ]; then
-        check_homebrew_packages virtualbox wget cdrtools
-    fi
     # Intel (amd64 architecture)
     CLOUD_IMG_URL="https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.ova"
     VM_TYPE="VirtualBox"
@@ -103,7 +103,6 @@ if [[ "$ARCH" == "x86_64" ]]; then
     EXPECTED_HASH=$(grep "jammy-server-cloudimg-amd64.ova" SHA256SUMS | awk '{print $1}')
 elif [[ "$ARCH" == "arm64" ]]; then
     # ARM-based (ARM64 architecture)
-    check_homebrew_packages qemu wget cdrtools
     if [ -f pidfile.txt ]; then
         echo "VM is already running, exiting..."
         exit 0
@@ -111,7 +110,6 @@ elif [[ "$ARCH" == "arm64" ]]; then
     CLOUD_IMG_URL="https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-arm64.img"
     VM_TYPE="QEMU"
     FILE_ENDING=".img"
-    EXPECTED_HASH=$(grep "jammy-server-cloudimg-arm64.img" SHA256SUMS | awk '{print $1}')
 else
     echo "Unsupported architecture: $ARCH"
     exit 1
@@ -143,23 +141,22 @@ else
     echo "Using existing Ubuntu Cloud IMG at $CLOUD_IMG_PATH"
 fi
 
-ACTUAL_HASH=$(sha256sum "$CLOUD_IMG_PATH" | awk '{print $1}' | tr -d '[:space:]' | tr -d '\\')
-
-
-if [ "$ACTUAL_HASH" != "$EXPECTED_HASH" && "$ARCH" != "arm64"]; then
-    echo "Checksum mismatch! Retrying download..."
-    rm -f "$CLOUD_IMG_PATH"
-    download_cloud_iso
+if [[ "$ARCH" != "arm64" ]]; then
     ACTUAL_HASH=$(sha256sum "$CLOUD_IMG_PATH" | awk '{print $1}' | tr -d '[:space:]' | tr -d '\\')
-    if [ "$ACTUAL_HASH" != "$EXPECTED_HASH" ]; then
-        echo "Cloud Image was twice not correctly downloaded, maybe retry with better connection?"
+    if [[ "$ACTUAL_HASH" != "$EXPECTED_HASH" ]]; then
+        echo "Checksum mismatch! Retrying download..."
         rm -f "$CLOUD_IMG_PATH"
-        rm -f SHA256SUMS
-        exit 1
+        download_cloud_iso
+        ACTUAL_HASH=$(sha256sum "$CLOUD_IMG_PATH" | awk '{print $1}' | tr -d '[:space:]' | tr -d '\\')
+        if [[ "$ACTUAL_HASH" != "$EXPECTED_HASH" ]]; then
+            echo "Cloud Image was twice not correctly downloaded, maybe retry with better connection?"
+            rm -f "$CLOUD_IMG_PATH"
+            rm -f SHA256SUMS
+            exit 1
+        fi
     fi
+    rm -f SHA256SUMS
 fi
-
-rm -f SHA256SUMS
 
 PASSWORD="kn1lab"
 PASSWORD_HASH=$(openssl passwd -6 "$PASSWORD")
