@@ -109,9 +109,4 @@ sudo chown -R labrat /home/labrat/kn1lab
 
 #Change the congestion control algorithm for tcp from cubic to reno, to better see som congestion control mechanisms in versuch4
 echo "net.ipv4.tcp_congestion_control = reno" | sudo tee -a /etc/sysctl.conf
-sudo sysctl -p
-
-#Automatically install the necessary Visual Studio Code extensions
-code --install-extension vscjava.vscode-java-pack
-code --install-extension ms-python.python
-code --install-extension ms-toolsai.jupyter  
+sudo sysctl -p  

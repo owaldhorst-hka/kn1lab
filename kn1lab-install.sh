@@ -265,6 +265,11 @@ create_qemu_vm() {
         -cdrom $CLOUD_INIT_ISO_PATH
 }
 
+#Automatically install the necessary Visual Studio Code extensions
+code --install-extension vscjava.vscode-java-pack
+code --install-extension ms-python.python
+code --install-extension ms-toolsai.jupyter  
+
 # Main logic to determine the VM setup based on architecture and OS
 if [[ "$VM_TYPE" == "VirtualBox" ]]; then
     create_virtualbox_vm
