@@ -1,8 +1,8 @@
 # Detect the operating system
-if [[ "$(uname -o)" == "Msys" || "$(uname -o)" == "Cygwin" || "$(uname -o)" == "MS/Windows"  || "$(uname)" == "Darwin" ]]; then
+if [[ "$OSTYPE" == "msys"* || "$OSTYPE" == "cygwin"  || "$OSTYPE" == "darwin"* ]]; then
   echo "This script should only be run inside the Linux VM. Since you are using another OS, the script was aborted!"
   exit 1
-elif [[ "$(uname)" == "Linux" ]]; then
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
   read -p "This script should only be run inside a VM. Do you want to proceed? (yes/no): " response
   response=$(echo "$response" | tr '[:upper:]' '[:lower:]')
   if [[ "$response" == "yes" ]]; then

@@ -73,11 +73,11 @@ UBUNTU_VERSION="ubuntu-22.04-cloud"
 if [[ "$OSTYPE" == "msys"* || "$OSTYPE" == "cygwin" ]]; then
     OS_TYPE="Windows"
     SCRIPT_DIR=$(cygpath -w "$SCRIPT_DIR")
-    if [[ -z $(echo "$PATH" | grep -i "virtualbox") ]]; then
+    if [ [-z $(echo "$PATH" | grep -i "virtualbox") ]]; then
         echo "VirtualBox is not in PATH"
         exit 1
     fi
-    if [[! command -v powershell.exe >/dev/null 2>&1]]; then
+    if ! command -v powershell.exe >/dev/null 2>&1; then
         echo "PowerShell is NOT on PATH"
         exit 1
     fi
