@@ -1,8 +1,8 @@
 # Detect the operating system
-if [[ "$(uname -o)" == "Msys" || "$(uname -o)" == "Cygwin" || "$(uname -o)" == "MS/Windows"  || "$(uname)" == "Darwin" ]]; then
+if [[ "$OSTYPE" == "msys"* || "$OSTYPE" == "cygwin"  || "$OSTYPE" == "darwin"* ]]; then
   echo "This script should only be run inside the Linux VM. Since you are using another OS, the script was aborted!"
   exit 1
-elif [[ "$(uname)" == "Linux" ]]; then
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
   read -p "This script should only be run inside a VM. Do you want to proceed? (yes/no): " response
   response=$(echo "$response" | tr '[:upper:]' '[:lower:]')
   if [[ "$response" == "yes" ]]; then
@@ -109,9 +109,4 @@ sudo chown -R labrat /home/labrat/kn1lab
 
 #Change the congestion control algorithm for tcp from cubic to reno, to better see som congestion control mechanisms in versuch4
 echo "net.ipv4.tcp_congestion_control = reno" | sudo tee -a /etc/sysctl.conf
-sudo sysctl -p
-
-#Automatically install the necessary Visual Studio Code extensions
-code --install-extension vscjava.vscode-java-pack
-code --install-extension ms-python.python
-code --install-extension ms-toolsai.jupyter  
+sudo sysctl -p  
