@@ -144,7 +144,7 @@ Verwenden Sie für diese Aufgabe ebenfalls die Mininet-Topologie `mininet_1.py`.
 
 1. War die Aufteilung der Datenrate fair?
 
-1. Wiederholen Sie das Experiment, indem sie nun einen TCP-Strom gegen einen UDP-Strom testen. Was ist das Ergebnis?
+1. Wiederholen Sie das Experiment, indem sie nun einen TCP-Strom gegen einen UDP-Strom mit einer Datenraten von 0,5 Mbit/s (Parameter `-b 0.5M`) testen. Was ist das Ergebnis?
 
 ## Aufgabe 3 - Auswirkungen von hohem Paketverlust auf den TCP-Durchsatz
 

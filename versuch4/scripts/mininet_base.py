@@ -18,7 +18,7 @@ class NetTopo(Topo):
         s2 = self.addSwitch('s2')
         s3 = self.addSwitch('s3')
 
-        self.addLink(s1, s2, cls=TCLink,bw = 0.5,delay= '200ms', loss=loss)
+        self.addLink(s1, s2, cls=TCLink, bw=0.5, loss=loss)
         self.addLink(s3, c1)
         self.addLink(s3, c2)
         self.addLink(s3, sv1)
