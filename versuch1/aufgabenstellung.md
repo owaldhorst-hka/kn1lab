@@ -15,11 +15,9 @@ Für diese Aufgabe können Sie das Verzeichnis `/home/labrat/kn1lab` in Visual S
 
 ## Aufgabe 2
 
-Die zweite Aufgabe umfasst das Senden einer E-Mail mit Hilfe der Java Mail API. Die Dokumentation dazu finden sie auf der Oracle Website unter:
+Die zweite Aufgabe umfasst das Senden einer E-Mail mit Jakarta Mail 2.0.2 (`com.sun.mail:jakarta.mail`). Die API-Klassen werden aus dem Namespace `jakarta.mail` importiert. Die Dokumentation finden Sie hier:
 
-<https://docs.oracle.com/javaee/7/api/javax/mail/package-summary.html>
-
-<https://docs.oracle.com/cd/E26576_01/doc.312/e24930/javamail.htm#GSDVG00079>
+<https://jakarta.ee/specifications/mail/2.0/apidocs/jakarta.mail/jakarta/mail/package-summary.html>
 
 Die Vorlage für diese Aufgabe finden Sie in Visual Studio Code unter `/kn1lab/versuch1/src/Send_Mail.java`.
 
