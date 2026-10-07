@@ -1,27 +1,60 @@
 #!/bin/bash
 
 ####################################################################################################
-# SSH Key Processing
-
-SSH_KEY_FOLDER="$HOME/.ssh/id_rsa.pub"
-# Check if the public key exists
-if [ -f "$SSH_KEY_FOLDER" ]; then
-    echo "Public SSH key found:"
-else
-    echo "No SSH key found. Generating a new one..."
-    ssh-keygen -t rsa -b 4096 -N "" -f "$HOME/.ssh/id_rsa"
-    
-    if [ -f "$SSH_KEY_FOLDER" ]; then
-        echo "New SSH key generated:"
-    else
-        echo "Failed to generate SSH key."
-        exit 1
-    fi
-fi
-SSH_PUB_KEY=$(cat "$SSH_KEY_FOLDER")
+# Variables & Constants
+VM_NAME="kn1lab"
+MEMORY_SIZE=4096
+CPU_COUNT=2
+DISC_SIZE=20480 
+SSH_HOST_PORT=2222
+SSH_GUEST_PORT=22
+PID_FILE="pidfile.txt"
+UBUNTU_VERSION="ubuntu-22.04-cloud"
+CLOUD_INIT_ISO="cloud-init.iso"
+SHA256SUMS_URL="https://cloud-images.ubuntu.com/jammy/current/SHA256SUMS"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ARCH="$(uname -m)"
 
 ####################################################################################################
-#Function to check whether necessary software is installed
+# PID Validation Logic (Cross-Platform)
+
+check_running_vm() {
+    if [ -f "$PID_FILE" ]; then
+        OLD_PID=$(cat "$PID_FILE" | tr -d '\r')
+        echo "Checking if existing PID $OLD_PID is still active..."
+        if kill -0 "$OLD_PID" 2>/dev/null; then
+            if ps -p "$OLD_PID" -o args= 2>/dev/null | grep -qE "VBoxHeadless|qemu-system|VirtualBoxVM"; then
+                echo "-------------------------------------------------------------------"
+                echo "ALREADY RUNNING: VM process $OLD_PID is still active."
+                echo "If you want to restart, stop the VM manually first."
+                echo "-------------------------------------------------------------------"
+                exit 0
+            fi
+        fi
+        echo "Stale pidfile found (Process $OLD_PID not found). Cleaning up..."
+        rm -f "$PID_FILE"
+    fi
+}
+
+save_vbox_pid() {
+    echo "Searching for PID of VM: $VM_NAME..."
+    sleep 2
+    if [[ "$OS_TYPE" == "Windows" ]]; then
+        PID=$(powershell.exe -Command "Get-WmiObject Win32_Process -Filter \"Name = 'VBoxHeadless.exe'\" | Where-Object { \$_.CommandLine -like '*$VM_NAME*' } | Select-Object -ExpandProperty ProcessId" | tr -d '\r' | head -n 1)
+    else
+        PID=$(pgrep -f "VBoxHeadless --comment $VM_NAME")
+    fi
+
+    if [[ -n "$PID" ]]; then
+        echo "$PID" > "$PID_FILE"
+        echo "PID $PID saved to $PID_FILE"
+    else
+        echo "Warning: Could not capture PID. You may need to stop the VM manually."
+    fi
+}
+
+####################################################################################################
+# Helper Functions
 
 check_programs() {
     missing=()
@@ -36,13 +69,10 @@ check_programs() {
     fi
 }
 
-####################################################################################################
-#Function to check whether necessary homebrew packages are installed
-
 check_homebrew_packages() {
     missing=()
     for pkg in "$@"; do
-        if ! brew list --formula | grep -q "^$pkg\$"; then
+        if ! brew list | grep -q "^$pkg\$"; then
             missing+=("$pkg")
         fi
     done
@@ -52,69 +82,92 @@ check_homebrew_packages() {
     fi
 }
 
-# Get the directory where the script is located
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SHA256SUMS_URL="https://cloud-images.ubuntu.com/jammy/current/SHA256SUMS"
-# Check architecture
-ARCH="$(uname -m)"
-# Variables
-VM_NAME="kn1lab"
-MEMORY_SIZE=4096
-CPU_COUNT=2
-DISC_SIZE=20480 # Size in MB, equivalent to 20 GB
-SSH_HOST_PORT=2222
-SSH_GUEST_PORT=22
-CLOUD_INIT_ISO="cloud-init.iso"
-UBUNTU_VERSION="ubuntu-22.04-cloud"
+handle_linux_kvm() {
+    if lsmod | grep -E "^kvm_amd\s|^kvm_intel\s" >/dev/null; then
+        echo "KVM module detected. Attempting to remove it to prevent VirtualBox conflicts..."
+        sudo modprobe -r kvm_intel kvm_amd 2>/dev/null
+        if lsmod | grep -qE "^kvm_amd\s|^kvm_intel\s"; then
+            echo "ERROR: Could not remove KVM. Please manually run 'sudo modprobe -r kvm_intel'."
+            exit 1
+        fi
+    fi
+}
+
+check_and_start_vbox() {
+    local vbm="$1"
+    if "$vbm" list vms | grep -q "\"$VM_NAME\""; then
+        echo "VM '$VM_NAME' already exists."
+        if "$vbm" showvminfo "$VM_NAME" --machinereadable | grep -q 'VMState="running"'; then
+            echo "VM is already running."
+            # Ensure PID file exists even if VM was started elsewhere
+            save_vbox_pid
+            exit 0
+        else
+            echo "Starting existing VM..."
+            "$vbm" startvm "$VM_NAME" --type headless
+            save_vbox_pid
+            exit 0
+        fi
+    fi
+}
 
 ####################################################################################################
-# Detect the operating system and look for missing programs
+# SSH Key Processing
+
+SSH_KEY_FOLDER="$HOME/.ssh/id_rsa.pub"
+if [ -f "$SSH_KEY_FOLDER" ]; then
+    echo "Public SSH key found."
+else
+    echo "No SSH key found. Generating a new one..."
+    ssh-keygen -t rsa -b 4096 -N "" -f "$HOME/.ssh/id_rsa"
+fi
+SSH_PUB_KEY=$(cat "$SSH_KEY_FOLDER")
+
+####################################################################################################
+# Detect OS and Initial Checks
+
+check_running_vm
 
 if [[ "$OSTYPE" == "msys"* || "$OSTYPE" == "cygwin" ]]; then
     OS_TYPE="Windows"
-    SCRIPT_DIR=$(cygpath -w "$SCRIPT_DIR")
-    if ! command -v powershell.exe >/dev/null 2>&1; then
-        echo "PowerShell is NOT on PATH"
-        exit 1
-    fi
-    if [[ ! -f "/c/Program Files/Oracle/VirtualBox/VBoxManage.exe" ]]; then
-        echo "Missing: VirtualBox (expected at C:\Program Files\VirtualBox\VBoxManage.exe)"
-        exit 1
-    fi
+    VBOX_MANAGE="/c/Program Files/Oracle/VirtualBox/VBoxManage.exe"
+    [[ ! -f "$VBOX_MANAGE" ]] && { echo "Missing: VirtualBox"; exit 1; }
+    check_and_start_vbox "$VBOX_MANAGE"
     powershell.exe -Command "Start-BitsTransfer -Source '$SHA256SUMS_URL' -Destination SHA256SUMS"
+
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     OS_TYPE="Mac"
     command -v brew &>/dev/null || { echo "Missing: Homebrew"; exit 1; }
     if [[ "$ARCH" == "x86_64" ]]; then
         check_homebrew_packages virtualbox wget cdrtools
+        VBOX_MANAGE="/usr/local/bin/VBoxManage"
+        check_and_start_vbox "$VBOX_MANAGE"
         wget -q -O SHA256SUMS "$SHA256SUMS_URL"
     else
         check_homebrew_packages qemu wget cdrtools
     fi
-elif [[ "$OSTYPE" == "linux-gnu"*  ]]; then
+
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
     OS_TYPE="Linux"
-    check_programs VBoxManage mkisofs
+    handle_linux_kvm
+    check_programs VBoxManage mkisofs wget
+    VBOX_MANAGE=$(command -v VBoxManage)
+    check_and_start_vbox "$VBOX_MANAGE"
     wget -q -O SHA256SUMS "$SHA256SUMS_URL"
 else
-    echo "Unsupported OS type: $(uname)"
+    echo "Unsupported OS: $(uname)"
     exit 1
 fi
 
 ####################################################################################################
-# Set the appropriate Ubuntu image based on architecture
+# Set appropriate Ubuntu image
 
 if [[ "$ARCH" == "x86_64" ]]; then
-    # Intel (amd64 architecture)
     CLOUD_IMG_URL="https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.ova"
     VM_TYPE="VirtualBox"
     FILE_ENDING=".ova"
     EXPECTED_HASH=$(grep "jammy-server-cloudimg-amd64.ova" SHA256SUMS | awk '{print $1}')
 elif [[ "$ARCH" == "arm64" ]]; then
-    # ARM-based (ARM64 architecture)
-    if [ -f pidfile.txt ]; then
-        echo "VM is already running, exiting..."
-        exit 0
-    fi
     CLOUD_IMG_URL="https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-arm64.img"
     VM_TYPE="QEMU"
     FILE_ENDING=".img"
@@ -123,21 +176,6 @@ else
     exit 1
 fi
 
-####################################################################################################
-#Download Cloud Image Function
-
-download_cloud_iso() {
-    echo "Ubuntu Cloud OVA not found, downloading..."
-    IMG_DOWNLOADED=1
-    if [[ "$OS_TYPE" == "Linux" || "$OS_TYPE" == "Mac" ]]; then
-        wget -O "$CLOUD_IMG_PATH" "$CLOUD_IMG_URL"
-    else
-        powershell.exe -Command "Start-BitsTransfer -Source '$CLOUD_IMG_URL' -Destination '$CLOUD_IMG_PATH'"
-    fi
-}
-
-####################################################################################################
-# Set paths relative to the script's location
 CLOUD_IMG_PATH="$SCRIPT_DIR/$UBUNTU_VERSION$FILE_ENDING"
 CLOUD_CONFIG_TMP_DIR="$SCRIPT_DIR/tmp"
 MKISOFS_TMP_DIR="$SCRIPT_DIR/mkisofs"
@@ -147,251 +185,119 @@ QEMU_EFI_PATH="$SCRIPT_DIR/QEMU_EFI.fd"
 QEMU_EFI_URL="https://releases.linaro.org/components/kernel/uefi-linaro/latest/release/qemu64/QEMU_EFI.fd"
 
 ####################################################################################################
-# Download the cloud image if not found
+# Download and Verify Image
+
+download_cloud_iso() {
+    echo "Ubuntu Cloud image not found, downloading..."
+    IMG_DOWNLOADED=1
+    if [[ "$OS_TYPE" == "Windows" ]]; then
+        WIN_PATH=$(cygpath -w "$CLOUD_IMG_PATH")
+        powershell.exe -Command "Start-BitsTransfer -Source '$CLOUD_IMG_URL' -Destination '$WIN_PATH'"
+    else
+        wget -O "$CLOUD_IMG_PATH" "$CLOUD_IMG_URL"
+    fi
+}
 
 if [[ ! -f "$CLOUD_IMG_PATH" ]]; then
     download_cloud_iso
-else
-    echo "Using existing Ubuntu Cloud IMG at $CLOUD_IMG_PATH"
 fi
 
-####################################################################################################
-#Check whether file was correctly downloaded, if Arch is not Arm64
 if [[ "$ARCH" != "arm64" ]]; then
-    ACTUAL_HASH=$(sha256sum "$CLOUD_IMG_PATH" | awk '{print $1}' | tr -d '[:space:]' | tr -d '\\')
+    ACTUAL_HASH=$(sha256sum "$CLOUD_IMG_PATH" | awk '{print $1}')
     if [[ "$ACTUAL_HASH" != "$EXPECTED_HASH" ]]; then
-        echo "Checksum mismatch! Retrying download..."
+        echo "Checksum mismatch! Retrying..."
         rm -f "$CLOUD_IMG_PATH"
         download_cloud_iso
-        ACTUAL_HASH=$(sha256sum "$CLOUD_IMG_PATH" | awk '{print $1}' | tr -d '[:space:]' | tr -d '\\')
-        if [[ "$ACTUAL_HASH" != "$EXPECTED_HASH" ]]; then
-            echo "Cloud Image was twice not correctly downloaded, maybe retry with better connection?"
-            rm -f "$CLOUD_IMG_PATH"
-            rm -f SHA256SUMS
-            exit 1
-        fi
     fi
     rm -f SHA256SUMS
 fi
 
 ####################################################################################################
-# Create cloud-init ISO if it doesn't exist
+# Create cloud-init ISO
 
-PASSWORD="kn1lab"
-PASSWORD_HASH=$(openssl passwd -6 "$PASSWORD")
+PASSWORD_HASH=$(openssl passwd -6 "kn1lab")
 
 if [[ ! -f "$CLOUD_INIT_ISO_PATH" ]]; then
-    echo "Cloud-init ISO not found, creating..."
-
+    echo "Creating cloud-init ISO..."
     mkdir -p "$CLOUD_CONFIG_TMP_DIR"
-
-    # Create cloud-config file
     cat << EOF > "$CLOUD_CONFIG_PATH"
 #cloud-config
-manage_etc_hosts: false
 users:
   - name: labrat
-    sudo:  ALL=(ALL) NOPASSWD:ALL
+    sudo: ALL=(ALL) NOPASSWD:ALL
     shell: /bin/bash
-    groups:
-      - sudo
-    lock_passwd: false
     passwd: $PASSWORD_HASH
     ssh_authorized_keys:
       - $SSH_PUB_KEY
 runcmd:
- - [ git, clone, https://github.com/owaldhorst-hka/CPUnetPLOT ]
- - [ cd, /home/labrat ]
- - [ git, clone, https://github.com/owaldhorst-hka/kn1lab ]
- - [ mkdir, -m, 777, /home/labrat/Maildir ]
- - [ mkdir, -m, 777, /home/labrat/Maildir/new ]
- - [ mkdir, -m, 777, /home/labrat/Maildir/cur ]
- - [ mkdir, -m, 777, /home/labrat/Maildir/tmp ]
+ - sudo -u labrat git clone https://github.com/owaldhorst-hka/CPUnetPLOT /CPUnetPLOT
+ - sudo -u labrat git clone https://github.com/owaldhorst-hka/kn1lab /home/labrat/kn1lab
+ - mkdir -p -m 777 /home/labrat/Maildir/new /home/labrat/Maildir/cur /home/labrat/Maildir/tmp
+ - chown -R labrat:labrat /home/labrat/Maildir
 EOF
-
     touch "$CLOUD_CONFIG_TMP_DIR/meta-data"
     
-    # Generate cloud-init ISO
-    if [[ "$OS_TYPE" == "Linux" || "$OS_TYPE" == "Mac" ]]; then
+    if [[ "$OS_TYPE" != "Windows" ]]; then
         mkisofs -output "$CLOUD_INIT_ISO_PATH" -volid cidata -joliet -rock "$CLOUD_CONFIG_TMP_DIR"
     else
-        GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/owaldhorst-hka/mkisofs
-        powershell.exe -Command "& '$MKISOFS_TMP_DIR/mkisofs.exe' -output '$CLOUD_INIT_ISO_PATH' -volid cidata -joliet -rock '$CLOUD_CONFIG_TMP_DIR'"
+        GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/owaldhorst-hka/mkisofs "$MKISOFS_TMP_DIR"
+        powershell.exe -Command "& '$(cygpath -w "$MKISOFS_TMP_DIR/mkisofs.exe")' -output '$(cygpath -w "$CLOUD_INIT_ISO_PATH")' -volid cidata -joliet -rock '$(cygpath -w "$CLOUD_CONFIG_TMP_DIR")'"
         rm -rf "$MKISOFS_TMP_DIR"
     fi
-else
-    echo "Using existing cloud-init ISO at $CLOUD_INIT_ISO_PATH"
 fi
 
 ####################################################################################################
-# Function to create a VM using VirtualBox with OVA
+# Start/Create VM
 
-create_virtualbox_vm_windows() {
-    echo "Setting up VM using VirtualBox and OVA on windows..."
+if [[ "$VM_TYPE" == "VirtualBox" ]]; then
+    echo "Importing and starting VirtualBox VM..."
+    "$VBOX_MANAGE" import "$CLOUD_IMG_PATH" --vsys 0 --vmname "$VM_NAME"
+    "$VBOX_MANAGE" modifyvm "$VM_NAME" --memory $MEMORY_SIZE --cpus $CPU_COUNT --nic1 nat
+    "$VBOX_MANAGE" storageattach "$VM_NAME" --storagectl "IDE" --port 1 --device 0 --type dvddrive --medium "$CLOUD_INIT_ISO_PATH"
+    "$VBOX_MANAGE" modifyvm "$VM_NAME" --natpf1 "ssh,tcp,127.0.0.1,$SSH_HOST_PORT,,$SSH_GUEST_PORT"
+    "$VBOX_MANAGE" startvm "$VM_NAME" --type headless
+    save_vbox_pid
 
-    # Import OVA into VirtualBox
-    "/c/Program Files/Oracle/VirtualBox/VBoxManage.exe" import "$CLOUD_IMG_PATH" --vsys 0 --vmname "$VM_NAME"
-
-    # Modify VM settings
-    "/c/Program Files/Oracle/VirtualBox/VBoxManage.exe" modifyvm "$VM_NAME" --memory $MEMORY_SIZE --cpus $CPU_COUNT
-
-    # Attach the cloud-init ISO to the existing IDE controller (already included in the OVA)
-    "/c/Program Files/Oracle/VirtualBox/VBoxManage.exe" storageattach "$VM_NAME" --storagectl "IDE" --port 1 --device 0 --type dvddrive --medium "$CLOUD_INIT_ISO_PATH"
-
-    # Configure network (NAT with port forwarding)
-    "/c/Program Files/Oracle/VirtualBox/VBoxManage.exe" modifyvm "$VM_NAME" --nic1 nat
-    "/c/Program Files/Oracle/VirtualBox/VBoxManage.exe" modifyvm "$VM_NAME" --natpf1 "ssh,tcp,127.0.0.1,$SSH_HOST_PORT,,$SSH_GUEST_PORT"
-
-    # Start VM in headless mode
-    "/c/Program Files/Oracle/VirtualBox/VBoxManage.exe" startvm "$VM_NAME" --type headless
-}
-
-create_virtualbox_vm_linux() {
-    echo "Setting up VM using VirtualBox and OVA on Linux..."
-
-    # Import OVA into VirtualBox
-    "/usr/lib/virtualbox/VBoxManage" import "$CLOUD_IMG_PATH" --vsys 0 --vmname "$VM_NAME"
-
-    # Modify VM settings
-    "/usr/lib/virtualbox/VBoxManage" modifyvm "$VM_NAME" --memory $MEMORY_SIZE --cpus $CPU_COUNT
-
-    # Attach the cloud-init ISO to the existing IDE controller (already included in the OVA)
-    "/usr/lib/virtualbox/VBoxManage" storageattach "$VM_NAME" --storagectl "IDE" --port 1 --device 0 --type dvddrive --medium "$CLOUD_INIT_ISO_PATH"
-
-    # Configure network (NAT with port forwarding)
-    "/usr/lib/virtualbox/VBoxManage" modifyvm "$VM_NAME" --nic1 nat
-    "/usr/lib/virtualbox/VBoxManage" modifyvm "$VM_NAME" --natpf1 "ssh,tcp,127.0.0.1,$SSH_HOST_PORT,,$SSH_GUEST_PORT"
-
-    # Start VM in headless mode
-    "/usr/lib/virtualbox/VBoxManage" startvm "$VM_NAME" --type headless
-}
-
-####################################################################################################
-# Function to create a VM using QEMU (for ARM-based systems)
-
-create_qemu_vm() {
-    echo "Setting up VM using QEMU (ARM-based system)..."
-
-    # Download the EFI image
-    if [[ ! -f "$QEMU_EFI_PATH" ]]; then
-        echo "QEMU EFI Image not found, downloading..."
-        wget -O "$QEMU_EFI_PATH" "$QEMU_EFI_URL"
-    else
-        echo "Using existing QEMU EFI Image at $QEMU_EFI_PATH"
-    fi
-
-    # Resize the IMG file to the specified size (in MB)
-    if [ -n "$IMG_DOWNLOADED" ]; then
-        echo "Rezising disk..."
-        qemu-img resize $UBUNTU_VERSION$FILE_ENDING "$DISC_SIZE"M
-    fi
-    # Run the VM using QEMU with ARM architecture on Mac
-    qemu-system-aarch64 \
-        -m "$MEMORY_SIZE"M \
-        -accel hvf \
-        -cpu host \
-        -smp $CPU_COUNT \
-        -M virt \
-        --display none -daemonize -pidfile pidfile.txt \
-        -bios QEMU_EFI.fd \
-        -device virtio-net-pci,netdev=net0 \
-        -netdev user,id=net0,hostfwd=tcp::"$SSH_HOST_PORT"-:"$SSH_GUEST_PORT" \
-        -hda $CLOUD_IMG_PATH \
-        -cdrom $CLOUD_INIT_ISO_PATH
-}
-
-####################################################################################################
-# Main logic to determine the VM setup based on architecture and OS
-
-if [[ "$VM_TYPE" == "VirtualBox" && "$OS_TYPE" == "Windows" ]]; then
-    create_virtualbox_vm_windows
-elif [[ "$VM_TYPE" == "VirtualBox" && "$OS_TYPE" == "Linux" ]]; then
-    create_virtualbox_vm_linux
 elif [[ "$VM_TYPE" == "QEMU" ]]; then
-    create_qemu_vm
-fi
-
-####################################################################################################
-# Reset known ssh hosts, because these tend to throw an error
-
-if [ "$VM_TYPE" != "QEMU" ] || [ -n "$IMG_DOWNLOADED" ]; then
-    touch "$HOME/.ssh/known_hosts"
-    ssh-keygen -f "$HOME/.ssh/known_hosts" -R "[localhost]:2222"
-fi
-
-####################################################################################################
-# Clean up tmp folder if it was created by the script
-
-if [[ ! -f "$CLOUD_CONFIG_TMP_DIR" ]]; then
-    rm -rf "$CLOUD_CONFIG_TMP_DIR"
-fi
-
-####################################################################################################
-#Add VS Code extensions to settings.json, so they are automatically installed in the ssh VM
-#Existing extensions are not overriden and running the script multiple times is also possible 
-#Extensions are installed, when VS Code connects to the VM for the first time
-
-# Determine settings path
-if [[ "$OS_TYPE" == "Linux" ]]; then
-    SETTINGS_PATH="$HOME/.config/Code/User/settings.json"
-elif [[ "$OS_TYPE" == "Mac" ]]; then
-    SETTINGS_PATH="$HOME/Library/Application Support/Code/User/settings.json"
-elif [[ "$OS_TYPE" == "Windows" ]]; then
-    SETTINGS_PATH="$APPDATA/Code/User/settings.json"
-else
-    echo "Unsupported OS: $OSTYPE"
-    exit 1
-fi
-
-#Create settings.json, if necessary
-mkdir -p "$(dirname "$SETTINGS_PATH")"
-[ -f "$SETTINGS_PATH" ] || echo "{}" > "$SETTINGS_PATH"
-
-# Desired extensions
-desired_extensions=(
-    "vscjava.vscode-java-pack"
-    "ms-python.python"
-    "ms-toolsai.jupyter"
-)
-
-# Backup original
-cp "$SETTINGS_PATH" "$SETTINGS_PATH.bak"
-
-# Extract existing extensions (basic regex parse)
-existing=$(sed -n '/"remote\.SSH\.defaultExtensions"/,/\]/p' "$SETTINGS_PATH" | grep -o '".\+?"' | tr -d '"' | paste -sd "," -)
-
-# Convert to array
-IFS=',' read -r -a existing_array <<< "$existing"
-
-# Build a new unique list
-merged=("${existing_array[@]}")
-for ext in "${desired_extensions[@]}"; do
-    if [[ ! " ${merged[*]} " =~ " ${ext} " ]]; then
-        merged+=("$ext")
+    [[ ! -f "$QEMU_EFI_PATH" ]] && wget -O "$QEMU_EFI_PATH" "$QEMU_EFI_URL"
+    if [ -n "$IMG_DOWNLOADED" ]; then
+        qemu-img resize "$CLOUD_IMG_PATH" "$DISC_SIZE"M
     fi
-done
-
-# Format the list for insertion
-extension_json="\"remote.SSH.defaultExtensions\": ["
-for ext in "${merged[@]}"; do
-    extension_json+="\"$ext\", "
-done
-extension_json=${extension_json%, }  # Remove trailing comma
-extension_json+="]"
-
-# Remove old line and insert new one
-if grep -q '"remote.SSH.defaultExtensions"' "$SETTINGS_PATH"; then
-    # Replace line
-    sed -i -E "s|\"remote.SSH.defaultExtensions\"[^\[]*\[[^]]*\]|$extension_json|" "$SETTINGS_PATH"
-else
-    # Insert before final }
-    sed -i -E '$s/}/,\n  '"$extension_json"'\n}/' "$SETTINGS_PATH"
+    qemu-system-aarch64 -m "$MEMORY_SIZE"M -accel hvf -cpu host -smp $CPU_COUNT -M virt \
+        --display none -daemonize -pidfile "$PID_FILE" -bios "$QEMU_EFI_PATH" \
+        -device virtio-net-pci,netdev=net0 -netdev user,id=net0,hostfwd=tcp::"$SSH_HOST_PORT"-:"$SSH_GUEST_PORT" \
+        -hda "$CLOUD_IMG_PATH" -cdrom "$CLOUD_INIT_ISO_PATH"
+    echo "QEMU started. PID saved to $PID_FILE."
 fi
 
-echo "Merged extensions into $SETTINGS_PATH"
-
 ####################################################################################################
-# VM setup is finished!
+# Post-VM setup tasks
 
-echo "VM created and started."
-echo "You can SSH into the VM using: ssh -p $SSH_HOST_PORT labrat@localhost"
+ssh-keygen -f "$HOME/.ssh/known_hosts" -R "[localhost]:2222" 2>/dev/null
+rm -rf "$CLOUD_CONFIG_TMP_DIR"
+
+# VS Code settings injection
+if [[ "$OS_TYPE" == "Linux" ]]; then SETTINGS_PATH="$HOME/.config/Code/User/settings.json"
+elif [[ "$OS_TYPE" == "Mac" ]]; then SETTINGS_PATH="$HOME/Library/Application Support/Code/User/settings.json"
+elif [[ "$OS_TYPE" == "Windows" ]]; then SETTINGS_PATH="$APPDATA/Code/User/settings.json"
+fi
+
+if [[ -n "$SETTINGS_PATH" ]]; then
+    mkdir -p "$(dirname "$SETTINGS_PATH")"
+    [ -f "$SETTINGS_PATH" ] || echo "{}" > "$SETTINGS_PATH"
+    cp "$SETTINGS_PATH" "$SETTINGS_PATH.bak"
+
+    desired_extensions=("vscjava.vscode-java-pack" "ms-python.python" "ms-toolsai.jupyter")
+    for ext in "${desired_extensions[@]}"; do
+        if ! grep -q "$ext" "$SETTINGS_PATH"; then
+            if grep -q "remote.SSH.defaultExtensions" "$SETTINGS_PATH"; then
+                sed -i -E "s/(\"remote.SSH.defaultExtensions\":\s*\[)/\1\"$ext\", /" "$SETTINGS_PATH"
+            else
+                sed -i -E 's/\{/{\n  "remote.SSH.defaultExtensions": ["'"$ext"'"],/' "$SETTINGS_PATH"
+            fi
+        fi
+    done
+fi
+
+echo "VM created and started. PID saved to $PID_FILE."
+echo "You can SSH using: ssh -p $SSH_HOST_PORT labrat@localhost"

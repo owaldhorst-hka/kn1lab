@@ -16,6 +16,7 @@
 ./kn1lab-install.sh
 ```
 
+* `Wichtig`: Unter Linux können bestimmte KVM-Kernel-Module (`kvm_amd` oder `kvm_intel`) den Start von VirtualBox blockieren. Das Skript erkennt diesen Konflikt und entfernt die entsprechenden Module automatisch. Da hierfür Administratorrechte erforderlich sind, werden Sie gegebenenfalls zur Eingabe Ihres sudo-Passworts aufgefordert.
 * Anschließend können Sie sich mit der Maschine über ssh verbinden, indem Sie diese als Host in Visual Studio Code anlegen. Dafür können Sie über den blauen Remote-Window-Knopf im linken unteren Eck mit der Option `Connect to Host` und der darauffolgenden Option `Add new SSH Host` unter Angabe von `ssh -p 2222 labrat@localhost` die Einrichtung durchführen.
 * Nach der Einrichtung können Sie sich mit der Maschine über deren Auswahl in der Option `Connect to Host` verbinden.
   * Hinweis zur Erstverbindung: Je nach VS-Code-Version können verschiedene Abfragen erscheinen:
@@ -28,9 +29,8 @@
 ## Anmerkungen zur weiteren Verwendung der virtuellen Maschine im Laufe des Semesters
 
 * Sie müssen die virtuelle Maschine nach jedem Neustart Ihres Computers ebenfalls erneut starten, damit Sie sich mit dieser verbinden können.
-* Bei der Verwendung von Virtualbox können Sie die VM innerhalb der Anwendung VirtualBox starten.
-* Bei Qemu müssen Sie das Skript `kn1lab-install.sh` erneut ausführen, das Ausführen des Setup-Skripts ist nicht notwendig.
-* Bei der Verwendung von Qemu gibt es außerdem die Möglichkeit, mit dem Skript `stop-vm.sh` die Virtuelle Maschine in einem Terminal außerhalb der virtuellen Maschine anzuhalten. Unter Umständen müssen Sie das Skript mit dem Befehl `chmod +x stop-vm.sh` zuvor ausführbar machen.
+* Dafür müssen Sie das Skript `kn1lab-install.sh` erneut ausführen.
+* Mit dem Skript `stop-vm.sh` können Sie die Virtuelle Maschine in einem Terminal außerhalb der virtuellen Maschine anhalten. Unter Umständen müssen Sie das Skript mit dem Befehl `chmod +x stop-vm.sh` zuvor ausführbar machen.
 
 
 ## Aufgabenstellungen
