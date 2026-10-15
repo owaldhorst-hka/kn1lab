@@ -293,9 +293,9 @@ if [[ -n "$SETTINGS_PATH" ]]; then
     for ext in "${desired_extensions[@]}"; do
         if ! grep -q "$ext" "$SETTINGS_PATH"; then
             if grep -q "remote.SSH.defaultExtensions" "$SETTINGS_PATH"; then
-                sed -i -E "s/(\"remote.SSH.defaultExtensions\":\s*\[)/\1\"$ext\", /" "$SETTINGS_PATH"
+                sed -E "s/(\"remote.SSH.defaultExtensions\":[[:space:]]*\[)/\1\"$ext\", /" "$SETTINGS_PATH" > "$SETTINGS_PATH.tmp" && mv "$SETTINGS_PATH.tmp" "$SETTINGS_PATH"
             else
-                sed -i -E 's/\{/{\n  "remote.SSH.defaultExtensions": ["'"$ext"'"],/' "$SETTINGS_PATH"
+                sed -E '1s/\{/{ "remote.SSH.defaultExtensions": ["'"$ext"'"],/' "$SETTINGS_PATH" > "$SETTINGS_PATH.tmp" && mv "$SETTINGS_PATH.tmp" "$SETTINGS_PATH"
             fi
         fi
     done
