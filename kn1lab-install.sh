@@ -181,8 +181,10 @@ CLOUD_CONFIG_TMP_DIR="$SCRIPT_DIR/tmp"
 MKISOFS_TMP_DIR="$SCRIPT_DIR/mkisofs"
 CLOUD_CONFIG_PATH="$CLOUD_CONFIG_TMP_DIR/user-data"
 CLOUD_INIT_ISO_PATH="$SCRIPT_DIR/$CLOUD_INIT_ISO"
-QEMU_EFI_PATH="$SCRIPT_DIR/QEMU_EFI.fd"
-QEMU_EFI_URL="https://releases.linaro.org/components/kernel/uefi-linaro/latest/release/qemu64/QEMU_EFI.fd"
+if [[ "$OS_TYPE" == "Mac" && "$ARCH" == "arm64" ]]; then
+    # UEFI firmware bundled with Homebrew's qemu (the old Linaro download URL is gone)
+    QEMU_EFI_PATH="$(brew --prefix qemu)/share/qemu/edk2-aarch64-code.fd"
+fi
 
 ####################################################################################################
 # Download and Verify Image
@@ -259,7 +261,7 @@ if [[ "$VM_TYPE" == "VirtualBox" ]]; then
     save_vbox_pid
 
 elif [[ "$VM_TYPE" == "QEMU" ]]; then
-    [[ ! -f "$QEMU_EFI_PATH" ]] && wget -O "$QEMU_EFI_PATH" "$QEMU_EFI_URL"
+    [[ ! -f "$QEMU_EFI_PATH" ]] && { echo "Missing UEFI firmware: $QEMU_EFI_PATH"; exit 1; }
     if [ -n "$IMG_DOWNLOADED" ]; then
         qemu-img resize "$CLOUD_IMG_PATH" "$DISC_SIZE"M
     fi
