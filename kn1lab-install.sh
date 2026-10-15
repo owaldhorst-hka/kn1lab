@@ -133,7 +133,7 @@ if [[ "$OSTYPE" == "msys"* || "$OSTYPE" == "cygwin" ]]; then
     VBOX_MANAGE="/c/Program Files/Oracle/VirtualBox/VBoxManage.exe"
     [[ ! -f "$VBOX_MANAGE" ]] && { echo "Missing: VirtualBox"; exit 1; }
     check_and_start_vbox "$VBOX_MANAGE"
-    powershell.exe -Command "Start-BitsTransfer -Source '$SHA256SUMS_URL' -Destination SHA256SUMS"
+    powershell.exe -Command "Start-BitsTransfer -Source '$SHA256SUMS_URL' -Destination SHA256SUMS -ProxyUsage NoProxy"
 
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     OS_TYPE="Mac"
@@ -194,7 +194,7 @@ download_cloud_iso() {
     IMG_DOWNLOADED=1
     if [[ "$OS_TYPE" == "Windows" ]]; then
         WIN_PATH=$(cygpath -w "$CLOUD_IMG_PATH")
-        powershell.exe -Command "Start-BitsTransfer -Source '$CLOUD_IMG_URL' -Destination '$WIN_PATH'"
+        powershell.exe -Command "Start-BitsTransfer -Source '$CLOUD_IMG_URL' -Destination '$WIN_PATH' -ProxyUsage NoProxy"
     else
         wget -O "$CLOUD_IMG_PATH" "$CLOUD_IMG_URL"
     fi
